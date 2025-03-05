@@ -1,120 +1,73 @@
 package DAO;
 
-import Database.DatabaseConnection;
-import Model.FaParte;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Model.FaParte;
 
 public class FaParteDAO {
+    private Connection connection;
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public FaParteDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    private FaParte mapResultSetToFaParte(ResultSet rs) throws SQLException {
-        FaParte faParte = new FaParte();
-        faParte.setID_Rosa(rs.getInt("ID_Rosa"));
-        faParte.setID_Calciatore(rs.getInt("ID_Calciatore"));
-        faParte.setTitolare(rs.getBoolean("titolare"));
-        faParte.setPosizione(rs.getString("Posizione"));
-        return faParte;
-    }
-
-    public FaParte findByIdRosaIdCalciatore(int idRosa, int idCalciatore) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, ID_Calciatore, titolare, Posizione FROM FA_PARTE WHERE ID_Rosa = ? AND ID_Calciatore = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idRosa);
-            pstmt.setInt(2, idCalciatore);
-            ResultSet rs = pstmt.executeQuery();
+    public FaParte getFaParteById(int idRosa, int idCalciatore) throws SQLException {
+        String sql = "SELECT * FROM FA_PARTE WHERE ID_Rosa = ? AND ID_Calciatore = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRosa);
+            ps.setInt(2, idCalciatore);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToFaParte(rs);
-            } else {
-                return null;
+                return new FaParte(
+                        rs.getInt("ID_Rosa"),
+                        rs.getInt("ID_Calciatore"),
+                        rs.getBoolean("titolare"),
+                        rs.getString("Posizione")
+                );
             }
+            return null;
         }
     }
 
-    public List<FaParte> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, ID_Calciatore, titolare, Posizione FROM FA_PARTE";
-        List<FaParte> faParteList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<FaParte> getAllFaParte() throws SQLException {
+        String sql = "SELECT * FROM FA_PARTE";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<FaParte> faParteList = new ArrayList<>();
             while (rs.next()) {
-                faParteList.add(mapResultSetToFaParte(rs));
+                faParteList.add(new FaParte(
+                        rs.getInt("ID_Rosa"),
+                        rs.getInt("ID_Calciatore"),
+                        rs.getBoolean("titolare"),
+                        rs.getString("Posizione")
+                ));
             }
             return faParteList;
         }
     }
 
-    public void create(FaParte faParte) throws SQLException, ClassNotFoundException {
+    public void addFaParte(FaParte faParte) throws SQLException {
         String sql = "INSERT INTO FA_PARTE (ID_Rosa, ID_Calciatore, titolare, Posizione) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, faParte.getID_Rosa());
-            pstmt.setInt(2, faParte.getID_Calciatore());
-            pstmt.setBoolean(3, faParte.isTitolare());
-            pstmt.setString(4, faParte.getPosizione());
-            pstmt.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, faParte.getIdRosa());
+            ps.setInt(2, faParte.getIdCalciatore());
+            ps.setBoolean(3, faParte.isTitolare());
+            ps.setString(4, faParte.getPosizione());
+            ps.executeUpdate();
         }
     }
 
-    public void update(FaParte faParte) throws SQLException, ClassNotFoundException {
+    public void updateFaParte(FaParte faParte) throws SQLException {
         String sql = "UPDATE FA_PARTE SET titolare = ?, Posizione = ? WHERE ID_Rosa = ? AND ID_Calciatore = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setBoolean(1, faParte.isTitolare());
-            pstmt.setString(2, faParte.getPosizione());
-            pstmt.setInt(3, faParte.getID_Rosa());
-            pstmt.setInt(4, faParte.getID_Calciatore());
-            pstmt.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setBoolean(1, faParte.isTitolare());
+            ps.setString(2, faParte.getPosizione());
+            ps.setInt(3, faParte.getIdRosa());
+            ps.setInt(4, faParte.getIdCalciatore());
+            ps.executeUpdate();
         }
     }
 
-
-    public void delete(int idRosa, int idCalciatore) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM FA_PARTE WHERE ID_Rosa = ? AND ID_Calciatore = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idRosa);
-            pstmt.setInt(2, idCalciatore);
-            pstmt.executeUpdate();
-        }
-    }
-
-    public List<FaParte> findByIdRosa(int idRosa) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, ID_Calciatore, titolare, Posizione FROM FA_PARTE WHERE ID_Rosa = ?";
-        List<FaParte> faParteList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idRosa);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                faParteList.add(mapResultSetToFaParte(rs));
-            }
-            return faParteList;
-        }
-    }
-
-    public List<FaParte> findByIdCalciatore(int idCalciatore) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, ID_Calciatore, titolare, Posizione FROM FA_PARTE WHERE ID_Calciatore = ?";
-        List<FaParte> faParteList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idCalciatore);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                faParteList.add(mapResultSetToFaParte(rs));
-            }
-            return faParteList;
-        }
-    }
-
-    // Metodi aggiuntivi (se necessario)
-    // ...
-}
+    public void deleteFaParte(int idRosa, int idCalciatore) throws SQLException {
+        String sql = "DELETE FROM FA_PARTE WHERE ID_Rosa = ? AND ID_Calciatore = ?";}}

@@ -1,100 +1,73 @@
 package DAO;
 
-import Database.DatabaseConnection;
-import Model.Rosa;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Model.Rosa;
 
 public class RosaDAO {
+    private Connection connection;
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public RosaDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    private Rosa mapResultSetToRosa(ResultSet rs) throws SQLException {
-        Rosa rosa = new Rosa();
-        rosa.setID_Rosa(rs.getInt("ID_Rosa"));
-        rosa.setNomeSquadra(rs.getString("nomeSquadra"));
-        rosa.setStagione(rs.getString("stagione"));
-        return rosa;
-    }
-
-    public Rosa findByIdRosa(int idRosa) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, nomeSquadra, stagione FROM ROSA WHERE ID_Rosa = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idRosa);
-            ResultSet rs = pstmt.executeQuery();
+    public Rosa getRosaById(int idRosa) throws SQLException {
+        String sql = "SELECT * FROM Rosa WHERE ID_Rosa = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRosa);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToRosa(rs);
-            } else {
-                return null;
+                return new Rosa(
+                        rs.getInt("ID_Rosa"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("stagione")
+                );
             }
+            return null;
         }
     }
 
-    public List<Rosa> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, nomeSquadra, stagione FROM ROSA";
-        List<Rosa> rosaList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<Rosa> getAllRose() throws SQLException {
+        String sql = "SELECT * FROM Rosa";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Rosa> rose = new ArrayList<>();
             while (rs.next()) {
-                rosaList.add(mapResultSetToRosa(rs));
+                rose.add(new Rosa(
+                        rs.getInt("ID_Rosa"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("stagione")
+                ));
             }
-            return rosaList;
+            return rose;
         }
     }
 
-    public void create(Rosa rosa) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO ROSA (nomeSquadra, stagione) VALUES (?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, rosa.getNomeSquadra());
-            pstmt.setString(2, rosa.getStagione());
-            pstmt.executeUpdate();
+    public void addRosa(Rosa rosa) throws SQLException {
+        String sql = "INSERT INTO Rosa (nomeSquadra, stagione) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, rosa.getNomeSquadra());
+            ps.setString(2, rosa.getStagione());
+            ps.executeUpdate();
         }
     }
 
-    public void update(Rosa rosa) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE ROSA SET nomeSquadra = ?, stagione = ? WHERE ID_Rosa = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, rosa.getNomeSquadra());
-            pstmt.setString(2, rosa.getStagione());
-            pstmt.setInt(3, rosa.getID_Rosa());
-            pstmt.executeUpdate();
+    public void updateRosa(Rosa rosa) throws SQLException {
+        String sql = "UPDATE Rosa SET nomeSquadra = ?, stagione = ? WHERE ID_Rosa = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, rosa.getNomeSquadra());
+            ps.setString(2, rosa.getStagione());
+            ps.setInt(3, rosa.getIdRosa());
+            ps.executeUpdate();
         }
     }
 
-    public void delete(int idRosa) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM ROSA WHERE ID_Rosa = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idRosa);
-            pstmt.executeUpdate();
+    public void deleteRosa(int idRosa) throws SQLException {
+        String sql = "DELETE FROM Rosa WHERE ID_Rosa = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRosa);
+            ps.executeUpdate();
         }
     }
-
-    public List<Rosa> findByNomeSquadraStagione(String nomeSquadra, String stagione) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Rosa, nomeSquadra, stagione FROM ROSA WHERE nomeSquadra = ? AND stagione = ?";
-        List<Rosa> rosaList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nomeSquadra);
-            pstmt.setString(2, stagione);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                rosaList.add(mapResultSetToRosa(rs));
-            }
-            return rosaList;
-        }
-    }
-
-    // Metodi aggiuntivi (se necessario)
-    // ...
 }

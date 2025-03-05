@@ -1,113 +1,86 @@
 package DAO;
 
-import Database.DatabaseConnection;
-import Model.Compete;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Model.Compete;
 
 public class CompeteDAO {
+    private Connection connection;
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public CompeteDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    private Compete mapResultSetToCompete(ResultSet rs) throws SQLException {
-        Compete compete = new Compete();
-        compete.setID(rs.getInt("ID"));
-        compete.setID_Partita(rs.getInt("ID_Partita"));
-        compete.setNomeSquadra(rs.getString("nomeSquadra"));
-        compete.setTipoAzione(rs.getString("tipoAzione"));
-        compete.setMinutaggio(rs.getInt("minutaggio"));
-        return compete;
-    }
-
-    public Compete findByIdPartitaNomeSquadraIdPersona(int idPartita, String nomeSquadra, int id) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID, ID_Partita, nomeSquadra, tipoAzione, minutaggio FROM COMPETE WHERE ID_Partita = ? AND nomeSquadra = ? AND ID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idPartita);
-            pstmt.setString(2, nomeSquadra);
-            pstmt.setInt(3, id);
-            ResultSet rs = pstmt.executeQuery();
+    public Compete getCompeteById(int id, int idPartita, String nomeSquadra) throws SQLException {
+        String sql = "SELECT * FROM COMPETE WHERE ID = ? AND ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.setInt(2, idPartita);
+            ps.setString(3, nomeSquadra);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToCompete(rs);
-            } else {
-                return null;
+                return new Compete(
+                        rs.getInt("ID"),
+                        rs.getInt("ID_Partita"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("tipoAzione"),
+                        rs.getInt("minutaggio")
+                );
             }
+            return null;
         }
     }
 
-    public List<Compete> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID, ID_Partita, nomeSquadra, tipoAzione, minutaggio FROM COMPETE";
-        List<Compete> competeList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<Compete> getAllCompete() throws SQLException {
+        String sql = "SELECT * FROM COMPETE";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Compete> competeList = new ArrayList<>();
             while (rs.next()) {
-                competeList.add(mapResultSetToCompete(rs));
+                competeList.add(new Compete(
+                        rs.getInt("ID"),
+                        rs.getInt("ID_Partita"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("tipoAzione"),
+                        rs.getInt("minutaggio")
+                ));
             }
             return competeList;
         }
     }
 
-    public void create(Compete compete) throws SQLException, ClassNotFoundException {
+    public void addCompete(Compete compete) throws SQLException {
         String sql = "INSERT INTO COMPETE (ID, ID_Partita, nomeSquadra, tipoAzione, minutaggio) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, compete.getID());
-            pstmt.setInt(2, compete.getID_Partita());
-            pstmt.setString(3, compete.getNomeSquadra());
-            pstmt.setString(4, compete.getTipoAzione());
-            pstmt.setInt(5, compete.getMinutaggio());
-            pstmt.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, compete.getId());
+            ps.setInt(2, compete.getIdPartita());
+            ps.setString(3, compete.getNomeSquadra());
+            ps.setString(4, compete.getTipoAzione());
+            ps.setInt(5, compete.getMinutaggio());
+            ps.executeUpdate();
         }
     }
 
-
-    public void delete(int idPartita, String nomeSquadra, int id) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM COMPETE WHERE ID_Partita = ? AND nomeSquadra = ? AND ID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idPartita);
-            pstmt.setString(2, nomeSquadra);
-            pstmt.setInt(3, id);
-            pstmt.executeUpdate();
+    public void updateCompete(Compete compete) throws SQLException {
+        String sql = "UPDATE COMPETE SET tipoAzione = ?, minutaggio = ? WHERE ID = ? AND ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, compete.getTipoAzione());
+            ps.setInt(2, compete.getMinutaggio());
+            ps.setInt(3, compete.getId());
+            ps.setInt(4, compete.getIdPartita());
+            ps.setString(5, compete.getNomeSquadra());
+            ps.executeUpdate();
         }
     }
 
-    public List<Compete> findByIdPartitaNomeSquadra(int idPartita, String nomeSquadra) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID, ID_Partita, nomeSquadra, tipoAzione, minutaggio FROM COMPETE WHERE ID_Partita = ? AND nomeSquadra = ?";
-        List<Compete> competeList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idPartita);
-            pstmt.setString(2, nomeSquadra);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                competeList.add(mapResultSetToCompete(rs));
-            }
-            return competeList;
+    public void deleteCompete(int id, int idPartita, String nomeSquadra) throws SQLException {
+        String sql = "DELETE FROM COMPETE WHERE ID = ? AND ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.setInt(2, idPartita);
+            ps.setString(3, nomeSquadra);
+            ps.executeUpdate();
         }
     }
-
-    public List<Compete> findByIdPersona(int id) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID, ID_Partita, nomeSquadra, tipoAzione, minutaggio FROM COMPETE WHERE ID = ?";
-        List<Compete> competeList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                competeList.add(mapResultSetToCompete(rs));
-            }
-            return competeList;
-        }
-    }
-
-    // Metodi aggiuntivi (se necessario)
-    // ...
 }

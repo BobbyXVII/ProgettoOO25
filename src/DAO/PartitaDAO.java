@@ -1,141 +1,104 @@
 package DAO;
 
-import Database.DatabaseConnection;
-import Model.Partita;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
-import java.sql.Time;
+import Model.Partita;
 
 public class PartitaDAO {
+    private Connection connection;
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public PartitaDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    private Partita mapResultSetToPartita(ResultSet rs) throws SQLException {
-        Partita partita = new Partita();
-        partita.setID_Partita(rs.getInt("ID_Partita"));
-        partita.setNomeSquadra(rs.getString("nomeSquadra"));
-        partita.setNomeCompetizione(rs.getString("nomeCompetizione"));
-        partita.setAnnoSvolgimentoCompetizione(rs.getString("annoSvolgimento"));
-        partita.setID_Rosa(rs.getInt("ID_Rosa"));
-        partita.setInCasa(rs.getBoolean("inCasa"));
-        partita.setData(rs.getDate("data"));
-        partita.setOra(rs.getTime("ora"));
-        partita.setRisultato(rs.getString("risultato"));
-        partita.setNomeStadio(rs.getString("nomeStadio"));
-        return partita;
-    }
-
-    public Partita findByIdPartitaNomeSquadra(int idPartita, String nomeSquadra) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio FROM PARTITA WHERE ID_Partita = ? AND nomeSquadra = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idPartita);
-            pstmt.setString(2, nomeSquadra);
-            ResultSet rs = pstmt.executeQuery();
+    public Partita getPartitaById(int idPartita, String nomeSquadra) throws SQLException {
+        String sql = "SELECT * FROM Partita WHERE ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idPartita);
+            ps.setString(2, nomeSquadra);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToPartita(rs);
-            } else {
-                return null;
+                return new Partita(
+                        rs.getInt("ID_Partita"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("nomeCompetizione"),
+                        rs.getString("annoSvolgimento"),
+                        rs.getInt("ID_Rosa"),
+                        rs.getBoolean("inCasa"),
+                        rs.getDate("data"),
+                        rs.getTime("ora"),
+                        rs.getString("risultato"),
+                        rs.getString("nomeStadio")
+                );
             }
+            return null;
         }
     }
 
-    public List<Partita> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio FROM PARTITA";
-        List<Partita> partitaList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<Partita> getAllPartite() throws SQLException {
+        String sql = "SELECT * FROM Partita";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Partita> partite = new ArrayList<>();
             while (rs.next()) {
-                partitaList.add(mapResultSetToPartita(rs));
+                partite.add(new Partita(
+                        rs.getInt("ID_Partita"),
+                        rs.getString("nomeSquadra"),
+                        rs.getString("nomeCompetizione"),
+                        rs.getString("annoSvolgimento"),
+                        rs.getInt("ID_Rosa"),
+                        rs.getBoolean("inCasa"),
+                        rs.getDate("data"),
+                        rs.getTime("ora"),
+                        rs.getString("risultato"),
+                        rs.getString("nomeStadio")
+                ));
             }
-            return partitaList;
+            return partite;
         }
     }
 
-    public void create(Partita partita) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO PARTITA (ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, partita.getID_Partita());
-            pstmt.setString(2, partita.getNomeSquadra());
-            pstmt.setString(3, partita.getNomeCompetizione());
-            pstmt.setString(4, partita.getAnnoSvolgimentoCompetizione());
-            pstmt.setInt(5, partita.getID_Rosa());
-            pstmt.setBoolean(6, partita.isInCasa());
-            pstmt.setDate(7, new java.sql.Date(partita.getData().getTime()));
-            pstmt.setTime(8, new java.sql.Time(partita.getOra().getTime()));
-            pstmt.setString(9, partita.getRisultato());
-            pstmt.setString(10, partita.getNomeStadio());
-            pstmt.executeUpdate();
+    public void addPartita(Partita partita) throws SQLException {
+        String sql = "INSERT INTO Partita (ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, partita.getIdPartita());
+            ps.setString(2, partita.getNomeSquadra());
+            ps.setString(3, partita.getNomeCompetizione());
+            ps.setString(4, partita.getAnnoSvolgimento());
+            ps.setInt(5, partita.getIdRosa());
+            ps.setBoolean(6, partita.isInCasa());
+            ps.setDate(7, partita.getData());
+            ps.setTime(8, partita.getOra());
+            ps.setString(9, partita.getRisultato());
+            ps.setString(10, partita.getNomeStadio());
+            ps.executeUpdate();
         }
     }
 
-    public void update(Partita partita) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE PARTITA SET nomeCompetizione = ?, annoSvolgimento = ?, ID_Rosa = ?, inCasa = ?, data = ?, ora = ?, risultato = ?, nomeStadio = ? WHERE ID_Partita = ? AND nomeSquadra = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, partita.getNomeCompetizione());
-            pstmt.setString(2, partita.getAnnoSvolgimentoCompetizione());
-            pstmt.setInt(3, partita.getID_Rosa());
-            pstmt.setBoolean(4, partita.isInCasa());
-            pstmt.setDate(5, new java.sql.Date(partita.getData().getTime()));
-            pstmt.setTime(6, new java.sql.Time(partita.getOra().getTime()));
-            pstmt.setString(7, partita.getRisultato());
-            pstmt.setString(8, partita.getNomeStadio());
-            pstmt.setInt(9, partita.getID_Partita());
-            pstmt.setString(10, partita.getNomeSquadra());
-            pstmt.executeUpdate();
+    public void updatePartita(Partita partita) throws SQLException {
+        String sql = "UPDATE Partita SET nomeCompetizione = ?, annoSvolgimento = ?, ID_Rosa = ?, inCasa = ?, data = ?, ora = ?, risultato = ?, nomeStadio = ? WHERE ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, partita.getNomeCompetizione());
+            ps.setString(2, partita.getAnnoSvolgimento());
+            ps.setInt(3, partita.getIdRosa());
+            ps.setBoolean(4, partita.isInCasa());
+            ps.setDate(5, partita.getData());
+            ps.setTime(6, partita.getOra());
+            ps.setString(7, partita.getRisultato());
+            ps.setString(8, partita.getNomeStadio());
+            ps.setInt(9, partita.getIdPartita());
+            ps.setString(10, partita.getNomeSquadra());
+            ps.executeUpdate();
         }
     }
 
-    public void delete(int idPartita, String nomeSquadra) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM PARTITA WHERE ID_Partita = ? AND nomeSquadra = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idPartita);
-            pstmt.setString(2, nomeSquadra);
-            pstmt.executeUpdate();
+    public void deletePartita(int idPartita, String nomeSquadra) throws SQLException {
+        String sql = "DELETE FROM Partita WHERE ID_Partita = ? AND nomeSquadra = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idPartita);
+            ps.setString(2, nomeSquadra);
+            ps.executeUpdate();
         }
     }
-
-    public List<Partita> findByCompetizioneAnno(String nomeCompetizione, String annoSvolgimento) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio FROM PARTITA WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
-        List<Partita> partitaList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nomeCompetizione);
-            pstmt.setString(2, annoSvolgimento);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                partitaList.add(mapResultSetToPartita(rs));
-            }
-            return partitaList;
-        }
-    }
-
-    public List<Partita> findByNomeSquadra(String nomeSquadra) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT ID_Partita, nomeSquadra, nomeCompetizione, annoSvolgimento, ID_Rosa, inCasa, data, ora, risultato, nomeStadio FROM PARTITA WHERE nomeSquadra = ?";
-        List<Partita> partitaList = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nomeSquadra);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                partitaList.add(mapResultSetToPartita(rs));
-            }
-            return partitaList;
-        }
-    }
-
-
-    // Metodi aggiuntivi (se necessario)
-    // ...
 }

@@ -1,87 +1,74 @@
 package DAO;
 
-import Database.DatabaseConnection;
+import java.sql.*;
 import Model.Ruolo;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RuoloDAO {
+    private Connection connection;
 
-    // Metodo per ottenere una connessione al database
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public RuoloDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    // Metodo per mappare una riga del ResultSet a un oggetto Ruolo
-    private Ruolo mapResultSetToRuolo(ResultSet rs) throws SQLException {
-        Ruolo ruolo = new Ruolo();
-        ruolo.setAbbrRuolo(rs.getString("abbr_ruolo"));
-        ruolo.setNomeRuolo(rs.getString("nome_ruolo"));
-        ruolo.setDescrizione(rs.getString("descrizione_ruolo"));
-        return ruolo;
-    }
-
-    public Ruolo findByAbbrRuolo(String abbrRuolo) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT abbr_ruolo, nome_ruolo, descrizione_ruolo FROM Ruolo WHERE abbr_ruolo = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, abbrRuolo);
-            ResultSet rs = pstmt.executeQuery();
+    public Ruolo getRuoloByAbbr(String abbrRuolo) throws SQLException {
+        String sql = "SELECT * FROM Ruolo WHERE abbrRuolo = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, abbrRuolo);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToRuolo(rs);
-            } else {
-                return null; // Ruolo non trovato
+                Ruolo ruolo = new Ruolo();
+                ruolo.setAbbrRuolo(rs.getString("abbrRuolo"));
+                ruolo.setNomeRuolo(rs.getString("nomeRuolo"));
+                ruolo.setDescrizione(rs.getString("descrizione"));
+                return ruolo;
             }
+            return null;
         }
     }
 
-    public List<Ruolo> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT abbr_ruolo, nome_ruolo, descrizione_ruolo FROM Ruolo";
-        List<Ruolo> ruoli = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<Ruolo> getAllRuoli() throws SQLException {
+        String sql = "SELECT * FROM Ruolo";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Ruolo> ruoliList = new ArrayList<>();
             while (rs.next()) {
-                ruoli.add(mapResultSetToRuolo(rs));
+                Ruolo ruolo = new Ruolo();
+                ruolo.setAbbrRuolo(rs.getString("abbrRuolo"));
+                ruolo.setNomeRuolo(rs.getString("nomeRuolo"));
+                ruolo.setDescrizione(rs.getString("descrizione"));
+                ruoliList.add(ruolo);
             }
-            return ruoli;
+            return ruoliList;
         }
     }
 
-    public void create(Ruolo ruolo) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO Ruolo (abbr_ruolo, nome_ruolo, descrizione_ruolo) VALUES (?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, ruolo.getAbbrRuolo());
-            pstmt.setString(2, ruolo.getNomeRuolo());
-            pstmt.setString(3, ruolo.getDescrizione());
-            pstmt.executeUpdate();
+    public void addRuolo(Ruolo ruolo) throws SQLException {
+        String sql = "INSERT INTO Ruolo (abbrRuolo, nomeRuolo, descrizione) VALUES (?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, ruolo.getAbbrRuolo());
+            ps.setString(2, ruolo.getNomeRuolo());
+            ps.setString(3, ruolo.getDescrizione());
+            ps.executeUpdate();
         }
     }
 
-    public void update(Ruolo ruolo) throws SQLException, ClassNotFoundException {
-        String sql = "UPDATE Ruolo SET nome_ruolo = ?, descrizione_ruolo = ? WHERE abbr_ruolo = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, ruolo.getNomeRuolo());
-            pstmt.setString(2, ruolo.getDescrizione());
-            pstmt.setString(3, ruolo.getAbbrRuolo());
-            pstmt.executeUpdate();
+    public void updateRuolo(Ruolo ruolo) throws SQLException {
+        String sql = "UPDATE Ruolo SET nomeRuolo = ?, descrizione = ? WHERE abbrRuolo = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, ruolo.getNomeRuolo());
+            ps.setString(2, ruolo.getDescrizione());
+            ps.setString(3, ruolo.getAbbrRuolo());
+            ps.executeUpdate();
         }
     }
 
-    public void delete(String abbrRuolo) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM Ruolo WHERE abbr_ruolo = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, abbrRuolo);
-            pstmt.executeUpdate();
+    public void deleteRuolo(String abbrRuolo) throws SQLException {
+        String sql = "DELETE FROM Ruolo WHERE abbrRuolo = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, abbrRuolo);
+            ps.executeUpdate();
         }
     }
-
-    // ... (Altri metodi specifici per Ruolo) ...
 }

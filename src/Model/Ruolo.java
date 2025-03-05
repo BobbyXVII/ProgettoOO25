@@ -5,16 +5,6 @@ public class Ruolo {
     private String nomeRuolo;
     private String descrizione;
 
-    // Costruttori
-    public Ruolo() {
-    }
-
-    public Ruolo(String abbrRuolo, String nomeRuolo, String descrizione) {
-        this.abbrRuolo = abbrRuolo;
-        this.nomeRuolo = nomeRuolo;
-        this.descrizione = descrizione;
-    }
-
     // Getter e Setter
     public String getAbbrRuolo() {
         return abbrRuolo;
@@ -40,12 +30,9 @@ public class Ruolo {
         this.descrizione = descrizione;
     }
 
+    // Override toString()
     @Override
     public String toString() {
-        return "Ruolo{" +
-                "abbrRuolo='" + abbrRuolo + '\'' +
-                ", nomeRuolo='" + nomeRuolo + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                '}';
+        return "Ruolo [abbrRuolo=" + abbrRuolo + ", nomeRuolo=" + nomeRuolo + ", descrizione=" + descrizione + "]";
     }
 }

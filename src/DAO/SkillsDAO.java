@@ -1,7 +1,7 @@
 package DAO;
 
-import Model.Skills;
 import java.sql.*;
+import Model.Skills;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,58 +12,59 @@ public class SkillsDAO {
         this.connection = connection;
     }
 
-    public void insert(Skills skill) throws SQLException {
-        String query = "INSERT INTO Skills (nomeSkill, descrizione) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, skill.getNomeSkill());
-            stmt.setString(2, skill.getDescrizione());
-            stmt.executeUpdate();
-        }
-    }
-
-    public Skills getByNomeSkill(String nomeSkill) throws SQLException {
-        String query = "SELECT * FROM Skills WHERE nomeSkill = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, nomeSkill);
-            ResultSet rs = stmt.executeQuery();
+    public Skills getSkillByName(String nomeSkill) throws SQLException {
+        String sql = "SELECT * FROM Skills WHERE nomeSkill = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nomeSkill);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Skills(
-                        rs.getString("nomeSkill"),
-                        rs.getString("descrizione")
-                );
+                Skills skill = new Skills();
+                skill.setNomeSkill(rs.getString("nomeSkill"));
+                skill.setDescrizione(rs.getString("descrizione"));
+                return skill;
             }
+            return null;
         }
-        return null;
     }
 
-    public List<Skills> getAll() throws SQLException {
-        List<Skills> skillsList = new ArrayList<>();
-        String query = "SELECT * FROM Skills";
-        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+    public List<Skills> getAllSkills() throws SQLException {
+        String sql = "SELECT * FROM Skills";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Skills> skillsList = new ArrayList<>();
             while (rs.next()) {
-                skillsList.add(new Skills(
-                        rs.getString("nomeSkill"),
-                        rs.getString("descrizione")
-                ));
+                Skills skill = new Skills();
+                skill.setNomeSkill(rs.getString("nomeSkill"));
+                skill.setDescrizione(rs.getString("descrizione"));
+                skillsList.add(skill);
             }
-        }
-        return skillsList;
-    }
-
-    public void update(Skills skill) throws SQLException {
-        String query = "UPDATE Skills SET descrizione = ? WHERE nomeSkill = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, skill.getDescrizione());
-            stmt.setString(2, skill.getNomeSkill());
-            stmt.executeUpdate();
+            return skillsList;
         }
     }
 
-    public void delete(String nomeSkill) throws SQLException {
-        String query = "DELETE FROM Skills WHERE nomeSkill = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, nomeSkill);
-            stmt.executeUpdate();
+    public void addSkill(Skills skill) throws SQLException {
+        String sql = "INSERT INTO Skills (nomeSkill, descrizione) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, skill.getNomeSkill());
+            ps.setString(2, skill.getDescrizione());
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateSkill(Skills skill) throws SQLException {
+        String sql = "UPDATE Skills SET descrizione = ? WHERE nomeSkill = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, skill.getDescrizione());
+            ps.setString(2, skill.getNomeSkill());
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteSkill(String nomeSkill) throws SQLException {
+        String sql = "DELETE FROM Skills WHERE nomeSkill = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nomeSkill);
+            ps.executeUpdate();
         }
     }
 }

@@ -4,11 +4,7 @@ public class Skills {
     private String nomeSkill;
     private String descrizione;
 
-    public Skills(String nomeSkill, String descrizione) {
-        this.nomeSkill = nomeSkill;
-        this.descrizione = descrizione;
-    }
-
+    // Getter e Setter
     public String getNomeSkill() {
         return nomeSkill;
     }
@@ -25,11 +21,9 @@ public class Skills {
         this.descrizione = descrizione;
     }
 
+    // Override toString()
     @Override
     public String toString() {
-        return "Skills{" +
-                "nomeSkill='" + nomeSkill + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                '}';
+        return "Skills [nomeSkill=" + nomeSkill + ", descrizione=" + descrizione + "]";
     }
 }

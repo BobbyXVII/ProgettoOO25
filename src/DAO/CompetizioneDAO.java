@@ -1,62 +1,80 @@
 package DAO;
 
-import Database.DatabaseConnection;
+import java.sql.*;
 import Model.Competizione;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompetizioneDAO {
+    private Connection connection;
 
-    // Metodo per ottenere una connessione al database
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
+    public CompetizioneDAO(Connection connection) {
+        this.connection = connection;
     }
 
-    // Metodo per mappare una riga del ResultSet a un oggetto Competizione
-    private Competizione mapResultSetToCompetizione(ResultSet rs) throws SQLException {
-        Competizione competizione = new Competizione();
-        competizione.setNomeCompetizione(rs.getString("nome_competizione"));
-        competizione.setAnnoSvolgimento(rs.getString("anno_svolgimento"));
-        competizione.setTipCompetizione(rs.getString("tip_competizione"));
-        competizione.setDescrizioneCompetizione(rs.getString("descrizione_competizione"));
-        return competizione;
-    }
-
-    public Competizione findByNomeAnno(String nomeCompetizione, String annoSvolgimento) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT nome_competizione, anno_svolgimento, tip_competizione, descrizione_competizione FROM Competizione WHERE nome_competizione = ? AND anno_svolgimento = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nomeCompetizione);
-            pstmt.setString(2, annoSvolgimento);
-            ResultSet rs = pstmt.executeQuery();
+    public Competizione getCompetizioneByDetails(String nomeCompetizione, String annoSvolgimento) throws SQLException {
+        String sql = "SELECT * FROM Competizione WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nomeCompetizione);
+            ps.setString(2, annoSvolgimento);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return mapResultSetToCompetizione(rs);
-            } else {
-                return null; // Competizione non trovata
+                Competizione competizione = new Competizione();
+                competizione.setNomeCompetizione(rs.getString("nomeCompetizione"));
+                competizione.setAnnoSvolgimento(rs.getString("annoSvolgimento"));
+                competizione.setTipCompetizione(rs.getString("tipCompetizione"));
+                competizione.setNazionalita(rs.getString("nazionalita"));
+                return competizione;
             }
+            return null;
         }
     }
 
-    public List<Competizione> findAll() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT nome_competizione, anno_svolgimento, tip_competizione, descrizione_competizione FROM Competizione";
-        List<Competizione> competizioni = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public List<Competizione> getAllCompetizioni() throws SQLException {
+        String sql = "SELECT * FROM Competizione";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            List<Competizione> competizioniList = new ArrayList<>();
             while (rs.next()) {
-                competizioni.add(mapResultSetToCompetizione(rs));
+                Competizione competizione = new Competizione();
+                competizione.setNomeCompetizione(rs.getString("nomeCompetizione"));
+                competizione.setAnnoSvolgimento(rs.getString("annoSvolgimento"));
+                competizione.setTipCompetizione(rs.getString("tipCompetizione"));
+                competizione.setNazionalita(rs.getString("nazionalita"));
+                competizioniList.add(competizione);
             }
-            return competizioni;
+            return competizioniList;
         }
     }
 
-    public void create(Competizione competizione) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO Competizione (nome_competizione, anno_svolgimento, tip_competizione, descrizione_competizione) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, competizione.getNomeCompetizione());
-            pstmt.setString(2, competizione.getAn
+    public void addCompetizione(Competizione competizione) throws SQLException {
+        String sql = "INSERT INTO Competizione (nomeCompetizione, annoSvolgimento, tipCompetizione, nazionalita) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, competizione.getNomeCompetizione());
+            ps.setString(2, competizione.getAnnoSvolgimento());
+            ps.setString(3, competizione.getTipCompetizione());
+            ps.setString(4, competizione.getNazionalita());
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateCompetizione(Competizione competizione) throws SQLException {
+        String sql = "UPDATE Competizione SET tipCompetizione = ?, nazionalita = ? WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, competizione.getTipCompetizione());
+            ps.setString(2, competizione.getNazionalita());
+            ps.setString(3, competizione.getNomeCompetizione());
+            ps.setString(4, competizione.getAnnoSvolgimento());
+            ps.executeUpdate();
+        }
+    }
+
+    public void deleteCompetizione(String nomeCompetizione, String annoSvolgimento) throws SQLException {
+        String sql = "DELETE FROM Competizione WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nomeCompetizione);
+            ps.setString(2, annoSvolgimento);
+            ps.executeUpdate();
+        }
+    }
+}

@@ -1,52 +1,77 @@
 package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Persona {
-    private int id;
+    private int ID;
     private String nome;
     private String cognome;
-    private Date dataNascita;
+    private Date data_Nascita;
     private String nazionalita;
     private float altezza;
     private String piede;
 
-    public Persona(int id, String nome, String cognome, Date dataNascita, String nazionalita, float altezza, String piede) {
-        this.id = id;
+    // Getter e Setter
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
         this.cognome = cognome;
-        this.dataNascita = dataNascita;
+    }
+
+    public Date getData_Nascita() {
+        return data_Nascita;
+    }
+
+    public void setData_Nascita(Date data_Nascita) {
+        this.data_Nascita = data_Nascita;
+    }
+
+    public String getNazionalita() {
+        return nazionalita;
+    }
+
+    public void setNazionalita(String nazionalita) {
         this.nazionalita = nazionalita;
+    }
+
+    public float getAltezza() {
+        return altezza;
+    }
+
+    public void setAltezza(float altezza) {
         this.altezza = altezza;
+    }
+
+    public String getPiede() {
+        return piede;
+    }
+
+    public void setPiede(String piede) {
         this.piede = piede;
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getCognome() { return cognome; }
-    public void setCognome(String cognome) { this.cognome = cognome; }
-    public Date getDataNascita() { return dataNascita; }
-    public void setDataNascita(Date dataNascita) { this.dataNascita = dataNascita; }
-    public String getNazionalita() { return nazionalita; }
-    public void setNazionalita(String nazionalita) { this.nazionalita = nazionalita; }
-    public float getAltezza() { return altezza; }
-    public void setAltezza(float altezza) { this.altezza = altezza; }
-    public String getPiede() { return piede; }
-    public void setPiede(String piede) { this.piede = piede; }
-
+    // Override toString()
     @Override
     public String toString() {
-        return "Persona{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                ", dataNascita=" + dataNascita +
-                ", nazionalita='" + nazionalita + '\'' +
-                ", altezza=" + altezza +
-                ", piede='" + piede + '\'' +
-                '}';
+        return "Persona [ID=" + ID + ", nome=" + nome + ", cognome=" + cognome + ", data_Nascita=" + data_Nascita
+                + ", nazionalita=" + nazionalita + ", altezza=" + altezza + ", piede=" + piede + "]";
     }
 }
