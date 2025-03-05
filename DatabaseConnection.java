@@ -6,7 +6,8 @@ public class DatabaseConnection {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/UninaSoccer"; // Sostituisci con il tuo URL
     private static final String DB_USERNAME = "postgres"; // Sostituisci con il tuo username
-    private static final String DB_PASSWORD = "2486"; // Sostituisci con la tua password
+        private static final String DB_PASSWORD= "2486"; // Sostituisci con la tua password
+
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER); // Carica il driver JDBC
