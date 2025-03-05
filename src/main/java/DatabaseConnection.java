@@ -8,7 +8,7 @@ public class DatabaseConnection {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/UninaSoccer"; // Sostituisci
     private static final String DB_USERNAME = "postgres";       // Sostituisci
-    private static final String DB_PASSWORD = "1111";       // Sostituisci
+    private static final String DB_PASSWORD = "2486";       // Sostituisci
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
 
     private static final Logger LOGGER = Logger.getLogger(DatabaseConnection.class.getName()); // Logger statico
