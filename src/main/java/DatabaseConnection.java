@@ -1,21 +1,29 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level; // Importa Level
-import java.util.logging.Logger; // Importa Logger
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DatabaseConnection {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/UninaSoccer"; // Sostituisci
-    private static final String DB_USERNAME = "postgres";       // Sostituisci
-    private static final String DB_PASSWORD = "2486";       // Sostituisci
-    private static final String JDBC_DRIVER = "org.postgresql.Driver";
+    private static final Logger LOGGER = Logger.getLogger(DatabaseConnection.class.getName());
 
-    private static final Logger LOGGER = Logger.getLogger(DatabaseConnection.class.getName()); // Logger statico
+    // NIENTE PIÙ CREDENZIALI HARDCODED QUI!
+    // Le leggeremo dalle variabili d'ambiente
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName(JDBC_DRIVER);
-        return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        String dbUrl = System.getenv("DB_URL");        // Leggi la variabile d'ambiente DB_URL
+        String dbUsername = System.getenv("DB_USERNAME"); // Leggi la variabile d'ambiente DB_USERNAME
+        String dbPassword = System.getenv("DB_PASSWORD"); // Leggi la variabile d'ambiente DB_PASSWORD
+        String jdbcDriver = "org.postgresql.Driver"; // Il driver JDBC rimane costante
+
+        if (dbUrl == null || dbUsername == null || dbPassword == null) {
+            LOGGER.severe("Variabili d'ambiente del database non configurate (DB_URL, DB_USERNAME, DB_PASSWORD)");
+            throw new SQLException("Variabili d'ambiente del database non configurate.");
+        }
+
+        Class.forName(jdbcDriver);
+        return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
     }
 
     public static void main(String[] args) {
@@ -28,7 +36,7 @@ public class DatabaseConnection {
                 System.out.println("Connessione al database fallita.");
             }
         } catch (SQLException | ClassNotFoundException e) {
-            LOGGER.log(Level.SEVERE, "Errore durante la connessione al database:", e); // Logging robusto
+            LOGGER.log(Level.SEVERE, "Errore durante la connessione al database:", e);
         }
     }
 }
