@@ -18,7 +18,7 @@ public class UtenteDAO {
                 return new Utente(
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("ruolo"),
+                        rs.getString("pex"),
                         rs.getInt("id_calciatore")
                 );
             }
