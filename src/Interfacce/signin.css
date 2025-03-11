@@ -1,0 +1,58 @@
+/* Sfondo della scena con un gradiente ispirato al mondo del calcio */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
+
+/* Container centrale con sfondo semi-trasparente e ombreggiatura */
+.signin-container {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-padding: 30;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 4);
+}
+
+/* Titolo */
+.signin-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+/* Etichette */
+.signin-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Campi di input */
+.signin-input {
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+}
+
+/* Bottone Sign IN */
+.signin-button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.signin-button:hover {
+    -fx-background-color: #3498db;
+}
+
+/* Bottone Torna al logIn */
+.signin-back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
