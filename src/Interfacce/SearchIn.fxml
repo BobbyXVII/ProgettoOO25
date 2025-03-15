@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
+   <children>
+      <TextField layoutX="19.0" layoutY="61.0" prefHeight="31.0" prefWidth="345.0" promptText="Napoli" />
+      <ImageView fitHeight="31.0" fitWidth="20.0" layoutX="364.0" layoutY="64.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Immagini/lente_ricerca.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutY="10" layoutX="477.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Immagini/Icon_Profile.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="513.0" layoutY="20.0" text="Il mio profilo">
+         <font>
+            <Font name="Calibri" size="12.0" />
+         </font>
+      </Label>
+      <ListView layoutX="19.0" layoutY="95.0" prefHeight="291.0" prefWidth="563.0" />
+      <ImageView fitHeight="35.0" fitWidth="350.0" layoutY="10.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Immagini/home.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
