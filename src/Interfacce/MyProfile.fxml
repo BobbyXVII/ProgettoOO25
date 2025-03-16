@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="68.0" layoutX="266.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+       <image>
+           <Image url="@../Immagini/Icon_Profile.png" />
+       </image>
+   </ImageView>
+      <TextField layoutX="220.0" layoutY="188.0" promptText="Username" />
+      <TextField layoutX="220.0" layoutY="232.0" promptText="Vecchia Password" />
+      <TextField layoutX="220.0" layoutY="275.0" promptText="Nuova Password" />
+      <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="388.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Pngtreevector_pencil_icon_3773618.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="388.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Pngtreevector_pencil_icon_3773618.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="35.0" fitWidth="350.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Immagini/home.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
