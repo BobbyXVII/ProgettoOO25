@@ -5,35 +5,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
-   <children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SearchInController">
       <AnchorPane fx:id="NavBar" prefHeight="50.0" prefWidth="613.0">
             <VBox alignment="CENTER" layoutX="369.0" layoutY="-13.0" prefHeight="55.0" prefWidth="81.0" spacing="20" styleClass="signin-container2">
             <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="477.0" layoutY="10" pickOnBounds="true" preserveRatio="true">
-               <image>
                   <Image url="@../Immagini/Icon_Profile.png" />
-               </image>
             </ImageView>
             </VBox>
             <VBox alignment="CENTER" layoutX="448.0" layoutY="-7.0" prefHeight="42.0" prefWidth="168.0" spacing="20" styleClass="signin-container">
             <Label layoutX="513.0" layoutY="20.0" text="Il mio profilo">
-               <font>
-                  <Font name="Calibri" size="12.0" />
-               </font>
             </Label>
             </VBox>
       </AnchorPane>
       <TextField layoutX="19.0" layoutY="61.0" prefHeight="31.0" prefWidth="345.0" promptText="Napoli" />
       <ImageView fitHeight="31.0" fitWidth="20.0" layoutX="364.0" layoutY="64.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-         <image>
             <Image url="@../Immagini/lente_ricerca.png" />
-         </image>
       </ImageView>
       <ListView layoutX="10.0" layoutY="120.0" prefHeight="291.0" prefWidth="563.0" />
       <ImageView fitHeight="35.0" fitWidth="350.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-         <image>
             <Image url="@../Immagini/home.png" />
-         </image>
       </ImageView>
-   </children>
 </AnchorPane>
