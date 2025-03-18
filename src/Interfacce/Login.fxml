@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400" prefWidth="600" stylesheets="@SignUp.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400" prefWidth="600" stylesheets="@SignUp.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ControllerLogin">
    <children>
       <HBox prefHeight="400" prefWidth="600">
          <!-- Pannello laterale blu -->

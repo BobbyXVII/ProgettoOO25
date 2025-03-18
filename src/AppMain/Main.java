@@ -1,4 +1,4 @@
-package org.example;
+package AppMain;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Carica la prima scena
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("src/Interfacce/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/Login.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);

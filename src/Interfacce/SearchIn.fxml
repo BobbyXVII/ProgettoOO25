@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SearchInController">
       <AnchorPane fx:id="NavBar" prefHeight="50.0" prefWidth="613.0">
@@ -12,7 +11,7 @@
                   <Image url="@../Immagini/Icon_Profile.png" />
             </ImageView>
             </VBox>
-            <VBox alignment="CENTER" layoutX="448.0" layoutY="-7.0" prefHeight="42.0" prefWidth="168.0" spacing="20" styleClass="signin-container">
+            <VBox alignment="CENTER" layoutX="448.0" layoutY="14.0" prefHeight="42.0" prefWidth="168.0" spacing="20" styleClass="signin-container">
             <Label layoutX="513.0" layoutY="20.0" text="Il mio profilo">
             </Label>
             </VBox>
