@@ -66,7 +66,7 @@ public class ControllerLogin {
 
         if (utente != null) {
             // Login effettuato con successo: carica la nuova schermata (SearchIn.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
             Stage stage = (Stage) PulsanteLogIn.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);

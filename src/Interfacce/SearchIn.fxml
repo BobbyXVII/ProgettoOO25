@@ -11,7 +11,7 @@
                   <Image url="@../Immagini/Icon_Profile.png" />
             </ImageView>
             </VBox>
-            <VBox alignment="CENTER" layoutX="448.0" layoutY="14.0" prefHeight="42.0" prefWidth="168.0" spacing="20" styleClass="signin-container">
+            <VBox alignment="CENTER" layoutX="450.0" layoutY="0" prefHeight="42.0" prefWidth="168.0" spacing="20" styleClass="signin-container">
             <Label layoutX="513.0" layoutY="20.0" text="Il mio profilo">
             </Label>
             </VBox>
@@ -20,7 +20,6 @@
       <ImageView fitHeight="31.0" fitWidth="20.0" layoutX="364.0" layoutY="64.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
             <Image url="@../Immagini/lente_ricerca.png" />
       </ImageView>
-      <ListView layoutX="10.0" layoutY="120.0" prefHeight="291.0" prefWidth="563.0" />
       <ImageView fitHeight="35.0" fitWidth="350.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../Immagini/home.png" />
       </ImageView>

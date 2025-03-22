@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400" prefWidth="600" stylesheets="@SignUp.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400" prefWidth="600" stylesheets="@SignUp.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignUpController">
    <children>
       <HBox prefHeight="400" prefWidth="600">
          <!-- Pannello laterale blu -->
@@ -38,7 +38,7 @@
                </VBox>
 
                <HBox alignment="CENTER" spacing="20">
-                  <Button styleClass="signin-back-button" text="Torna al logIn" />
+                  <Button fx:id="BackToLogIn" styleClass="signin-back-button" text="Torna al logIn" />
                   <Button fx:id="Button_SignUp" styleClass="signin-button" text="Sign Up" />
                </HBox>
             </VBox>

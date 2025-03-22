@@ -1,20 +1,19 @@
-#NavBar {
+.button {
+    -fx-background-color: #e8a23c;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.Pannello {
+    -fx-background-color: white;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.PannelloNav {
     -fx-background-color: #2a5298;
+    -fx-text-fill: #1e1e1e;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }
-
-.signin-container {
-    -fx-background-color: rgba(255, 255, 255, 0.95);
-    -fx-padding: 10;
-    -fx-background-radius: 0 10 10 0; /* Sopra e sinistra spigolosi, destra e sotto arrotondati */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 4, 0); /* Ombra solo a destra e sotto */
-}
-
-.signin-container2 {
-    -fx-background-color: rgba(255, 255, 255, 0.95);
-    -fx-padding: 10;
-    -fx-background-radius: 10 0 0 10; /* Sopra e destra spigolosi, sotto e sinistra arrotondati */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 4);
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, -4); /* Sposta l'ombra verso sinistra */
-}
-
-
