@@ -5,50 +5,59 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
-   <ImageView fitHeight="400.0" fitWidth="670.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../Immagini/Sfondo_Logged_In.png" />
-      </image>
-   </ImageView>
-        <TextField layoutX="128.0" layoutY="185.0" prefHeight="31.0" prefWidth="345.0" promptText="Napoli" />
-        <ImageView fitHeight="31.0" fitWidth="20.0" layoutX="476.0" layoutY="190.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../Immagini/lente_ricerca.png" />
-            </image>
-        </ImageView>
-        <Label layoutX="173.0" layoutY="138.0" text="Cosa vuoi cercare?" textFill="WHITE">
-            <font>
-                <Font name="Calibri Bold" size="33.0" />
-            </font>
-        </Label>
-        <Button layoutX="128.0" layoutY="232.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="111.0" styleClass="button" text="Antonio conte">
-            <font>
-                <Font size="10.0" />
-            </font></Button>
-        <Button layoutX="245.0" layoutY="232.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="111.0" styleClass="button" text="Alex Meret">
-            <font>
-                <Font size="10.0" />
-            </font></Button>
-        <Button layoutX="362.0" layoutY="232.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="111.0" styleClass="button" text="Champions League">
-            <font>
-                <Font size="10.0" />
-            </font></Button>
-   <Pane layoutY="0" prefHeight="39.0" prefWidth="600.0" styleClass="PannelloNav" />
-   <Button fx:id="GoToProfile" layoutX="483.0" mnemonicParsing="false" onAction="#handleGoToProfile">
-      <graphic>
-              <Label text="il mio profilo">
-                  <font>
-                      <Font name="Calibri" size="12.0" />
-                  </font>
-            <graphic>
-                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
+    <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../Immagini/Sfondo_Logged_In.png" />
+        </image>
+    </ImageView>
+    <TextField fx:id="Q_Search" layoutX="256.0" layoutY="350.0" prefHeight="50.0" prefWidth="700.0" promptText="Napoli">
+      <font>
+         <Font size="18.0" />
+      </font></TextField>
+    <Label layoutX="450.0" layoutY="270.0" text="Cosa vuoi cercare?" textFill="WHITE">
+        <font>
+            <Font name="Calibri Bold" size="48.0" />
+        </font>
+    </Label>
+    <Button layoutX="282.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Antonio Conte">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+    <Button layoutX="506.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Alex Meret">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+    <Button layoutX="730.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Champions League">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+    <Pane layoutY="0" prefHeight="60.0" prefWidth="1280.0" styleClass="PannelloNav" />
+    <Button fx:id="GoToProfile" alignment="CENTER" layoutX="1116.0" mnemonicParsing="false" onAction="#handleGoToProfile">
+        <graphic>
+            <Label text="Il mio profilo">
+                <font>
+                    <Font name="Calibri" size="18.0" />
+                </font>
+                <graphic>
+                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../Immagini/Icon_Profile.png" />
                         </image>
                     </ImageView>
-            </graphic>
-              </Label>
-      </graphic>
-   </Button>
+                </graphic>
+            </Label>
+        </graphic>
+    </Button>
+   <Button fx:id="Q_Start" layoutX="956.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleSearch" styleClass="Tbutton">
+      <graphic>
+          <ImageView fitHeight="50.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@../Immagini/lente_ricerca.png" />
+              </image>
+          </ImageView>
+      </graphic></Button>
 </AnchorPane>

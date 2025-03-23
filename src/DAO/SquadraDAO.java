@@ -4,32 +4,33 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import Model.Squadra;
+import Database.DatabaseConnection;
+import Model.Utente;
 
 public class SquadraDAO {
-    private Connection connection;
-
-    public SquadraDAO(Connection connection) {
-        this.connection = connection;
-    }
 
     public Squadra getSquadraByNome(String nomeSquadra) throws SQLException {
-        String sql = "SELECT * FROM Squadra WHERE nomeSquadra = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, nomeSquadra);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT * FROM Squadra WHERE nomeSquadra LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();  // Usa DatabaseConnection qui
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + nomeSquadra + "%");
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Squadra(
                         rs.getString("nomeSquadra"),
                         rs.getInt("annoFondazione"),
-                        rs.getString("campAppartenenza"),
                         rs.getString("nazionalita"),
                         rs.getString("nomeStadio")
                 );
             }
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return null;
     }
-
+/*
     public List<Squadra> getAllSquadre() throws SQLException {
         String sql = "SELECT * FROM Squadra";
         try (PreparedStatement ps = connection.prepareStatement(sql);
@@ -79,4 +80,5 @@ public class SquadraDAO {
             ps.executeUpdate();
         }
     }
+*/
 }

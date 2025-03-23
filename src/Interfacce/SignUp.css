@@ -9,6 +9,8 @@
     -fx-padding: 30;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 4);
+    -fx-pref-width: 400;
+    -fx-pref-height: 500;
 }
 
 /* Titolo */
@@ -31,9 +33,10 @@
     -fx-padding: 8;
     -fx-border-color: #bdc3c7;
     -fx-border-radius: 5;
+    -fx-pref-width: 300px;
 }
 
-/* Bottone Sign IN */
+/* Bottone Sign UP */
 .signin-button {
     -fx-background-color: #2980b9;
     -fx-text-fill: white;

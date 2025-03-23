@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ElaborazioneQueryController">
+   <children>
+      <ImageView fitHeight="720" fitWidth="1280" layoutX="0" layoutY="0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Immagini/Sfondo_Elab__Query.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="420.0" layoutY="272.0" text="Ricerca In Elaborazione" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="48.0" />
+         </font>
+      </Label>
+      <ProgressBar fx:id="ProgressB" layoutX="521.0" layoutY="348.0" prefHeight="24.0" prefWidth="239.0" progress="0.1" />
+   </children>
+</AnchorPane>

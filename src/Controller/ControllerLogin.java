@@ -30,6 +30,9 @@ public class ControllerLogin {
     // Istanza del DAO per accedere al database
     private UtenteDAO utenteDAO = new UtenteDAO();
 
+    // Variabile globale per salvare il nome utente dell'utente connesso
+    public static String nomeUtenteConnesso;
+
     @FXML
     public void initialize() {
         // Gestore per il pulsante di login
@@ -65,7 +68,10 @@ public class ControllerLogin {
         Utente utente = utenteDAO.autenticaUtente(username, password);
 
         if (utente != null) {
-            // Login effettuato con successo: carica la nuova schermata (SearchIn.fxml)
+            // Salva il nome utente dell'utente connesso nella variabile globale
+            nomeUtenteConnesso = username;
+
+            // Login effettuato con successo: carica la nuova schermata (LoggedIn.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
             Stage stage = (Stage) PulsanteLogIn.getScene().getWindow();
             Scene scene = new Scene(loader.load());
