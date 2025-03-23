@@ -1,37 +1,54 @@
 package DAO;
 
 import java.sql.*;
+
+import Database.DatabaseConnection;
 import Model.Persona;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonaDAO {
-    private Connection connection;
 
-    public PersonaDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Persona getPersonaById(int ID) throws SQLException {
-        String sql = "SELECT * FROM Persona WHERE ID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, ID);
-            ResultSet rs = ps.executeQuery();
+    public String getNomeCognomeById(int ID) throws SQLException {
+        String sql = "SELECT nome, cognome FROM Persona WHERE ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, ID);  // Imposta il parametro ID
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Persona persona = new Persona();
-                persona.setID(rs.getInt("ID"));
-                persona.setNome(rs.getString("nome"));
-                persona.setCognome(rs.getString("cognome"));
-                persona.setData_Nascita(rs.getDate("data_Nascita"));
-                persona.setNazionalita(rs.getString("nazionalita"));
-                persona.setAltezza(rs.getFloat("altezza"));
-                persona.setPiede(rs.getString("piede"));
-                return persona;
+                return rs.getString("nome") + " " + rs.getString("cognome"); // Ritorna "Nome Cognome"
             }
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return null; // Se non trova la persona, ritorna null
     }
 
+    public int getIdByNome(String result) throws SQLException {
+        String sql = "SELECT id FROM Persona WHERE LOWER(nome || ' ' || cognome) LIKE LOWER(?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Imposta il parametro per il nome completo (nome e cognome)
+            stmt.setString(1, "%" + result.toLowerCase() + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return -1; // Se non trova la persona, ritorna -1
+    }
+
+/*
     public List<Persona> getAllPersonas() throws SQLException {
         String sql = "SELECT * FROM Persona";
         try (PreparedStatement ps = connection.prepareStatement(sql);
@@ -86,4 +103,5 @@ public class PersonaDAO {
             ps.executeUpdate();
         }
     }
+ */
 }

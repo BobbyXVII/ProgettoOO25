@@ -10,10 +10,13 @@ import Model.Utente;
 public class SquadraDAO {
 
     public Squadra getSquadraByNome(String nomeSquadra) throws SQLException {
-        String sql = "SELECT * FROM Squadra WHERE nomeSquadra LIKE ?";
+        String sql = "SELECT * FROM Squadra WHERE LOWER(nomeSquadra) LIKE LOWER(?)";
         try (Connection conn = DatabaseConnection.getConnection();  // Usa DatabaseConnection qui
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + nomeSquadra + "%");
+
+            // Imposta il parametro, convertendolo in minuscolo
+            stmt.setString(1, "%" + nomeSquadra.toLowerCase() + "%");
+
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Squadra(
@@ -30,6 +33,7 @@ public class SquadraDAO {
         }
         return null;
     }
+
 /*
     public List<Squadra> getAllSquadre() throws SQLException {
         String sql = "SELECT * FROM Squadra";

@@ -25,6 +25,9 @@ public class MyProfileController {
     @FXML
     private Button btn_ModifyInformation;
 
+    @FXML
+    private Button BackLogged;
+
     private final UtenteDAO utenteDAO = new UtenteDAO();
     private final String nomeUtente = ControllerLogin.nomeUtenteConnesso;
 
@@ -80,6 +83,11 @@ public class MyProfileController {
     @FXML
     private void handleDisconnect() {
         navigateTo("/interfacce/Login.fxml");
+    }
+
+    @FXML
+    private void handleHomepage() {
+        navigateTo("/interfacce/LoggedIn.fxml");
     }
 
     private void showAlert(String title, String message) {

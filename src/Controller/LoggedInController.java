@@ -43,7 +43,7 @@ public class LoggedInController {
 
         StringaQuery = inputText;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/Elaborazione_Query.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
             Stage stage = (Stage) Q_Start.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
