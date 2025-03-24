@@ -1,0 +1,45 @@
+#myListView {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2); /* ombra da copiare*/
+    -fx-font-family: Calibri;
+}
+
+#myListView .list-cell {
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1;
+    -fx-border-color: #cccccc;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+#myListView .list-cell:selected {
+    -fx-background-color: #2a5298;
+    -fx-text-fill: white;
+    -fx-border-width: 2px;
+}
+
+#myListView .list-cell:hover {
+    -fx-background-color: #aecbff;
+}
+
+.buttonAdd {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.buttonRemove {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
