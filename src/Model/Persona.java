@@ -68,6 +68,15 @@ public class Persona {
         this.piede = piede;
     }
 
+
+    public Persona(String nome, String cognome, Date data_Nascita, String nazionalita, float altezza, String piede) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.data_Nascita = data_Nascita;
+        this.nazionalita = nazionalita;
+        this.altezza = altezza;
+        this.piede = piede;
+    }
     // Override toString()
     @Override
     public String toString() {

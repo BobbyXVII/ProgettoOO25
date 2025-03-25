@@ -1,6 +1,8 @@
 package Controller;
 
+import DAO.PersonaDAO;
 import Database.DatabaseConnection;
+import Model.Persona;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +17,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Date;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
+import java.sql.Date;
+import java.time.LocalDate;
+
+
 
 public class AddNewPlayerController {
 
@@ -42,6 +51,9 @@ public class AddNewPlayerController {
     @FXML
     private Button Proceed_btn;
 
+    private final PersonaDAO personaDAO = new PersonaDAO();
+
+
     @FXML
     public void initialize() {
         // Imposta le opzioni per la ChoiceBox della Nazionalità
@@ -64,21 +76,44 @@ public class AddNewPlayerController {
         // Imposta le opzioni per la ChoiceBox del Piede
         ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
         PiedeChoiceBox.setItems(tipologiePiedi);
+
+
+        //Creazione Persona e invio Query
+
     }
 
     @FXML
     private void handleBack() {
-        cambiaScena("SearchIn.fxml");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma");
+        alert.setHeaderText("Vuoi annullare la compilazione?");
+        alert.setContentText("Questa azione cancellerà i dati inseriti.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            BackToSearch();
+        }
     }
+
 
     @FXML
     private void handleProceed() {
         if (campiValidi()) {
-            // Proviamo a salvare il giocatore nel database
-            if (salvaGiocatore()) {
-                cambiaScena2("AddNewPlayer2.fxml");
-            }
-        } else {
+                //conversione data come parametro
+                LocalDate localDate = dataNascitaPicker.getValue();
+                Date data = Date.valueOf(localDate);
+                float altezzaFinale = Float.parseFloat(altezzaField.getText());
+                Persona persona = new Persona(String.valueOf(nomeField.getText().trim()),String.valueOf(cognomeField.getText().trim()),data,String.valueOf(nationalityChoiceBox.getValue().trim()),altezzaFinale,String.valueOf(PiedeChoiceBox.getValue().trim()));
+                try {
+                    personaDAO.addPersona(persona);
+                    System.out.println("Persona aggiunta con successo!");
+                    ProceedAdd();
+                } catch (SQLException e) {
+                    System.out.println("Errore durante l'inserimento: " + e.getMessage());
+                    System.out.println(String.valueOf(nomeField.getText().trim()));
+                    System.out.println(String.valueOf(cognomeField.getText().trim()));
+                }
+        }else{
             mostraErrore("Compila tutti i campi prima di procedere.");
         }
     }
@@ -100,65 +135,36 @@ public class AddNewPlayerController {
         alert.showAndWait();
     }
 
-    private void cambiaScena(String fxmlFile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/SearchIn.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = (Stage) Back_btn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            System.out.println("Errore nel caricamento del file FXML: " + fxmlFile);
-            e.printStackTrace();
-        }
+    private void BackToSearch() {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/SearchIn.fxml"));
+                Stage stage = (Stage) Back_btn.getScene().getWindow();
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+            } catch (IOException e) {
+                showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+            }
     }
 
-    private void cambiaScena2(String fxmlFile) {
+    private void ProceedAdd() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/ANP/AddNewPlayer2.fxml"));
-            Parent root = loader.load();
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/ANP/AddNewPlayer2.fxml"));
             Stage stage = (Stage) Proceed_btn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
         } catch (IOException e) {
-            System.out.println("Errore nel caricamento del file FXML: " + fxmlFile);
-            e.printStackTrace();
+            e.printStackTrace(); // Stampare il vero errore in console
+            showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
         }
+
     }
 
-    /**
-     * Metodo che salva i dati del nuovo giocatore nel database.
-     *
-     * @return true se l'operazione è andata a buon fine, false altrimenti
-     */
-    private boolean salvaGiocatore() {
-        String sql = "INSERT INTO persona (nome, cognome, data_nascita, altezza, nazionalita, piede) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setString(1, nomeField.getText());
-            ps.setString(2, cognomeField.getText());
-            // Convertiamo la data del DatePicker nel formato java.sql.Date
-            ps.setDate(3, Date.valueOf(dataNascitaPicker.getValue()));
-            // Converte il campo altezza in double
-            ps.setDouble(4, Double.parseDouble(altezzaField.getText()));
-            ps.setString(5, nationalityChoiceBox.getValue());
-            ps.setString(6, PiedeChoiceBox.getValue());
-
-            ps.executeUpdate();
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            mostraErrore("Errore nell'inserimento del giocatore nel database: " + ex.getMessage());
-            return false;
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            mostraErrore("Il campo altezza deve essere un numero valido.");
-            return false;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

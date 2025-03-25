@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="Sfondo" prefHeight="720" prefWidth="1280" stylesheets="@ANP.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddNewPlayerController">
+<AnchorPane fx:id="Sfondo" prefHeight="720" prefWidth="1280" stylesheets="@../CSS/ANP.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddNewPlayerController2">
     <children>
         <AnchorPane fx:id="BK_ground" layoutX="231.0" layoutY="1.0" prefHeight="719.0" prefWidth="812.0">
             <children>
@@ -18,14 +18,16 @@
                 <Label layoutX="208.0" layoutY="229.0" text="Valore di Mercato:" />
                 <TextField layoutX="209.0" layoutY="252.0" prefHeight="25.0" prefWidth="394.0" />
                 <ProgressBar layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="811.0" progress="0.66" />
-                <Button layoutX="347.0" layoutY="566.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
-                <Button layoutX="334.0" layoutY="641.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
+                <Button fx:id="procediButton" layoutX="351.0" layoutY="595.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
+                <Button layoutX="338.0" layoutY="670.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
                 <ChoiceBox layoutX="209.0" layoutY="181.0" prefHeight="25.0" prefWidth="394.0" />
                 <ChoiceBox layoutX="209.0" layoutY="122.0" prefHeight="25.0" prefWidth="394.0" />
-                <ListView fx:id="myListView_Skills" layoutX="21.0" layoutY="340.0" prefHeight="200.0" prefWidth="386.0" styleClass="myListView2"/>
-                <ListView fx:id="myListView_Ruoli" layoutX="410.0" layoutY="340.0" prefHeight="200.0" prefWidth="386.0" styleClass="myListView2"/>
+                <ListView fx:id="myListView_Skills" layoutX="21.0" layoutY="340.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
+                <ListView fx:id="myListView_Ruoli" layoutX="410.0" layoutY="340.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
                 <Label layoutX="21.0" layoutY="315.0" text="Seleziona Skills possedute dal calciatore:" />
                 <Label layoutX="410.0" layoutY="315.0" text="Seleziona ruoli giocati dal calciatore:" />
+                <Button fx:id="SkillsButton" layoutX="171.0" layoutY="534.0" mnemonicParsing="false" text="aggiungi" />
+                <Button fx:id="RuoliButton" layoutX="565.0" layoutY="534.0" mnemonicParsing="false" text="aggiungi" />
             </children>
         </AnchorPane>
     </children>

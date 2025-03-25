@@ -18,6 +18,13 @@
     -fx-text-fill: white;
 }
 
+.buttonAdd {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
 
 .Pannello {
     -fx-background-color: white;
@@ -31,3 +38,11 @@
     -fx-text-fill: #1e1e1e;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }
+
+
+.transparent-blur {
+    -fx-background-color: rgba(255, 255, 255, 0.2); /* Trasparente */
+    -fx-background-radius: 10; /* Bordo arrotondato */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 0);
+}
+

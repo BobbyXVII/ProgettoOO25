@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@CSS/LoggedIn.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoggedInController">
     <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../Immagini/Sfondo_Logged_In.png" />
@@ -20,17 +20,17 @@
             <Font name="Calibri Bold" size="48.0" />
         </font>
     </Label>
-    <Button layoutX="282.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Antonio Conte">
+    <Button layoutX="282.0" layoutY="421.0" onAction="#handleSearchSuggest" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Antonio Conte">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="506.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Alex Meret">
+    <Button layoutX="506.0" layoutY="421.0" onAction="#handleSearchSuggest2" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Alex Meret">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="730.0" layoutY="421.0" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Champions League">
+    <Button layoutX="730.0" layoutY="421.0" onAction="#handleSearchSuggest3" prefHeight="60.0" prefWidth="200.0" styleClass="button" text="Champions League">
         <font>
             <Font size="14.0" />
         </font>
@@ -60,4 +60,8 @@
               </image>
           </ImageView>
       </graphic></Button>
+    <Button fx:id="Add_btn" layoutX="0" layoutY="0" mnemonicParsing="false" onAction="#handleGoAdd" prefHeight="58.0" prefWidth="262.0" styleClass="buttonAdd" text="INSERISCI NUOVO ELEMENTO">
+        <font>
+            <Font name="System Bold" size="16.0" />
+        </font></Button>
 </AnchorPane>

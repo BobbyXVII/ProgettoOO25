@@ -1,25 +1,30 @@
 package DAO;
 
+import Database.DatabaseConnection;
+import Model.Persona;
 import Model.Possiede;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PossiedeDAO {
-    private Connection connection;
 
-    public PossiedeDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public void insert(Possiede possiede) throws SQLException {
-        String query = "INSERT INTO Possiede (ID, nomeSkill) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+    public void insertNewSKills(Possiede possiede) throws SQLException {
+        String sql = "INSERT INTO Possiede (ID, nomeSkill) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, possiede.getId());
             stmt.setString(2, possiede.getNomeSkill());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
+}
+
+    /*
 
     public Possiede getByIdAndSkill(int id, String nomeSkill) throws SQLException {
         String query = "SELECT * FROM Possiede WHERE ID = ? AND nomeSkill = ?";
@@ -60,3 +65,5 @@ public class PossiedeDAO {
         }
     }
 }
+
+     */

@@ -32,10 +32,10 @@ public class SearchInController {
     private Label myLabel;
 
     @FXML
-    private Button Add_btn;
+    private Button Rm_btn;
 
     @FXML
-    private Button Rm_btn;
+    private Button BackLogged;
 
     private final SquadraDAO squadraDAO = new SquadraDAO();
     private final CarrieraDAO carrieraDAO = new CarrieraDAO();
@@ -51,6 +51,7 @@ public class SearchInController {
     private String selectedItem;
 
     public String CalciatoreRichiesto;
+
 
     public void initialize() throws SQLException {
         String Pex = utenteDAO.ControllaPex(UtenteConnesso);
@@ -92,26 +93,35 @@ public class SearchInController {
                 System.out.println(CalciatoreRichiesto);
             }
         });
-        Add_btn.setOnAction(event -> handleAdd());
         Rm_btn.setOnAction(event -> handleRemove());
     }
 
     private void ShowButtons(int i) {
-        Add_btn.setOpacity(i);
         Rm_btn.setOpacity(i);
-        Add_btn.setDisable(i == 0);
         Rm_btn.setDisable(i == 0);
     }
 
+    public void handleHomepage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/LoggedIn.fxml"));
+            Stage stage = (Stage) BackLogged.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+        }
+    }
+
+            /*
     private void handleAdd() {
         if (selectedItem == null || selectedItem.trim().isEmpty() || selectedItem.equals(" ")) {
             showAlert("Errore", "Seleziona un elemento dalla lista.");
             return;
         }
         System.out.println("Aggiungi: " + selectedItem);
-
-        cambiaScena("AddNewPlayer1.fxml");
+        cambiaScena();
     }
+     */
 
     private void handleRemove() {
         if (selectedItem == null || selectedItem.trim().isEmpty() || selectedItem.equals(" ")) {
@@ -129,18 +139,5 @@ public class SearchInController {
         alert.showAndWait();
     }
 
-    private void cambiaScena(String fxmlFile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/ANP/AddNewPlayer1.fxml"));
-            Parent root = loader.load();
 
-            // Ottieni lo stage attuale
-            Stage stage = (Stage) Add_btn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Errore", "Impossibile caricare la nuova pagina.");
-        }
-    }
 }

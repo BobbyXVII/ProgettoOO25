@@ -48,6 +48,24 @@ public class PersonaDAO {
         return -1; // Se non trova la persona, ritorna -1
     }
 
+    public void addPersona(Persona persona) throws SQLException {
+        String sql = "INSERT INTO Persona (nome, cognome, data_Nascita, nazionalita, altezza, piede) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, persona.getNome());
+            ps.setString(2, persona.getCognome());
+            ps.setDate(3, persona.getData_Nascita());
+            ps.setString(4, persona.getNazionalita());
+            ps.setFloat(5, persona.getAltezza());
+            ps.setString(6, persona.getPiede());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 /*
     public List<Persona> getAllPersonas() throws SQLException {
         String sql = "SELECT * FROM Persona";
