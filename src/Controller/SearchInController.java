@@ -11,10 +11,15 @@ import Model.Utente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -104,6 +109,8 @@ public class SearchInController {
             return;
         }
         System.out.println("Aggiungi: " + selectedItem);
+
+        cambiaScena("AddNewPlayer1.fxml");
     }
 
     private void handleRemove() {
@@ -120,5 +127,20 @@ public class SearchInController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void cambiaScena(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/ANP/AddNewPlayer1.fxml"));
+            Parent root = loader.load();
+
+            // Ottieni lo stage attuale
+            Stage stage = (Stage) Add_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Errore", "Impossibile caricare la nuova pagina.");
+        }
     }
 }
