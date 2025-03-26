@@ -1,0 +1,48 @@
+#VisitCalciatori {
+    -fx-background-color: #2a5298;
+}
+
+#Pannello {
+    -fx-background-color: white;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 0 50px 50px 0; /* Arrotonda solo i bordi in alto a destra */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+#Panel {
+    -fx-background-color: white;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 0 0 10px 10px; /* Arrotonda solo i bordi in alto a destra */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+#Bar {
+    -fx-background-color: #152b53;
+    -fx-text-fill: white;
+}
+
+#Valore {
+    -fx-background-color: #5ca6ff;
+    -fx-text-fill: white;
+}
+
+#Pannello1 {
+    -fx-background-color: lightgrey;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 0 0 50px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+#Pannello3 {
+    -fx-background-color: white;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 0 0 50px 50px; /* Arrotonda solo i bordi in alto a destra */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.button {
+    -fx-background-color: #e8a23c;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}

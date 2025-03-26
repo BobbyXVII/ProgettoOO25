@@ -27,17 +27,20 @@ public class PersonaDAO {
         return null; // Se non trova la persona, ritorna null
     }
 
-    public int getIdByNome(String result) throws SQLException {
+    public List<Integer> getIdsByNome(String result) throws SQLException {
+        List<Integer> ids = new ArrayList<>();  // Lista per raccogliere gli ID
         String sql = "SELECT id FROM Persona WHERE LOWER(nome || ' ' || cognome) LIKE LOWER(?)";
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Imposta il parametro per il nome completo (nome e cognome)
             stmt.setString(1, "%" + result.toLowerCase() + "%");
 
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt("id"));  // Aggiunge ogni ID trovato alla lista
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,8 +48,9 @@ public class PersonaDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return -1; // Se non trova la persona, ritorna -1
+        return ids;  // Ritorna la lista di ID trovati
     }
+
 
     public void addPersona(Persona persona) throws SQLException {
         String sql = "INSERT INTO Persona (nome, cognome, data_Nascita, nazionalita, altezza, piede) VALUES (?, ?, ?, ?, ?, ?)";

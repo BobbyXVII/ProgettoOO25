@@ -41,3 +41,10 @@
     -fx-border-color: transparent;
     -fx-text-fill: white;
 }
+
+.buttonVisit {
+    -fx-background-color: #5593ff;
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}

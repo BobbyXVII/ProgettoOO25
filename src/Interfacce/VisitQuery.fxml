@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="VisitCalciatori" prefHeight="720" prefWidth="1280" stylesheets="@CSS/Visit.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.VisitQueryController">
+   <children>
+      <Pane fx:id="Pannello" layoutY="94.0" prefHeight="200.0" prefWidth="1214.0">
+         <children>
+            <Pane fx:id="Pannello1" layoutX="-5.0" layoutY="106.0" opacity="0.24" prefHeight="94.0" prefWidth="1220.0" />
+            <Label fx:id="NomeBar" layoutX="291.0" layoutY="14.0" textFill="#2c5191">
+               <font>
+                  <Font name="Calibri Bold" size="40.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="274.0" fitWidth="438.0" layoutX="14.0" layoutY="-100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Immagini/Logo_Visita_Player.png" />
+               </image>
+            </ImageView>
+            <Pane fx:id="Valore" layoutX="818.0" layoutY="21.0" prefHeight="141.0" prefWidth="353.0">
+               <children>
+                  <Label fx:id="ValoreDiMercL" layoutX="14.0" layoutY="5.0" prefHeight="131.0" prefWidth="238.0" textFill="WHITE">
+                     <font>
+                        <Font name="System Italic" size="90.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ValoreDiMercL1" layoutX="261.0" layoutY="5.0" prefHeight="131.0" prefWidth="238.0" text="€" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="90.0" />
+                     </font>
+                  </Label>
+               </children></Pane>
+         </children></Pane>
+      <Pane fx:id="Panel" layoutX="36.0" layoutY="333.0" prefHeight="340.0" prefWidth="518.0">
+         <children>
+            <Label layoutX="17.0" layoutY="14.0" text="Nome:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="17.0" layoutY="56.0" text="Cognome:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="17.0" layoutY="106.0" text="Data di Nascita:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="17.0" layoutY="156.0" text="Nazionalità:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="17.0" layoutY="200.0" text="Piede:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="17.0" layoutY="251.0" text="Squadra Attuale:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="NomeL" layoutX="213.0" layoutY="14.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="cognomeL" layoutX="213.0" layoutY="54.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="DateNascitaL" layoutX="213.0" layoutY="104.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="NazionalitaL" layoutX="213.0" layoutY="154.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="PiedeL" layoutX="213.0" layoutY="204.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="CurrTeamL" layoutX="213.0" layoutY="254.0" textFill="#2c5191">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField layoutX="320.0" layoutY="11.5" />
+            <TextField layoutX="320.0" layoutY="53.0" />
+            <TextField layoutX="320.0" layoutY="103.0" />
+            <TextField layoutX="320.0" layoutY="153.0" />
+            <TextField layoutX="320.0" layoutY="197.0" />
+            <TextField layoutX="320.0" layoutY="248.0" />
+         </children></Pane>
+      <Pane fx:id="Bar" layoutX="36.0" layoutY="310.0" prefHeight="23.0" prefWidth="518.0">
+         <children>
+            <Label layoutX="10.0" layoutY="1.0" text="INFORMAZIONI" textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="17.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <Pane fx:id="Pannello3" layoutX="365.0" layoutY="-136.0" prefHeight="200.0" prefWidth="550.0">
+         <children>
+            <Button layoutX="61.0" layoutY="150.0" mnemonicParsing="false" styleClass="button" text="Torna alla ricerca" />
+            <Button layoutX="396.0" layoutY="150.0" mnemonicParsing="false" styleClass="button" text="Torna alla Home" />
+            <ImageView fitHeight="46.0" fitWidth="52.0" layoutX="252.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Immagini/Icon.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
+   </children>
+</AnchorPane>

@@ -1,16 +1,75 @@
 package DAO;
 
 import java.sql.*;
+
+import Database.DatabaseConnection;
 import Model.Competizione;
+import Model.Squadra;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CompetizioneDAO {
-    private Connection connection;
 
-    public CompetizioneDAO(Connection connection) {
-        this.connection = connection;
+    public int checkCompetizioneEsiste(String compAnalizzata) throws SQLException {
+        String sql = "SELECT 1 FROM competizione WHERE LOWER(nomecompetizione) LIKE LOWER(?)";  // Usa LIKE per una ricerca parziale
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Imposta il parametro della query (nome competizione)
+            stmt.setString(1, "%" + compAnalizzata.toLowerCase() + "%");  // Usa il "%" per cercare competizioni che contengano il testo
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return 1;  // Se c'è una competizione che corrisponde al nome (anche parzialmente), restituisce 1
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;  // Se la competizione non esiste, restituisce 0
     }
+
+
+
+
+    public List<String> getCompetizioniAndDate(String compAnalizzata) throws SQLException {
+        String sql = "SELECT nomecompetizione, annoSvolgimento FROM competizione WHERE LOWER(nomecompetizione) LIKE LOWER(?)";
+        List<String> competizioniAndDates = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Imposta il parametro, convertendolo in minuscolo
+            stmt.setString(1, "%" + compAnalizzata.toLowerCase() + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Crea una stringa che contiene nome e data della competizione
+                String competizione = rs.getString("nomecompetizione");
+                String annoSvolgimento = rs.getString("annoSvolgimento");
+
+                // Aggiungi il risultato formattato alla lista
+                competizioniAndDates.add(competizione + " - " + annoSvolgimento);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return competizioniAndDates;  // Restituisce la lista di competizioni con le date
+    }
+
+}
+
+
+    /*
 
     public Competizione getCompetizioneByDetails(String nomeCompetizione, String annoSvolgimento) throws SQLException {
         String sql = "SELECT * FROM Competizione WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
@@ -78,3 +137,4 @@ public class CompetizioneDAO {
         }
     }
 }
+     */

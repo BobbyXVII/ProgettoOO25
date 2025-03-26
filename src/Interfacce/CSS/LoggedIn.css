@@ -33,6 +33,8 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }
 
+
+
 .PannelloNav {
     -fx-background-color: #2a5298;
     -fx-text-fill: #1e1e1e;

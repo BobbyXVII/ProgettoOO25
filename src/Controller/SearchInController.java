@@ -1,9 +1,6 @@
 package Controller;
 
-import DAO.CarrieraDAO;
-import DAO.PersonaDAO;
-import DAO.SquadraDAO;
-import DAO.UtenteDAO;
+import DAO.*;
 import Model.Carriera;
 import Model.Persona;
 import Model.Squadra;
@@ -42,13 +39,17 @@ public class SearchInController {
     private final PersonaDAO personaDAO = new PersonaDAO();
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
+    private final CompetizioneDAO competizioneDAO = new CompetizioneDAO();
+
     private final String QueryDone = LoggedInController.StringaQuery;
 
 
     //importazione variabile globale
     private final String UtenteConnesso = ControllerLogin.nomeUtenteConnesso;
 
-    private String selectedItem;
+    public static String selectedItem;
+
+    public static int Flag;
 
     public String CalciatoreRichiesto;
 
@@ -64,6 +65,7 @@ public class SearchInController {
         Squadra squadra = squadraDAO.getSquadraByNome(QueryDone);
 
         if (squadra != null) {
+            Flag = 1;
             Totalquery.add(squadra.getNomeSquadra());
             Totalquery.add(" ");
             Totalquery.add(" ");
@@ -76,14 +78,28 @@ public class SearchInController {
 
 
         } else {
-            int IdResult = personaDAO.getIdByNome(QueryDone);
-            if (IdResult > 0) {
-                String nomeCognome = personaDAO.getNomeCognomeById(IdResult);
-                Totalquery.add(nomeCognome);
-                Totalquery.add(" ");
-                Totalquery.add(" ");
-            } else {
-                showAlert("Errore di ricerca", "La query non ha riportato alcun risultato.");
+            List<Integer> idResults = personaDAO.getIdsByNome(QueryDone);  // Restituisce una lista di ID
+            if(!idResults.isEmpty()){
+                Flag = 2;
+                for (Integer id : idResults) {
+                    String nomeCognome = personaDAO.getNomeCognomeById(id);  // Ottieni nome e cognome per ogni ID
+                    if (nomeCognome != null) {
+                        Totalquery.add(nomeCognome);
+                    }
+                }
+        } else {
+                int ResultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryDone);
+                if (ResultSearchComp == 1){
+                    Flag = 3;
+                    List<String> competizioni = competizioneDAO.getCompetizioniAndDate(QueryDone);
+                    for (String competizione : competizioni) {
+                        System.out.println(competizione);  // Stampa ogni competizione con la sua data
+                        Totalquery.add(competizione);
+                    }
+
+                }else {
+                    showAlert("Errore di ricerca", "La query non ha riportato alcun risultato.");
+                }
             }
         }
 
@@ -92,8 +108,6 @@ public class SearchInController {
         myListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.trim().isEmpty()) {
                 selectedItem = newValue;
-                CalciatoreRichiesto = selectedItem;
-                System.out.println(CalciatoreRichiesto);
             }
         });
         Rm_btn.setOnAction(event -> handleRemove());
@@ -107,6 +121,18 @@ public class SearchInController {
     public void handleHomepage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/LoggedIn.fxml"));
+            Stage stage = (Stage) BackLogged.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+        }
+    }
+
+    @FXML
+    public void GoVisit(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/VisitQuery.fxml"));
             Stage stage = (Stage) BackLogged.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
