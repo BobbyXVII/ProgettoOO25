@@ -8,6 +8,15 @@ public class Vince {
     private int idPersona;
     private Date dataVincita;
 
+
+    public Vince(String idTrofeoIN, String idTrofeoDS, int idPersona, Date dataVincita) {
+        this.idTrofeoIN = idTrofeoIN;
+        this.idTrofeoDS = idTrofeoDS;
+        this.idPersona = idPersona;
+        this.dataVincita = dataVincita;
+    }
+
+
     // Getter e Setter
     public String getIdTrofeoIN() {
         return idTrofeoIN;

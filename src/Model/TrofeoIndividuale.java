@@ -7,6 +7,12 @@ public class TrofeoIndividuale {
     private String nomeAssegnazione;
     private Date dataSvolgimento;
 
+    public TrofeoIndividuale(String idTrofeoIN, String nomeAssegnazione, Date dataSvolgimento) {
+        this.idTrofeoIN = idTrofeoIN;
+        this.nomeAssegnazione = nomeAssegnazione;
+        this.dataSvolgimento = dataSvolgimento;
+    }
+
     // Getter e Setter
     public String getIdTrofeoIN() {
         return idTrofeoIN;

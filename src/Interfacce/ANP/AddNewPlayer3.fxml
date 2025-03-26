@@ -14,12 +14,13 @@
                     </font>
                 </Label>
                 <ProgressBar layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="811.0" progress="1.0" />
-                <Button layoutX="322.0" layoutY="568.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="169.0" styleClass="button1" text="Termina Inserimento" />
-                <Button layoutX="334.0" layoutY="641.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" wrapText="true" />
-            <ListView fx:id="myListView_Trofei_Squ" layoutX="412.0" layoutY="130.0" prefHeight="418.0" prefWidth="386.0" styleClass="myListView2"/>
+                <Button fx:id="End_Btn" onAction="#goBack" layoutX="322.0" layoutY="568.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="169.0" styleClass="button1" text="Termina Inserimento" />
+                <Button fx:id="Back_btn" onAction="#handleBack" layoutX="334.0" layoutY="641.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" wrapText="true" />
             <Label layoutX="14.0" layoutY="105.0" text="Seleziona Trofeo Individuale vinto:" />
-            <Label layoutX="412.0" layoutY="105.0" text="Seleziona Trofeo di Squadra vinto:" />
-            <ListView fx:id="myListView_Trofei_Ind" layoutX="14.0" layoutY="130.0" prefHeight="418.0" prefWidth="386.0" styleClass="myListView2"/>
+            <ListView fx:id="myListView_Trofei_Ind" layoutX="14.0" layoutY="130.0" prefHeight="320.0" prefWidth="796.0" styleClass="myListView2" />
+            <DatePicker fx:id="dateTrophyInd" layoutX="14.0" layoutY="483.0" prefHeight="25.0" prefWidth="342.0" />
+            <Button fx:id="Ind_Button" layoutX="14.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleAddTrophyInd" text="Aggiungi" />
+            <Label layoutX="14.0" layoutY="465.0" text="Data Vincita:" />
             </children>
         </AnchorPane>
     </children>

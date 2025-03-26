@@ -19,7 +19,7 @@
                 <TextField fx:id="valoreMercatoField" layoutX="214.0" layoutY="298.0" prefHeight="25.0" prefWidth="394.0" />
                 <ProgressBar layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="811.0" progress="0.66" />
                 <Button fx:id="procediButton" layoutX="351.0" layoutY="595.0" mnemonicParsing="false" onAction="#handleProceed" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
-                <Button layoutX="338.0" layoutY="670.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
+                <Button fx:id="Back_btn" onAction="#handleBack" layoutX="338.0" layoutY="670.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
                 <ChoiceBox fx:id="tipologiaChoiceBox" layoutX="209.0" layoutY="181.0" prefHeight="25.0" prefWidth="394.0" />
                 <ChoiceBox fx:id="squadraChoiceBox" layoutX="209.0" layoutY="122.0" prefHeight="25.0" prefWidth="394.0" />
                 <ListView fx:id="myListView_Skills" layoutX="29.0" layoutY="373.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />

@@ -19,11 +19,15 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class AddNewPlayerController2 {
 
     @FXML
     private ListView<String> myListView_Skills;
+
+    @FXML
+    private Button Back_btn;
 
     @FXML
     private ListView<String> myListView_Ruoli;
@@ -173,9 +177,6 @@ public class AddNewPlayerController2 {
         }
     }
 
-
-
-
     @FXML
     private void handleProceed() {
         if (campiValidi()) {
@@ -210,6 +211,28 @@ public class AddNewPlayerController2 {
 
     }
 
+    @FXML
+    private void handleBack() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma");
+        alert.setHeaderText("Vuoi annullare la compilazione?");
+        alert.setContentText("Questa azione cancellerà i dati inseriti.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            BackToSearch();
+        }
+    }
+    private void BackToSearch() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
+            Stage stage = (Stage) Back_btn.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            showAlert("Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+        }
+    }
 
     private boolean campiValidi() {
         return idNewPlayerAdded > 0 &&
@@ -244,4 +267,5 @@ public class AddNewPlayerController2 {
             alert.close();
         });
     }
+
 }

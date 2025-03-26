@@ -140,7 +140,7 @@ public class AddNewPlayerController {
 
     private void BackToSearch() {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/SearchIn.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
                 Stage stage = (Stage) Back_btn.getScene().getWindow();
                 Scene scene = new Scene(loader.load());
                 stage.setScene(scene);
