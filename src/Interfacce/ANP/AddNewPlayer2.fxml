@@ -15,19 +15,21 @@
                 </Label>
                 <Label layoutX="210.0" layoutY="105.0" text="Seleziona la squadra del calciatore:" />
                 <Label layoutX="208.0" layoutY="164.0" text="Tipologia:" />
-                <Label layoutX="208.0" layoutY="229.0" text="Valore di Mercato:" />
-                <TextField layoutX="209.0" layoutY="252.0" prefHeight="25.0" prefWidth="394.0" />
+                <Label layoutX="213.0" layoutY="275.0" text="Valore di Mercato:" />
+                <TextField fx:id="valoreMercatoField" layoutX="214.0" layoutY="298.0" prefHeight="25.0" prefWidth="394.0" />
                 <ProgressBar layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="811.0" progress="0.66" />
-                <Button fx:id="procediButton" layoutX="351.0" layoutY="595.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
+                <Button fx:id="procediButton" layoutX="351.0" layoutY="595.0" mnemonicParsing="false" onAction="#handleProceed" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
                 <Button layoutX="338.0" layoutY="670.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
-                <ChoiceBox layoutX="209.0" layoutY="181.0" prefHeight="25.0" prefWidth="394.0" />
-                <ChoiceBox layoutX="209.0" layoutY="122.0" prefHeight="25.0" prefWidth="394.0" />
-                <ListView fx:id="myListView_Skills" layoutX="21.0" layoutY="340.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
-                <ListView fx:id="myListView_Ruoli" layoutX="410.0" layoutY="340.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
-                <Label layoutX="21.0" layoutY="315.0" text="Seleziona Skills possedute dal calciatore:" />
-                <Label layoutX="410.0" layoutY="315.0" text="Seleziona ruoli giocati dal calciatore:" />
-                <Button fx:id="SkillsButton" layoutX="171.0" layoutY="534.0" mnemonicParsing="false" text="aggiungi" />
-                <Button fx:id="RuoliButton" layoutX="565.0" layoutY="534.0" mnemonicParsing="false" text="aggiungi" />
+                <ChoiceBox fx:id="tipologiaChoiceBox" layoutX="209.0" layoutY="181.0" prefHeight="25.0" prefWidth="394.0" />
+                <ChoiceBox fx:id="squadraChoiceBox" layoutX="209.0" layoutY="122.0" prefHeight="25.0" prefWidth="394.0" />
+                <ListView fx:id="myListView_Skills" layoutX="29.0" layoutY="373.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
+                <ListView fx:id="myListView_Ruoli" layoutX="418.0" layoutY="373.0" prefHeight="184.0" prefWidth="386.0" styleClass="myListView2" />
+                <Label layoutX="29.0" layoutY="348.0" text="Seleziona Skills possedute dal calciatore:" />
+                <Label layoutX="418.0" layoutY="348.0" text="Seleziona ruoli giocati dal calciatore:" />
+                <Button fx:id="SkillsButton" layoutX="179.0" layoutY="567.0" mnemonicParsing="false" text="aggiungi" />
+                <Button fx:id="RuoliButton" layoutX="573.0" layoutY="567.0" mnemonicParsing="false" text="aggiungi" />
+            <Label layoutX="209.0" layoutY="221.0" text="Data Inizio Carriera:" />
+            <DatePicker fx:id="dataInizioCarriera" layoutX="211.0" layoutY="239.0" prefHeight="28.0" prefWidth="394.0" />
             </children>
         </AnchorPane>
     </children>

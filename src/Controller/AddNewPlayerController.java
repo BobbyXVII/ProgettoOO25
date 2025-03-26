@@ -53,6 +53,8 @@ public class AddNewPlayerController {
 
     private final PersonaDAO personaDAO = new PersonaDAO();
 
+    public static int idNewPlayerAdded;
+
 
     @FXML
     public void initialize() {
@@ -147,7 +149,13 @@ public class AddNewPlayerController {
             }
     }
 
-    private void ProceedAdd() {
+    private void ProceedAdd() throws SQLException {
+        int resultAdding = personaDAO.getLastInsertedId();
+        if (resultAdding == -1){
+            showAlert("ERRORE NEL SISTEMA", "Calciatore non aggiunto correttamente.");
+        }else{
+            idNewPlayerAdded = resultAdding;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/ANP/AddNewPlayer2.fxml"));
             Stage stage = (Stage) Proceed_btn.getScene().getWindow();

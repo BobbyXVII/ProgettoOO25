@@ -16,6 +16,23 @@ public class Carriera {
     private int valoreDiMercato;
     private Date dataRitiro;
 
+    public Carriera(int id, String nomeSquadra, Date dataInizioCarriera, Date dataFineCarriera, int cartelliniRossiAnnuali,
+                    int cartelliniGialliAnnuali, String tipologia, int infortuniAnnuali, int goalSubitiAnnuali,
+                    int goalEseguitiAnnuali, int valoreDiMercato, Date dataRitiro) {
+        this.id = id;
+        this.nomeSquadra = nomeSquadra;
+        this.dataInizioCarriera = dataInizioCarriera;
+        this.dataFineCarriera = dataFineCarriera;
+        this.cartelliniRossiAnnuali = cartelliniRossiAnnuali;
+        this.cartelliniGialliAnnuali = cartelliniGialliAnnuali;
+        this.tipologia = tipologia;
+        this.infortuniAnnuali = infortuniAnnuali;
+        this.goalSubitiAnnuali = goalSubitiAnnuali;
+        this.goalEseguitiAnnuali = goalEseguitiAnnuali;
+        this.valoreDiMercato = valoreDiMercato;
+        this.dataRitiro = dataRitiro;
+    }
+
     // Getter e Setter
     public int getId() {
         return id;
@@ -112,6 +129,7 @@ public class Carriera {
     public void setDataRitiro(Date dataRitiro) {
         this.dataRitiro = dataRitiro;
     }
+
 
     // Override toString()
     @Override

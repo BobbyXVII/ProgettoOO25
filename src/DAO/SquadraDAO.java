@@ -34,25 +34,25 @@ public class SquadraDAO {
         return null;
     }
 
-/*
-    public List<Squadra> getAllSquadre() throws SQLException {
-        String sql = "SELECT * FROM Squadra";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            List<Squadra> squadre = new ArrayList<>();
+    public List<String> getAllSquadre() throws SQLException {
+        List<String> clubList = new ArrayList<>();
+        String sql = "SELECT nomeSquadra FROM Squadra";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                squadre.add(new Squadra(
-                        rs.getString("nomeSquadra"),
-                        rs.getInt("annoFondazione"),
-                        rs.getString("campAppartenenza"),
-                        rs.getString("nazionalita"),
-                        rs.getString("nomeStadio")
-                ));
+                String  club = rs.getString("nomeSquadra");
+                clubList.add(club);
             }
-            return squadre;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return clubList;
     }
 
+/*
     public void addSquadra(Squadra squadra) throws SQLException {
         String sql = "INSERT INTO Squadra (nomeSquadra, annoFondazione, campAppartenenza, nazionalita, nomeStadio) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

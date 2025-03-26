@@ -78,7 +78,7 @@ public class LoggedInController {
         if (result.isPresent()) {
             if (result.get() == addPlayer) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/ANP/AddNewPlayer2.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/ANP/AddNewPlayer1.fxml"));
                     Stage stage = (Stage) Add_btn.getScene().getWindow();
                     Scene scene = new Scene(loader.load());
                     stage.setScene(scene);

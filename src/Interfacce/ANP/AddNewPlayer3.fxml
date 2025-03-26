@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="Sfondo" prefHeight="720" prefWidth="1280" stylesheets="@../CSS/ANP.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddNewPlayerController">
+<AnchorPane fx:id="Sfondo" prefHeight="720" prefWidth="1280" stylesheets="@../CSS/ANP.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddNewPlayerController3">
     <children>
         <AnchorPane fx:id="BK_ground" layoutX="231.0" layoutY="1.0" prefHeight="719.0" prefWidth="812.0">
             <children>

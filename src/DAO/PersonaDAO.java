@@ -66,6 +66,22 @@ public class PersonaDAO {
             throw new RuntimeException(e);
         }
     }
+    public int getLastInsertedId() throws SQLException {
+        String sql = "SELECT MAX(ID) AS lastId FROM Persona";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("lastId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return -1; // Se non trova alcun ID, ritorna -1
+    }
 /*
     public List<Persona> getAllPersonas() throws SQLException {
         String sql = "SELECT * FROM Persona";

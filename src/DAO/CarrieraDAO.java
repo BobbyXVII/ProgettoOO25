@@ -10,31 +10,18 @@ import java.util.List;
 
 public class CarrieraDAO {
 
-    public List<Carriera> getCarrieraByClubName(String nomeSquadra) throws SQLException {
-        String sql = "SELECT * FROM Carriera WHERE LOWER(nomeSquadra) LIKE LOWER(?)";
-        List<Carriera> carriereList = new ArrayList<>();
+    public List<Integer> getCarrieraByClubName(String nomeSquadra) throws SQLException {
+        String sql = "SELECT ID FROM Carriera WHERE LOWER(nomeSquadra) LIKE LOWER(?)";
+        List<Integer> idList = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + nomeSquadra.toLowerCase() + "%");
             ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) { // Usa while per iterare su tutte le righe
-                Carriera carriera = new Carriera();
-                carriera.setId(rs.getInt("ID"));
-                carriera.setNomeSquadra(rs.getString("nomeSquadra"));
-                carriera.setDataInizioCarriera(rs.getDate("dataInizioCarriera"));
-                carriera.setDataFineCarriera(rs.getDate("dataFineCarriera"));
-                carriera.setCartelliniRossiAnnuali(rs.getInt("cartelliniRossiAnnuali"));
-                carriera.setCartelliniGialliAnnuali(rs.getInt("cartelliniGialliAnnuali"));
-                carriera.setTipologia(rs.getString("tipologia"));
-                carriera.setInfortuniAnnuali(rs.getInt("infortuniAnnuali"));
-                carriera.setGoalSubitiAnnuali(rs.getInt("goalSubitiAnnuali"));
-                carriera.setGoalEseguitiAnnuali(rs.getInt("goalEseguitiAnnuali"));
-                carriera.setValoreDiMercato(rs.getInt("valoreDiMercato"));
-                carriera.setDataRitiro(rs.getDate("dataRitiro"));
-
-                carriereList.add(carriera); // Aggiungi ogni carriera trovata alla lista
+            while (rs.next()) {
+                int id = rs.getInt("ID"); // Ottieni solo l'ID
+                idList.add(id); // Aggiungi l'ID alla lista
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,41 +30,37 @@ public class CarrieraDAO {
             throw new RuntimeException(e);
         }
 
-        return carriereList; // Restituisce tutte le carriere trovate
+        return idList; // Restituisce la lista degli ID trovati
     }
 
-    public List<Carriera> getCarrieraByID(int ID) throws SQLException {
-        String sql = "SELECT * FROM Carriera WHERE ID = ?";
-        List<Carriera> carriereList = new ArrayList<>();
 
+
+    public void addCarriera(Carriera carriera) throws SQLException {
+        String sql = "INSERT INTO Carriera (ID, nomeSquadra, dataInizioCarriera, dataFineCarriera, " +
+                "cartelliniRossiAnnuali, cartelliniGialliAnnuali, tipologia, infortuniAnnuali, goalSubitiAnnuali, " +
+                "goalEseguitiAnnuali, valoreDiMercato, dataRitiro) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) { // Usa while per iterare su tutte le righe
-                Carriera carriera = new Carriera();
-                carriera.setId(rs.getInt("ID"));
-                carriera.setNomeSquadra(rs.getString("nomeSquadra"));
-                carriera.setDataInizioCarriera(rs.getDate("dataInizioCarriera"));
-                carriera.setDataFineCarriera(rs.getDate("dataFineCarriera"));
-                carriera.setCartelliniRossiAnnuali(rs.getInt("cartelliniRossiAnnuali"));
-                carriera.setCartelliniGialliAnnuali(rs.getInt("cartelliniGialliAnnuali"));
-                carriera.setTipologia(rs.getString("tipologia"));
-                carriera.setInfortuniAnnuali(rs.getInt("infortuniAnnuali"));
-                carriera.setGoalSubitiAnnuali(rs.getInt("goalSubitiAnnuali"));
-                carriera.setGoalEseguitiAnnuali(rs.getInt("goalEseguitiAnnuali"));
-                carriera.setValoreDiMercato(rs.getInt("valoreDiMercato"));
-                carriera.setDataRitiro(rs.getDate("dataRitiro"));
-
-                carriereList.add(carriera); // Aggiungi ogni carriera trovata alla lista
-            }
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, carriera.getId());
+            ps.setString(2, carriera.getNomeSquadra());
+            ps.setDate(3, new java.sql.Date(carriera.getDataInizioCarriera().getTime()));
+            ps.setDate(4, carriera.getDataFineCarriera() != null ? new java.sql.Date(carriera.getDataFineCarriera().getTime()) : null);
+            ps.setInt(5, carriera.getCartelliniRossiAnnuali());
+            ps.setInt(6, carriera.getCartelliniGialliAnnuali());
+            ps.setString(7, carriera.getTipologia());
+            ps.setInt(8, carriera.getInfortuniAnnuali());
+            ps.setInt(9, carriera.getGoalSubitiAnnuali());
+            ps.setInt(10, carriera.getGoalEseguitiAnnuali());
+            ps.setInt(11, carriera.getValoreDiMercato());
+            ps.setDate(12, carriera.getDataRitiro() != null ? new java.sql.Date(carriera.getDataRitiro().getTime()) : null);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        return carriereList; // Restituisce tutte le carriere trovate
     }
 /*
     public List<Carriera> getAllCarriere() throws SQLException {
@@ -105,27 +88,6 @@ public class CarrieraDAO {
         }
     }
 
-    public void addCarriera(Carriera carriera) throws SQLException {
-        String sql = "INSERT INTO Carriera (ID, nomeSquadra, dataInizioCarriera, dataFineCarriera, " +
-                "cartelliniRossiAnnuali, cartelliniGialliAnnuali, tipologia, infortuniAnnuali, goalSubitiAnnuali, " +
-                "goalEseguitiAnnuali, valoreDiMercato, dataRitiro) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, carriera.getId());
-            ps.setString(2, carriera.getNomeSquadra());
-            ps.setDate(3, new java.sql.Date(carriera.getDataInizioCarriera().getTime()));
-            ps.setDate(4, carriera.getDataFineCarriera() != null ? new java.sql.Date(carriera.getDataFineCarriera().getTime()) : null);
-            ps.setInt(5, carriera.getCartelliniRossiAnnuali());
-            ps.setInt(6, carriera.getCartelliniGialliAnnuali());
-            ps.setString(7, carriera.getTipologia());
-            ps.setInt(8, carriera.getInfortuniAnnuali());
-            ps.setInt(9, carriera.getGoalSubitiAnnuali());
-            ps.setInt(10, carriera.getGoalEseguitiAnnuali());
-            ps.setInt(11, carriera.getValoreDiMercato());
-            ps.setDate(12, carriera.getDataRitiro() != null ? new java.sql.Date(carriera.getDataRitiro().getTime()) : null);
-            ps.executeUpdate();
-        }
-    }
 
     public void updateCarriera(Carriera carriera) throws SQLException {
         String sql = "UPDATE Carriera SET " +

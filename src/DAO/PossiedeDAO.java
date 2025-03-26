@@ -22,6 +22,23 @@ public class PossiedeDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean skillExists(int id, String nomeSkill) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Possiede WHERE ID = ? AND nomeSkill = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.setString(2, nomeSkill);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
 
     /*

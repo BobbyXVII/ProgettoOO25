@@ -67,11 +67,14 @@ public class SearchInController {
             Totalquery.add(squadra.getNomeSquadra());
             Totalquery.add(" ");
             Totalquery.add(" ");
-            List<Carriera> carriere = carrieraDAO.getCarrieraByClubName(QueryDone);
-            for (Carriera carriera : carriere) {
-                String nomeCognome = personaDAO.getNomeCognomeById(carriera.getId());
+            List<Integer> carriereIds = carrieraDAO.getCarrieraByClubName(QueryDone); // Restituisce solo gli ID
+            for (Integer id : carriereIds) {
+                // Usa l'ID per fare qualcosa, come recuperare informazioni da un altro DAO
+                String nomeCognome = personaDAO.getNomeCognomeById(id);
                 Totalquery.add(nomeCognome);
             }
+
+
         } else {
             int IdResult = personaDAO.getIdByNome(QueryDone);
             if (IdResult > 0) {

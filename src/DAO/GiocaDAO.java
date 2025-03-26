@@ -2,6 +2,8 @@ package DAO;
 
 import Database.DatabaseConnection;
 import Model.Gioca;
+import Model.Possiede;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,32 +13,40 @@ import java.util.List;
 
 public class GiocaDAO {
 
-    // Metodo per ottenere una connessione al database
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        return DatabaseConnection.getConnection();
-    }
 
-    // Metodo per mappare una riga del ResultSet a un oggetto Gioca
-    private Gioca mapResultSetToGioca(ResultSet rs) throws SQLException {
-        Gioca gioca = new Gioca();
-        gioca.setID(rs.getInt("id_persona"));
-        gioca.setAbbrRuolo(rs.getString("abbr_ruolo"));
-        return gioca;
-    }
-
-    public List<Gioca> findByPersonaId(int personaId) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT id_persona, abbr_ruolo FROM Gioca WHERE id_persona = ?";
-        List<Gioca> giocate = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, personaId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                giocate.add(mapResultSetToGioca(rs));
-            }
-            return giocate;
+    public void insertNewRole(Gioca gioca) throws SQLException {
+        String sql = "INSERT INTO Gioca (abbrRuolo, ID) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, gioca.getAbbrRuolo());
+            stmt.setInt(2, gioca.getID());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    public boolean roleExists(String abbrRuolo, int ID) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Gioca WHERE abbrRuolo = ? AND ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, abbrRuolo);
+            stmt.setInt(2, ID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+}
+/*
 
     public List<Gioca> findByAbbrRuolo(String abbrRuolo) throws SQLException, ClassNotFoundException {
         String sql = "SELECT id_persona, abbr_ruolo FROM Gioca WHERE abbr_ruolo = ?";
@@ -91,3 +101,4 @@ public class GiocaDAO {
 
     // ... (Altri metodi specifici per Gioca) ...
 }
+ */
