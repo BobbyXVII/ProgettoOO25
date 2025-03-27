@@ -1,6 +1,7 @@
 package Controller;
 
         import DAO.*;
+        import Model.Persona;
         import Model.Squadra;
         import javafx.application.Platform;
         import javafx.collections.FXCollections;
@@ -24,10 +25,10 @@ public class VisitQueryController {
     @FXML private AnchorPane VisitCalciatori;
     @FXML private Pane Pannello, Pannello1, Valore, Panel, Bar, Pannello3;
     @FXML private Label NomeBar, CognomeBar, ValoreDiMercL, ValoreDiMercL1;
-    @FXML private Label NomeL, cognomeL, DateNascitaL, NazionalitaL, PiedeL, CurrTeamL;
-    @FXML private TextField textFieldNome, textFieldCognome, textFieldDataNascita, textFieldNazionalita, textFieldPiede, textFieldSquadra;
+    @FXML private Label NomeL, cognomeL, DateNascitaL, NazionalitaL, PiedeL, CurrTeamL, AltezzaL;
+    @FXML private TextField Edit_name, Edit_cognome, Edit_Date, Edit_Nazio, Edit_piede, Edit_altezza;
     @FXML private ImageView logoVisitaPlayer, iconImage;
-    @FXML private Button btnTornaRicerca, btnTornaHome;
+    @FXML private Button btnTornaRicerca, btnTornaHome, btnAnnulla;
 
     private final SquadraDAO squadraDAO = new SquadraDAO();
     private final CarrieraDAO carrieraDAO = new CarrieraDAO();
@@ -40,11 +41,23 @@ public class VisitQueryController {
 
         Squadra squadra = squadraDAO.getSquadraByNome(QueryRichiesta);
         if (squadra != null) {
-            //A
+            //
         } else {
             List<Integer> idResults = personaDAO.getIdsByNome(QueryRichiesta);  // Restituisce una lista di ID
             if (!idResults.isEmpty()) {
                 VisitCalciatori.setOpacity(1);
+                int res = personaDAO.getIdByNomeQ(QueryRichiesta);
+                Persona persona = personaDAO.getPersonaById(res);
+                NomeL.setText(persona.getNome());
+                cognomeL.setText(persona.getCognome());
+                DateNascitaL.setText(String.valueOf(persona.getData_Nascita()));
+                NazionalitaL.setText(persona.getNazionalita());
+                PiedeL.setText(persona.getPiede());
+                AltezzaL.setText(String.valueOf(persona.getAltezza()));
+                CurrTeamL.setText(carrieraDAO.getNomeSquadraByCalciatoreId(res));
+
+
+
             } else {
                 int ResultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryRichiesta);
                 if (ResultSearchComp == 1) {
@@ -54,6 +67,18 @@ public class VisitQueryController {
                 }
             }
         }
+    }
+
+    @FXML
+    public void ActiveEdit(){
+        Edit_cognome.setOpacity(1);
+        Edit_name.setOpacity(1);
+        Edit_Nazio.setOpacity(1);
+        Edit_piede.setOpacity(1);
+        Edit_Date.setOpacity(1);
+        Edit_altezza.setOpacity(1);
+        btnAnnulla.setOpacity(1);
+
     }
 
 

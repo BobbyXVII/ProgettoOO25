@@ -41,8 +41,22 @@
 }
 
 .button {
+    -fx-background-color: #5ca6ff;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.button2 {
     -fx-background-color: #e8a23c;
     -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.buttonRemove {
+    -fx-background-color: red;
+    -fx-text-fill: white;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }

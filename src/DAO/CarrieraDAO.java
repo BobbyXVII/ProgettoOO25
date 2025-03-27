@@ -62,6 +62,34 @@ public class CarrieraDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public String getNomeSquadraByCalciatoreId(int calciatoreId) throws SQLException {
+        String sql = "SELECT nomeSquadra " +
+                "FROM Carriera " +
+                "WHERE id = ? AND dataFineCarriera IS NULL " +  // Filtra per l'ID del calciatore e carriera attiva
+                "ORDER BY dataInizioCarriera DESC LIMIT 1";  // Ordina per la carriera più recente
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Imposta l'ID del calciatore come parametro nella query
+            stmt.setInt(1, calciatoreId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Restituisce il nome della squadra
+                    return rs.getString("nomeSquadra");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;  // Ritorna null se non trova la squadra attuale
+    }
 /*
     public List<Carriera> getAllCarriere() throws SQLException {
         String sql = "SELECT * FROM Carriera";

@@ -52,6 +52,8 @@ public class SquadraDAO {
         return clubList;
     }
 
+
+
 /*
     public void addSquadra(Squadra squadra) throws SQLException {
         String sql = "INSERT INTO Squadra (nomeSquadra, annoFondazione, campAppartenenza, nazionalita, nomeStadio) VALUES (?, ?, ?, ?, ?)";

@@ -1,2 +1,8 @@
 
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¥¨—¹Ý2
+g	java:S112>"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¨¨—¹Ý2
+g	java:S112X"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¿ž ¹Ý2
 v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ä”òª8Å¼‡…×2
+]	java:S125^"<This block of commented-out lines of code should be removed.(›ðÅÞýÿÿÿÿ8ö¨—¹Ý2
+G
+java:S1128"*Remove this unused import 'Model.Squadra'.(ÒÑïè8÷¨—¹Ý2

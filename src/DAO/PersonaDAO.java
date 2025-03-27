@@ -27,6 +27,34 @@ public class PersonaDAO {
         return null; // Se non trova la persona, ritorna null
     }
 
+    public Persona getPersonaById(int ID) throws SQLException {
+        String sql = "SELECT nome, cognome, data_Nascita, nazionalita, altezza, piede FROM Persona WHERE ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, ID);  // Imposta il parametro ID
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Crea e restituisci l'oggetto Persona
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                Date dataNascita = rs.getDate("data_Nascita");
+                String nazionalita = rs.getString("nazionalita");
+                float altezza = rs.getFloat("altezza");
+                String piede = rs.getString("piede");
+
+                return new Persona(nome, cognome, dataNascita, nazionalita, altezza, piede);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return null; // Se non trova la persona, ritorna null
+    }
+
+
+
     public List<Integer> getIdsByNome(String result) throws SQLException {
         List<Integer> ids = new ArrayList<>();  // Lista per raccogliere gli ID
         String sql = "SELECT id FROM Persona WHERE LOWER(nome || ' ' || cognome) LIKE LOWER(?)";
@@ -50,6 +78,29 @@ public class PersonaDAO {
         }
         return ids;  // Ritorna la lista di ID trovati
     }
+
+    public Integer getIdByNomeQ(String result) throws SQLException {
+        String sql = "SELECT id FROM Persona WHERE LOWER(nome || ' ' || cognome) LIKE LOWER(?) LIMIT 1"; // Limitato a un solo risultato
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Imposta il parametro per il nome completo (nome e cognome)
+            stmt.setString(1, "%" + result.toLowerCase() + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");  // Ritorna il primo ID trovato
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return null;  // Ritorna null se non trova nessun risultato
+    }
+
 
 
     public void addPersona(Persona persona) throws SQLException {
