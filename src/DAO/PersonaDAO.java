@@ -121,6 +121,32 @@ public class PersonaDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public void updatePersona(Persona persona) throws SQLException {
+        String sql = "UPDATE persona SET nome = ?, cognome = ?, data_nascita = ?, nazionalita = ?, altezza = ?, piede = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, persona.getNome());
+            ps.setString(2, persona.getCognome());
+            ps.setDate(3, persona.getData_Nascita());
+            ps.setString(4, persona.getNazionalita());
+            ps.setFloat(5, persona.getAltezza());
+            ps.setString(6, persona.getPiede());
+            ps.setInt(7, persona.getId()); // ID deve essere l'ultimo parametro
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
     public int getLastInsertedId() throws SQLException {
         String sql = "SELECT MAX(ID) AS lastId FROM Persona";
         try (Connection conn = DatabaseConnection.getConnection();

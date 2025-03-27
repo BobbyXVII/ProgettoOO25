@@ -77,10 +77,24 @@ public class Persona {
         this.altezza = altezza;
         this.piede = piede;
     }
+
+    public Persona(int ID,String nome, String cognome, Date data_Nascita, String nazionalita, float altezza, String piede) {
+        this.ID = ID;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.data_Nascita = data_Nascita;
+        this.nazionalita = nazionalita;
+        this.altezza = altezza;
+        this.piede = piede;
+    }
     // Override toString()
     @Override
     public String toString() {
         return "Persona [ID=" + ID + ", nome=" + nome + ", cognome=" + cognome + ", data_Nascita=" + data_Nascita
                 + ", nazionalita=" + nazionalita + ", altezza=" + altezza + ", piede=" + piede + "]";
+    }
+
+    public int getId() {
+        return ID;
     }
 }

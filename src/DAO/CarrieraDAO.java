@@ -1,10 +1,10 @@
 package DAO;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import Model.Carriera;
 import java.util.ArrayList;
 import Database.DatabaseConnection;
-import Model.Squadra;
 
 import java.util.List;
 
@@ -90,6 +90,32 @@ public class CarrieraDAO {
 
         return null;  // Ritorna null se non trova la squadra attuale
     }
+
+    public BigDecimal getValoreDiMercatoByCalciatoreId(int calciatoreId) throws SQLException {
+        String sql = "SELECT valoredimercato FROM Carriera WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, calciatoreId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBigDecimal("valoredimercato");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null; // Oppure return BigDecimal.ZERO se vuoi evitare NullPointerException
+    }
+
+
+
 /*
     public List<Carriera> getAllCarriere() throws SQLException {
         String sql = "SELECT * FROM Carriera";
