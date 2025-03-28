@@ -75,4 +75,29 @@ public class UtenteDAO {
         }
         return null;
     }
+
+    public Integer getIdByUsernameIfCalciatore(String username) throws SQLException {
+        String sql = "SELECT id_calciatore FROM Utenti WHERE username = ? AND ruolo LIKE 'CALCIATORE'";
+        Integer userId = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Imposta il parametro per il nome utente
+            ps.setString(1, username);
+
+            // Esegui la query
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Recupera l'ID utente
+                    userId = rs.getInt("id_calciatore");
+                    return userId;
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return -1;  // Restituisce null se l'utente non è calciatore o non esiste
+    }
 }

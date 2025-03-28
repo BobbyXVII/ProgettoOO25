@@ -9,6 +9,10 @@ public class Vince {
     private Date dataVincita;
 
 
+    public Vince() {
+    }
+
+
     public Vince(String idTrofeoIN, String idTrofeoDS, int idPersona, Date dataVincita) {
         this.idTrofeoIN = idTrofeoIN;
         this.idTrofeoDS = idTrofeoDS;

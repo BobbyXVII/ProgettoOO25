@@ -9,14 +9,14 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }
 
-#Panel {
+.Panel {
     -fx-background-color: white;
     -fx-text-fill: #1e1e1e;
     -fx-background-radius: 0 0 10px 10px; /* Arrotonda solo i bordi in alto a destra */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
 }
 
-#Bar {
+.Bar {
     -fx-background-color: #152b53;
     -fx-text-fill: white;
 }
@@ -66,4 +66,42 @@
     -fx-text-fill: white;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 5);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+
+/* Stile del testo nelle intestazioni delle colonne */
+.table-view .column-header .label {
+    -fx-text-fill: #2c5191;
+    -fx-font-weight: bold;
+}
+
+/* Stile delle righe pari */
+.table-row-cell:even {
+    -fx-background-color: #76a8ff;
+}
+
+/* Stile delle righe dispari */
+.table-row-cell:odd {
+    -fx-background-color: #bcd4ff;
+}
+
+/* Stile delle celle */
+.table-cell {
+    -fx-text-fill: #2c5191;
+    -fx-padding: 5;
+}
+
+/* Stile della riga selezionata */
+.table-row-cell:selected {
+    -fx-background-color: #009688;
+    -fx-background-radius: 5;
 }

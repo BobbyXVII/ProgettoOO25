@@ -137,6 +137,7 @@ public class SearchInController {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
+            e.printStackTrace();
             showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
         }
     }

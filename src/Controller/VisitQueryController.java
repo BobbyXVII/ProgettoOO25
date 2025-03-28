@@ -1,15 +1,16 @@
 package Controller;
 
         import DAO.*;
-        import Model.Persona;
-        import Model.Squadra;
+        import Model.*;
         import javafx.application.Platform;
+        import javafx.beans.property.SimpleStringProperty;
         import javafx.collections.FXCollections;
         import javafx.collections.ObservableList;
         import javafx.fxml.FXML;
         import javafx.fxml.FXMLLoader;
         import javafx.scene.Scene;
         import javafx.scene.control.*;
+        import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.ImageView;
         import javafx.scene.layout.AnchorPane;
         import javafx.scene.layout.Pane;
@@ -20,6 +21,7 @@ package Controller;
         import java.sql.Date;
         import java.sql.SQLException;
         import java.time.LocalDate;
+        import java.util.ArrayList;
         import java.util.List;
         import java.text.DecimalFormat;
         import java.text.DecimalFormatSymbols;
@@ -29,85 +31,232 @@ public class VisitQueryController {
 
     private final String QueryRichiesta = SearchInController.selectedItem;
 
+    private final String CurrentUser = ControllerLogin.nomeUtenteConnesso;
+
+    private int CurrentUserID;
+
+    private String ResultSelection;
+
+    private final String CurrentUserPEX = ControllerLogin.roleUserConnected;
+
     @FXML private AnchorPane VisitCalciatori;
     @FXML private Pane Pannello, Pannello1, Valore, Panel, Bar, Pannello3;
-    @FXML private Label NomeBar, CognomeBar, ValoreDiMercL, ValoreDiMercL1;
+    @FXML private Label NomeBar, CognomeBar, ValoreDiMercL, ValoreDiMercL1, TextSkill, TextTrophy;
     @FXML private Label NomeL, cognomeL, DateNascitaL, NazionalitaL, PiedeL, CurrTeamL, AltezzaL;
     @FXML private TextField Edit_name, Edit_cognome, Edit_Nazio, Edit_piede, Edit_altezza;
-    @FXML private DatePicker Edit_Date;
+    @FXML private DatePicker Edit_Date, DateWinTrophy;
     @FXML private ImageView logoVisitaPlayer, iconImage;
-    @FXML private ChoiceBox nationalityChoiceBox, PiedeChoiceBox;
-    @FXML private Button btnTornaRicerca, btnTornaHome, btnAnnulla, BackToSearch, BackToLogged, btnConferma;
+    @FXML private ChoiceBox nationalityChoiceBox, PiedeChoiceBox, ListSkills, ListTrophy;
+    @FXML private Button btnTornaRicerca, btnTornaHome, btnAnnulla, BackToSearch, BackToLogged, btnConferma, btn_inserisciTrophy, btn_RemoveTrophy, btnModifica;
 
-    private int resultID;
+    @FXML
+    private TableView<Vince> trophyTable;
+
+    @FXML
+    private TableColumn<Vince, String> trophyName;
+
+    @FXML
+    private TableColumn<Vince, String> trophyWinDate;
+
+    private VinceDAO vinceDAO = new VinceDAO();
+
+    @FXML
+    private TableView<Possiede> skillsTable;
+
+    @FXML
+    private TableColumn<Possiede, String> nomeSkillColumn;
+
+    private int CurrentPlayer;
 
     private final SquadraDAO squadraDAO = new SquadraDAO();
     private final CarrieraDAO carrieraDAO = new CarrieraDAO();
     private final PersonaDAO personaDAO = new PersonaDAO();
     private final UtenteDAO utenteDAO = new UtenteDAO();
+
+    private final SkillsDAO skillsDAO = new SkillsDAO();
+
+    private final TrofeoIndividualeDAO trofIndDAO = new TrofeoIndividualeDAO();
     private final CompetizioneDAO competizioneDAO = new CompetizioneDAO();
+
+    @FXML private Button btn_RemoveSkill, btn_inserisciSkill;
+    private final PossiedeDAO possiedeDAO = new PossiedeDAO();
+
     @FXML
     public void initialize() throws SQLException {
+
         NomeBar.setText(QueryRichiesta);
 
         Squadra squadra = squadraDAO.getSquadraByNome(QueryRichiesta);
-        if (squadra != null) {
-            //
-        } else {
-            List<Integer> idResults = personaDAO.getIdsByNome(QueryRichiesta);  // Restituisce una lista di ID
+        if (squadra == null) {
+            List<Integer> idResults = personaDAO.getIdsByNome(QueryRichiesta);
             if (!idResults.isEmpty()) {
-                VisitCalciatori.setOpacity(1);
-                resultID = personaDAO.getIdByNomeQ(QueryRichiesta);
-                Persona persona = personaDAO.getPersonaById(resultID);
+                // Recupera l'ID del calciatore corrente dal nome utente, se il ruolo è "CALCIATORE"
+                CurrentUserID = utenteDAO.getIdByUsernameIfCalciatore(CurrentUser);
+                CurrentPlayer = personaDAO.getIdByNomeQ(QueryRichiesta);
+                Persona persona = personaDAO.getPersonaById(CurrentPlayer);
+
                 NomeL.setText(persona.getNome());
                 cognomeL.setText(persona.getCognome());
                 DateNascitaL.setText(String.valueOf(persona.getData_Nascita()));
                 NazionalitaL.setText(persona.getNazionalita());
                 PiedeL.setText(persona.getPiede());
                 AltezzaL.setText(String.valueOf(persona.getAltezza()));
-                CurrTeamL.setText(carrieraDAO.getNomeSquadraByCalciatoreId(resultID));
-                BigDecimal valore = carrieraDAO.getValoreDiMercatoByCalciatoreId(resultID);
-                if (valore != null) {
-                    DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ITALY);
-                    symbols.setGroupingSeparator('.'); // Imposta il punto come separatore delle migliaia
-                    DecimalFormat df = new DecimalFormat("#,###", symbols);
+                CurrTeamL.setText(carrieraDAO.getNomeSquadraByCalciatoreId(CurrentPlayer));
+                ValoreDiMercL.setText(String.valueOf(carrieraDAO.getValoreDiMercatoByCalciatoreId(CurrentPlayer)));
 
-                    ValoreDiMercL.setText(df.format(valore));
-                } else {
-                    ValoreDiMercL.setText("N/A");
+                String Pex = utenteDAO.ControllaPex(CurrentUser);
+                System.out.println(CurrentUser);
+                System.out.println(CurrentUserID);
+                System.out.println(CurrentPlayer);
+                if ("ADMIN".equals(Pex) || (CurrentUserID == CurrentPlayer)) {
+                    TextSkill.setOpacity(1);
+                    TextTrophy.setOpacity(1);
+                    ListTrophy.setOpacity(1);
+                    DateWinTrophy.setOpacity(1);
+                    ListSkills.setOpacity(1);
+                    ListTrophy.setOpacity(1);
+                    btn_RemoveTrophy.setOpacity(1);
+                    btn_inserisciTrophy.setOpacity(1);
+                    btnModifica.setOpacity(1);
                 }
+                // Imposta le colonne per i trofei
+                trophyName.setCellValueFactory(cellData -> {
+                    try {
+                        return new SimpleStringProperty(String.valueOf(trofIndDAO.getNomeAssegnazioneById(cellData.getValue().getIdTrofeoIN())));
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                trophyWinDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDataVincita().toString()));
+
+                // Carica i trofei vinti
+                List<Vince> vinceList = vinceDAO.getTrofeiVintiByPlayer(CurrentPlayer);
+                ObservableList<Vince> observableList = FXCollections.observableArrayList(vinceList);
+                trophyTable.setItems(observableList);
+
+                // Carica le skills
+                nomeSkillColumn.setCellValueFactory(new PropertyValueFactory<>("nomeSkill"));
+                List<Possiede> skills = possiedeDAO.getSkillsByCalciatoreIdT(CurrentPlayer);
+                ObservableList<Possiede> observableSkills = FXCollections.observableArrayList(skills);
+                skillsTable.setItems(observableSkills);
+
+                // Lista delle skills possedute
+                List<String> skillsPossedute = possiedeDAO.getSkillsByCalciatoreId(CurrentPlayer);
+                ObservableList<String> skillsList = FXCollections.observableArrayList(skillsDAO.getAllSkills());
+                ListSkills.setItems(skillsList);
+
+                // Gestione della selezione della skill
+                ListSkills.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        btn_RemoveSkill.setOpacity(1);
+                        btn_inserisciSkill.setOpacity(1);
+                    } else {
+                        btn_RemoveSkill.setOpacity(0);
+                        btn_inserisciSkill.setOpacity(0);
+                    }
+                });
 
 
 
-            } else {
-                int ResultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryRichiesta);
-                if (ResultSearchComp == 1) {
-                    //
-                } else {
-                    showAlert("La query non ha riportato alcun risultato.");
+                // Carica i trofei disponibili
+                ObservableList<String> TotalTrophy = FXCollections.observableArrayList(trofIndDAO.getAllTrophyNames());
+                ListTrophy.setItems(TotalTrophy);
+
+
+                // Gestione della selezione del trofeo
+                ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    ResultSelection = String.valueOf(newValue);
+                });
+                if (ResultSelection != null) {
+                    }
                 }
             }
         }
 
-        ObservableList<String> nazionalita = FXCollections.observableArrayList(
-                "Italia", "Germania", "Francia", "Spagna", "Inghilterra", "Portogallo", "Brasile", "Argentina", "Stati Uniti",
-                "Belgio", "Olanda", "Polonia", "Grecia", "Svezia", "Russia", "Giappone", "Messico", "Uruguay", "Colombia",
-                "Cile", "Croazia", "Danimarca", "Serbia", "Svizzera", "Australia", "Ecuador", "Tunisia", "Algeria", "Canada",
-                "Corea del Sud", "Perù", "Egitto", "Nigeria", "Camerun", "Sud Africa", "Turchia", "Israele", "Romania",
-                "Bulgaria", "Finlandia", "Norvegia", "Austria", "Slovacchia", "Slovenia", "Ceco", "Costa Rica", "Giamaica",
-                "Honduras", "Panama", "Kenia", "Zambia", "Mozambico", "Ghana", "Marocco", "Galles", "Scozia", "Paraguay",
-                "Bolivia", "Venezuela", "Perù", "Ecuador", "Libia", "Seychelles", "Malta", "Figi", "Samoa", "Tonga",
-                "Isole Faroe", "Isole Cook", "Saint Kitts e Nevis", "Saint Lucia", "Barbados", "Trinidad e Tobago",
-                "Grenada", "Antigua e Barbuda", "Saint Vincent e Grenadine", "Bahamas", "Bermuda", "Isole Vergini",
-                "Armenia", "Georgia", "Azerbaigian", "Kazakhstan", "Uzbekistan", "Turkmenistan", "Kyrgyzstan", "Tajikistan",
-                "Mongolia", "Nepal", "Bhutan", "Maldivas", "Sri Lanka", "Myanmar", "Cambogia", "Laos", "Filippine",
-                "Indonesia", "Singapore", "Malaysia", "Brunei"
-        );
-        nationalityChoiceBox.setItems(nazionalita);
 
-        ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
-        PiedeChoiceBox.setItems(tipologiePiedi);
+
+    @FXML
+    private void confirmRemoveTrophy() throws SQLException {
+        String selectedTrophy = (String) ListTrophy.getSelectionModel().getSelectedItem();
+        System.out.println(selectedTrophy);
+        String idToRemove = trofIndDAO.getIdTrofeoByNomeAssegnazione(selectedTrophy);
+        System.out.println(idToRemove);
+        if (selectedTrophy != null) {
+            try {
+                vinceDAO.deleteWin(CurrentPlayer,idToRemove);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            backToVisit();
+            showSuccessRemoveT();
+        } else {
+            showAlert("Nessun Trofeo Selezionato");
+        }
     }
+
+    @FXML
+    private void ConfirmInsertTrophy() throws SQLException {
+        String selectedTrophy = (String) ListTrophy.getSelectionModel().getSelectedItem();
+        if (DateWinTrophy.getValue() != null) {
+            LocalDate localDate = DateWinTrophy.getValue();
+            Date dataWin = Date.valueOf(localDate);
+            if (selectedTrophy != null) {
+                int ControlloTrofeo = vinceDAO.checkTrophyInd4ID(CurrentPlayer, dataWin, selectedTrophy);
+                if (ControlloTrofeo == 1) {
+                        showAlert("Trofeo già assegnato");
+                    } else {
+                        TrofeoIndividuale trofInd = new TrofeoIndividuale(" ", selectedTrophy, dataWin);
+                        trofIndDAO.addTrofeoIndividuale(trofInd);
+                        String LastTrophyAdded = trofIndDAO.getLastTrofeoIndividualeId();
+                        Vince vince = new Vince(LastTrophyAdded, null, CurrentPlayer, dataWin);
+                        try {
+                            vinceDAO.addVince(vince);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        showSuccessAlert();
+                        backToVisit();
+                }
+            }else{
+                showAlert("Nessun Trofeo Selezionato");
+            }
+        } else {
+                showAlert("Nessuna Data Selezionata");
+        }
+    }
+    @FXML
+    private void ConfirmInsert() throws SQLException {
+        String selectedSkill = (String) ListSkills.getSelectionModel().getSelectedItem();
+        if (selectedSkill != null) {
+            Possiede possiede = new Possiede(CurrentPlayer, selectedSkill);
+            try {
+                possiedeDAO.insertNewSKills(possiede);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            backToVisit();
+            showSuccessAlert();
+        } else {
+            showAlert("Nessuna Skill Selezionata");
+        }
+    }
+
+    @FXML
+    private void confirmRemove(){
+        String selectedSkill = (String) ListSkills.getSelectionModel().getSelectedItem();
+        if (selectedSkill != null) {
+            try {
+                possiedeDAO.deleteSkill(CurrentPlayer,selectedSkill);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            backToVisit();
+            showSuccessRemoveS();
+        } else {
+            showAlert("Nessuna Skill Selezionata");
+        }
+    }
+
 
     @FXML
     public void ActiveEdit(){
@@ -160,7 +309,7 @@ public class VisitQueryController {
     @FXML
     public void ConfirmEdit() throws SQLException {
         // Recupera la persona attuale dal database
-        Persona personaEsistente = personaDAO.getPersonaById(resultID);
+        Persona personaEsistente = personaDAO.getPersonaById(CurrentPlayer);
 
         // Se la persona esiste, aggiorna solo i campi modificati
         String nome = Edit_name.getText().isEmpty() ? personaEsistente.getNome() : Edit_name.getText().trim();
@@ -173,7 +322,7 @@ public class VisitQueryController {
 
 
         // Crea il nuovo oggetto aggiornato
-        Persona personaAggiornata = new Persona(resultID, nome, cognome, data, nazionalita, altezza, piede);
+        Persona personaAggiornata = new Persona(CurrentPlayer, nome, cognome, data, nazionalita, altezza, piede);
 
         // Esegui l'update
         personaDAO.updatePersona(personaAggiornata);
@@ -204,6 +353,44 @@ public class VisitQueryController {
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Dati aggiornati con successo!");
+
+        // Mostra l'alert
+        alert.show();
+
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            alert.close();
+        });
+    }
+
+    private void showSuccessRemoveS() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successo");
+        alert.setHeaderText(null);
+        alert.setContentText("Skill Rimossa con successo!");
+
+        // Mostra l'alert
+        alert.show();
+
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            alert.close();
+        });
+    }
+
+    private void showSuccessRemoveT() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successo");
+        alert.setHeaderText(null);
+        alert.setContentText("Trofeo rimosso con successo!");
 
         // Mostra l'alert
         alert.show();

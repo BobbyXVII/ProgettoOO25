@@ -34,7 +34,7 @@
                   </Label>
                </children></Pane>
          </children></Pane>
-      <Pane fx:id="Panel" layoutX="36.0" layoutY="333.0" prefHeight="340.0" prefWidth="518.0">
+      <Pane layoutX="36.0" layoutY="366.0" prefHeight="340.0" prefWidth="518.0" styleClass="Panel">
          <children>
             <Label layoutX="17.0" layoutY="14.0" text="Nome:">
                <font>
@@ -112,12 +112,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Button layoutX="16.0" layoutY="294.0" mnemonicParsing="false" onAction="#ActiveEdit" styleClass="button" text="Modifica dati" />
+            <Button fx:id="btnModifica" layoutX="16.0" layoutY="294.0" mnemonicParsing="false" onAction="#ActiveEdit" opacity="0" styleClass="button" text="Modifica dati" />
             <Button fx:id="btnAnnulla" layoutX="112.0" layoutY="294.0" mnemonicParsing="false" onAction="#backToVisit" opacity="0" styleClass="buttonRemove" text="annulla modifica" />
             <Button fx:id="btnConferma" layoutX="336.0" layoutY="294.0" mnemonicParsing="false" onAction="#ConfirmEdit" opacity="0" styleClass="buttonAdd" text="Conferma modifica" />
 
          </children></Pane>
-      <Pane fx:id="Bar" layoutX="36.0" layoutY="310.0" prefHeight="23.0" prefWidth="518.0">
+      <Pane layoutX="36.0" layoutY="343.0" prefHeight="23.0" prefWidth="518.0" styleClass="Bar">
          <children>
             <Label layoutX="10.0" layoutY="1.0" text="INFORMAZIONI" textFill="WHITE">
                <font>
@@ -135,5 +135,50 @@
                </image>
             </ImageView>
          </children></Pane>
+      <Pane fx:id="Panel1" layoutX="562.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
+         <children>
+            <TableView fx:id="skillsTable" editable="true" layoutX="8.0" prefHeight="214.0" prefWidth="270.0">
+               <columns>
+                  <TableColumn fx:id="nomeSkillColumn" prefWidth="270.0" text="Skill Possedute" />
+               </columns>
+            </TableView>
+            <ChoiceBox fx:id="ListSkills" layoutX="68.0" layoutY="255.0" opacity="0.0" prefWidth="150.0" />
+            <Label fx:id="TextSkill" layoutX="14.0" layoutY="232.0" opacity="0.0" text="Seleziona Skill su cui operare:" />
+            <Button fx:id="btn_RemoveSkill" layoutX="39.0" layoutY="287.0" mnemonicParsing="false" onAction="#confirmRemove" opacity="0.0" styleClass="buttonRemove" text="Rimuovi" />
+            <Button fx:id="btn_inserisciSkill" layoutX="189.0" layoutY="287.0" mnemonicParsing="false" onAction="#ConfirmInsert" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
+         </children></Pane>
+      <Pane fx:id="Bar1" layoutX="562.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
+         <children>
+            <Label layoutX="10.0" layoutY="1.0" text="SKILLS" textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="857.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
+         <children>
+            <Label layoutX="10.0" layoutY="1.0" text="TROFEI INDIVIDUALI VINTI" textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="PanelTrofy" layoutX="857.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
+         <children>
+            <TableView fx:id="trophyTable" editable="true" layoutX="8.0" prefHeight="194.0" prefWidth="270.0">
+               <columns>
+                  <TableColumn fx:id="trophyName" prefWidth="128.0" text="Nome Trofeo" />
+                  <TableColumn fx:id="trophyWinDate" prefWidth="142.0" text="Data vincita" />
+               </columns>
+            </TableView>
+            <ChoiceBox fx:id="ListTrophy" layoutX="69.0" layoutY="226.0" opacity="0.0" prefWidth="150.0" />
+            <Label fx:id="TextTrophy" layoutX="14.0" layoutY="203.0" opacity="0.0" text="Seleziona trofeo su cui operare:" />
+            <Button fx:id="btn_RemoveTrophy" layoutX="39.0" layoutY="302.0" mnemonicParsing="false" onAction="#confirmRemoveTrophy" opacity="0.0" styleClass="buttonRemove" text="Rimuovi" />
+            <Button fx:id="btn_inserisciTrophy" layoutX="189.0" layoutY="302.0" mnemonicParsing="false" onAction="#ConfirmInsertTrophy" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
+            <DatePicker fx:id="DateWinTrophy" layoutX="69.0" layoutY="257.0" opacity="0.0" prefHeight="25.0" prefWidth="150.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

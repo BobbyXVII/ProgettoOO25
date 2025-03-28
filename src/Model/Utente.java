@@ -10,6 +10,7 @@ public class Utente {
         this.username = username;
         this.password = password;
         this.ruolo = ruolo;
+
         this.idCalciatore = idCalciatore;
     }
 

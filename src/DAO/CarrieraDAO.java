@@ -104,15 +104,14 @@ public class CarrieraDAO {
                     return rs.getBigDecimal("valoredimercato");
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            throw e;
-        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        return null; // Oppure return BigDecimal.ZERO se vuoi evitare NullPointerException
+        return null; // Ritorna "0" invece di null per evitare problemi
     }
+
 
 
 

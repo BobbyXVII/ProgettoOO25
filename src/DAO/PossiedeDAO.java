@@ -39,6 +39,56 @@ public class PossiedeDAO {
         return false;
     }
 
+    public List<String> getSkillsByCalciatoreId(int id) throws SQLException {
+        List<String> skills = new ArrayList<>();
+        String sql = "SELECT nomeSkill FROM Possiede WHERE ID = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                skills.add(rs.getString("nomeSkill"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return skills;
+    }
+
+    public List<Possiede> getSkillsByCalciatoreIdT(int calciatoreId) throws SQLException {
+        List<Possiede> skills = new ArrayList<>();
+        String sql = "SELECT nomeSkill FROM Possiede WHERE ID = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, calciatoreId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    skills.add(new Possiede(calciatoreId, rs.getString("nomeSkill")));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return skills;
+    }
+
+
+    public void deleteSkill(int id, String nomeSkill) throws SQLException {
+        String sql = "DELETE FROM Possiede WHERE ID = ? AND nomeSkill = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql))  {
+            stmt.setInt(1, id);
+            stmt.setString(2, nomeSkill);
+            stmt.executeUpdate();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
     /*
@@ -73,14 +123,6 @@ public class PossiedeDAO {
         return possiedeList;
     }
 
-    public void delete(int id, String nomeSkill) throws SQLException {
-        String query = "DELETE FROM Possiede WHERE ID = ? AND nomeSkill = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-            stmt.setString(2, nomeSkill);
-            stmt.executeUpdate();
-        }
-    }
 }
 
      */

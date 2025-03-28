@@ -33,6 +33,8 @@ public class ControllerLogin {
     // Variabile globale per salvare il nome utente dell'utente connesso
     public static String nomeUtenteConnesso;
 
+    public static String roleUserConnected;
+
     @FXML
     public void initialize() {
         // Gestore per il pulsante di login
@@ -52,6 +54,9 @@ public class ControllerLogin {
                 e.printStackTrace();
             }
         });
+
+        roleUserConnected = utenteDAO.ControllaPex(nomeUtenteConnesso);
+
     }
 
     private void handleLogin(ActionEvent event) throws IOException {
@@ -97,4 +102,6 @@ public class ControllerLogin {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 }

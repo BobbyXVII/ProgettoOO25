@@ -71,6 +71,65 @@ public class TrofeoIndividualeDAO {
         return null; // Se non ci sono trofei
     }
 
+    public String getNomeAssegnazioneById(String idTrofeoIN) throws SQLException {
+        String sql = "SELECT nomeAssegnazione FROM Trofeo_Individuale WHERE ID_Trofeo_IN = ?";
+        String nomeAssegnazione = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idTrofeoIN);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nomeAssegnazione = rs.getString("nomeAssegnazione");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return nomeAssegnazione;
+    }
+
+    public String getIdTrofeoByNomeAssegnazione(String nomeAssegnazioneIN) throws SQLException {
+        String sql = "SELECT ID_Trofeo_IN FROM Trofeo_Individuale WHERE nomeAssegnazione = ?";
+        String idTrofeoIN = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nomeAssegnazioneIN);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    idTrofeoIN = rs.getString("ID_Trofeo_IN");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return idTrofeoIN;
+    }
+
+
+    public List<String> getAllTrophyNames() throws SQLException {
+        String sql = "SELECT DISTINCT nomeAssegnazione FROM Trofeo_Individuale";
+        List<String> trophyNames = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String nomeAssegnazione = rs.getString("nomeAssegnazione");
+                trophyNames.add(nomeAssegnazione);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return trophyNames;
+    }
+
+
+
 }
 
 
