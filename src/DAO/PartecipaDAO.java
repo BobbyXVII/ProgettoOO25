@@ -51,6 +51,24 @@ public class PartecipaDAO {
         }
     }
 
+    public void insertPartecipa1(Partecipa partecipazione) throws SQLException {
+        String sql = "INSERT INTO Partecipa (nomeCompetizione, annoSvolgimento, nomeSquadra, posizionefinale) VALUES (?, ?, ?, null)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Imposta i parametri della query con i valori del modello Partecipa
+            ps.setString(1, partecipazione.getNomeCompetizione());
+            ps.setString(2, partecipazione.getAnnoSvolgimento());
+            ps.setString(3, partecipazione.getNomeSquadra());
+            // Esegui la query
+            ps.executeUpdate();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("Errore durante l'inserimento della partecipazione", e);
+        }
+    }
+
 /*
     public List<Partecipa> getAllPartecipazioni() throws SQLException {
         String sql = "SELECT * FROM Partecipa";

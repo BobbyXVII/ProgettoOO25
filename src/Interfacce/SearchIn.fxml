@@ -17,10 +17,6 @@
          <Font name="Calibri Bold" size="48.0" />
       </font>
    </Label>
-   <Button fx:id="Rm_btn" layoutX="1152.0" layoutY="248.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="113.0" styleClass="buttonRemove" text="RIMUOVI">
-      <font>
-         <Font name="Calibri Bold" size="16.0" />
-      </font></Button>
    <Button fx:id="BackLogged" layoutX="5.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleHomepage" styleClass="Tbutton">
       <graphic>
          <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
@@ -30,7 +26,7 @@
          </ImageView>
       </graphic>
    </Button>
-   <Button fx:id="Visit_btn" layoutX="1152.0" layoutY="195.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="113.0" onAction="#GoVisit" styleClass="buttonVisit" text="VISUALIZZA">
+   <Button fx:id="Visit_btn" layoutX="1152.0" layoutY="195.0" mnemonicParsing="false" onAction="#GoVisit" prefHeight="45.0" prefWidth="113.0" styleClass="buttonVisit" text="VISUALIZZA">
       <font>
          <Font name="Calibri Bold" size="16.0" />
       </font>

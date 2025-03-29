@@ -144,7 +144,19 @@ public class PersonaDAO {
         }
     }
 
-
+    public void deletePersona(int ID) throws SQLException {
+        String sql = "DELETE FROM Persona WHERE ID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, ID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public int getLastInsertedId() throws SQLException {
@@ -207,14 +219,6 @@ public class PersonaDAO {
             ps.setFloat(5, persona.getAltezza());
             ps.setString(6, persona.getPiede());
             ps.setInt(7, persona.getID());
-            ps.executeUpdate();
-        }
-    }
-
-    public void deletePersona(int ID) throws SQLException {
-        String sql = "DELETE FROM Persona WHERE ID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, ID);
             ps.executeUpdate();
         }
     }

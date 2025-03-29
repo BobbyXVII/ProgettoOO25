@@ -18,9 +18,9 @@ public class Partecipa {
     }
 
     public Partecipa(String competizione, String anno, String currentTeam) {
-        this.nomeCompetizione = nomeCompetizione;
-        this.annoSvolgimento = annoSvolgimento;
-        this.nomeSquadra = nomeSquadra;
+        this.nomeCompetizione = competizione;
+        this.annoSvolgimento = anno;
+        this.nomeSquadra = currentTeam;
     }
 
     // Getter e Setter

@@ -143,11 +143,21 @@ public class VisitQueryController {
                 // Gestione della selezione della skill
                 ListSkills.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        btn_RemoveSkill.setOpacity(1);
-                        btn_inserisciSkill.setOpacity(1);
-                    } else {
-                        btn_RemoveSkill.setOpacity(0);
-                        btn_inserisciSkill.setOpacity(0);
+                        List<String> Result = null;
+                        try {
+                            Result = possiedeDAO.getSkillsByCalciatoreId(CurrentPlayer);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        for (String s : Result) {
+                            if (s.equals(newValue)) {
+                                btn_inserisciSkill.setOpacity(0);
+                                btn_RemoveSkill.setOpacity(1);
+                            }else{
+                                btn_inserisciSkill.setOpacity(1);
+                                btn_RemoveSkill.setOpacity(0);
+                            }
+                        }
                     }
                 });
 
@@ -162,6 +172,7 @@ public class VisitQueryController {
                 ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     ResultSelection = String.valueOf(newValue);
                 });
+
 
         ObservableList<String> nazionalita = FXCollections.observableArrayList(
                 "Italia", "Germania", "Francia", "Spagna", "Inghilterra", "Portogallo", "Brasile", "Argentina", "Stati Uniti",

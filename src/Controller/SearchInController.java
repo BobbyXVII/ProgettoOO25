@@ -5,6 +5,7 @@ import Model.Carriera;
 import Model.Persona;
 import Model.Squadra;
 import Model.Utente;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,13 +27,12 @@ public class SearchInController {
     private ListView<String> myListView;
 
     @FXML
-    private Label myLabel;
-
-    @FXML
     private Button Rm_btn;
 
     @FXML
     private Button BackLogged;
+
+    private int isComp = 0;
 
     private final SquadraDAO squadraDAO = new SquadraDAO();
     private final CarrieraDAO carrieraDAO = new CarrieraDAO();
@@ -51,19 +51,13 @@ public class SearchInController {
 
     public static int Flag;
 
-    public String CalciatoreRichiesto;
-
 
     public void initialize() throws SQLException {
-        String Pex = utenteDAO.ControllaPex(UtenteConnesso);
-        ShowButtons(0);
-        if ("ADMIN".equals(Pex)) {
-            ShowButtons(1);
-        }
 
         ObservableList<String> Totalquery = FXCollections.observableArrayList();
         Squadra squadra = squadraDAO.getSquadraByNome(QueryDone);
 
+        int resultSearchComp = 0;
         if (squadra != null) {
             Flag = 1;
             Totalquery.add(squadra.getNomeSquadra());
@@ -88,8 +82,8 @@ public class SearchInController {
                     }
                 }
         } else {
-                int ResultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryDone);
-                if (ResultSearchComp == 1){
+                resultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryDone);
+                if (resultSearchComp == 1){
                     Flag = 3;
                     List<String> competizioni = competizioneDAO.getCompetizioniAndDate(QueryDone);
                     for (String competizione : competizioni) {
@@ -99,6 +93,7 @@ public class SearchInController {
 
                 }else {
                     showAlert("Errore di ricerca", "La query non ha riportato alcun risultato.");
+                    handleHomepage();
                 }
             }
         }
@@ -109,13 +104,13 @@ public class SearchInController {
             if (newValue != null && !newValue.trim().isEmpty()) {
                 selectedItem = newValue;
             }
+            if (Flag == 3){
+                String[] parti = selectedItem.split(" - ");
+                String competizione = parti[0].trim();
+                String anno = parti[1].trim();
+                selectedItem = competizione;
+            }
         });
-        Rm_btn.setOnAction(event -> handleRemove());
-    }
-
-    private void ShowButtons(int i) {
-        Rm_btn.setOpacity(i);
-        Rm_btn.setDisable(i == 0);
     }
 
     public void handleHomepage() {
@@ -169,12 +164,45 @@ public class SearchInController {
     }
      */
 
-    private void handleRemove() {
+    /*
+    private void handleRemove() throws SQLException {
         if (selectedItem == null || selectedItem.trim().isEmpty() || selectedItem.equals(" ")) {
             showAlert("Errore", "Seleziona un elemento dalla lista.");
             return;
         }
-        System.out.println("Rimuovi: " + selectedItem);
+        if(Flag == 1){
+            squadraDAO.deleteSquadra(selectedItem);
+            showSuccessAlert();
+        } else if (Flag == 2) {
+            int idToRemove = personaDAO.getIdByNomeQ(selectedItem);
+            personaDAO.deletePersona(idToRemove);
+            showSuccessAlert();
+        }else{
+            String[] parti = selectedItem.split(" - ");
+            String competizione = parti[0].trim();
+            String anno = parti[1].trim();
+            competizioneDAO.deleteCompetizione(competizione,anno);
+            showSuccessAlert();
+        }
+    }
+*/
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successo");
+        alert.setHeaderText(null);
+        alert.setContentText("Elemento rimosso con successo!");
+
+        // Mostra l'alert
+        alert.show();
+
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            alert.close();
+        });
     }
 
     private void showAlert(String title, String message) {

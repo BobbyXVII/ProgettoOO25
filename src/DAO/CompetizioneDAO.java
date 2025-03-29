@@ -54,14 +54,6 @@ public class CompetizioneDAO {
         }
         return competizioniAndDates;
     }
-
-
-
-
-
-
-
-
     public List<String> getCompetizioniAndDate(String compAnalizzata) throws SQLException {
         String sql = "SELECT nomecompetizione, annoSvolgimento FROM competizione WHERE LOWER(nomecompetizione) LIKE LOWER(?)";
         List<String> competizioniAndDates = new ArrayList<>();
@@ -88,6 +80,20 @@ public class CompetizioneDAO {
         }
 
         return competizioniAndDates;  // Restituisce la lista di competizioni con le date
+    }
+
+    public void deleteCompetizione(String nomeCompetizione, String annoSvolgimento) throws SQLException {
+        String sql = "DELETE FROM Competizione WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nomeCompetizione);
+            ps.setString(2, annoSvolgimento);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
@@ -148,15 +154,6 @@ public class CompetizioneDAO {
             ps.setString(2, competizione.getNazionalita());
             ps.setString(3, competizione.getNomeCompetizione());
             ps.setString(4, competizione.getAnnoSvolgimento());
-            ps.executeUpdate();
-        }
-    }
-
-    public void deleteCompetizione(String nomeCompetizione, String annoSvolgimento) throws SQLException {
-        String sql = "DELETE FROM Competizione WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, nomeCompetizione);
-            ps.setString(2, annoSvolgimento);
             ps.executeUpdate();
         }
     }

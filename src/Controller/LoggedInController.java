@@ -111,7 +111,7 @@ public class LoggedInController {
     public void handleSearchSuggest() {
         StringaQuery = "Antonio Conte";
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/Elaborazione_Query.fxml"));
             Stage stage = (Stage) Q_Start.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
@@ -123,7 +123,7 @@ public class LoggedInController {
     public void handleSearchSuggest2() {
         StringaQuery = "Alex Meret";
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/Elaborazione_Query.fxml"));
             Stage stage = (Stage) Q_Start.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
@@ -135,7 +135,7 @@ public class LoggedInController {
     public void handleSearchSuggest3() {
         StringaQuery = "Champions League";
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/Elaborazione_Query.fxml"));
             Stage stage = (Stage) Q_Start.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);

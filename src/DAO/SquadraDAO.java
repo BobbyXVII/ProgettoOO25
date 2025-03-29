@@ -68,6 +68,18 @@ public class SquadraDAO {
         }
     }
 
+    public void deleteSquadra(String nomeSquadra) throws SQLException {
+        String sql = "DELETE FROM Squadra WHERE nomeSquadra = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nomeSquadra);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 /*
     public void addSquadra(Squadra squadra) throws SQLException {
@@ -82,13 +94,5 @@ public class SquadraDAO {
         }
     }
 
-
-    public void deleteSquadra(String nomeSquadra) throws SQLException {
-        String sql = "DELETE FROM Squadra WHERE nomeSquadra = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, nomeSquadra);
-            ps.executeUpdate();
-        }
-    }
 */
 }

@@ -17,18 +17,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Optional;
 import javafx.geometry.Insets;
-
-
-import java.awt.*;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class VisitTeamQueryController {
@@ -39,8 +32,7 @@ public class VisitTeamQueryController {
     @FXML private Label annoFondazioneL;
     @FXML private Label NazionalitaL;
 
-    @FXML private Button btnModifica, btnAnnulla, btnConferma, BackToSearch, BackToLogged,
-            btn_inserisciComp;
+    @FXML private Button btnModifica, btnAnnulla, btnConferma, BackToSearch, BackToLogged, btn_inserisciComp;
 
     @FXML private TableView<TrofeoDiSquadra> TrofeiVinti;
     @FXML private TableColumn<TrofeoDiSquadra, String> nomeTrofeo;
@@ -49,7 +41,6 @@ public class VisitTeamQueryController {
     @FXML private ChoiceBox nationalityChoiceBox,ListComp;
 
     @FXML private TextField Edit_nomeClub, Edit_stadio, Edit_annoFondazione;
-    @FXML private DatePicker DateComp;
     @FXML private Spinner<Integer> posFinale;
     @FXML private Label TextComp;
 
@@ -61,32 +52,28 @@ public class VisitTeamQueryController {
 
     private final String CurrentTeam = SearchInController.selectedItem;
 
-    private String CurrentUserPEX;
-
-    private int CapacityNewStadio;
-
     private String ResultComp;
 
     private String stadioNew;
 
     private int Flag = 0;
 
-    private SquadraDAO squadraDAO = new SquadraDAO();
+    private final SquadraDAO squadraDAO = new SquadraDAO();
 
-    private UtenteDAO utenteDAO = new UtenteDAO();
+    private final UtenteDAO utenteDAO = new UtenteDAO();
 
-    private StadioDAO stadioDAO = new StadioDAO();
+    private final StadioDAO stadioDAO = new StadioDAO();
 
-    private PartecipaDAO partecipaDAO = new PartecipaDAO();
+    private final PartecipaDAO partecipaDAO = new PartecipaDAO();
 
-    private CompetizioneDAO competizioneDAO = new CompetizioneDAO();
+    private final CompetizioneDAO competizioneDAO = new CompetizioneDAO();
 
     private final TrofeoDiSquadraDAO trofeoDiSquadraDAO = new TrofeoDiSquadraDAO();
 
     public void initialize() throws SQLException {
         posFinale = new Spinner<>(0, 100, 0);
-        CurrentUserPEX = utenteDAO.ControllaPex(ControllerLogin.nomeUtenteConnesso);
-        System.out.println(CurrentUserPEX);
+        String currentUserPEX = utenteDAO.ControllaPex(ControllerLogin.nomeUtenteConnesso);
+        System.out.println(currentUserPEX);
         Squadra squadra = squadraDAO.getSquadraByNome(CurrentTeam);
 
         NomeBar.setText(CurrentTeam);
@@ -105,8 +92,6 @@ public class VisitTeamQueryController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
 
         nomeTrofeo.setCellValueFactory(new PropertyValueFactory<>("nomeCompetizione"));
         dataVincita.setCellValueFactory(new PropertyValueFactory<>("annoSvolgimento"));
@@ -144,16 +129,14 @@ public class VisitTeamQueryController {
             ResultComp = String.valueOf(newValue);
         });
 
-        if ("ADMIN".equals(CurrentUserPEX)) {
+        if ("ADMIN".equals(currentUserPEX)) {
             btnModifica.setOpacity(1);
             ListComp.setOpacity(1);
             posFinale.setOpacity(1);
             btn_inserisciComp.setOpacity(1);
-            if(ResultComp != null){
-                btn_inserisciComp.setOpacity(1);
-            }
+            TextComp.setOpacity(1);
+            posFinale.setOpacity(1);
         }
-
     }
 
     @FXML
@@ -174,27 +157,35 @@ public class VisitTeamQueryController {
             Stage stage = (Stage) btnAnnulla.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
     @FXML
-    private void ConfirmInsertComp() throws SQLException, ClassNotFoundException {
-            // Dividi la stringa in due parti usando il " - "
+    private void ConfirmInsertComp() throws SQLException {
+    if(ResultComp != null){
+        posFinale.setEditable(true);
+        posFinale.setPromptText("0");
         String[] parti = ResultComp.split(" - ");
         String competizione = parti[0].trim();
         String anno = parti[1].trim();
-        if((posFinale.getValue().equals(null))){
+        if(posFinale.getValue() == null){
             showError("Errore di selezione","Nessun valore di posizione finale è stato selezionato. Selezionare 0 se non si vuole inserire posizione");
         }else{
-            if((Integer) posFinale.getValue() < 1){
+            if(posFinale.getValue() < 1){
                 Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam);
-                partecipaDAO.insertPartecipa(partecipa);
+                partecipaDAO.insertPartecipa1(partecipa);
             }else{
                 Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam,((Integer)posFinale.getValue()));
                 partecipaDAO.insertPartecipa(partecipa);
             }
+            showSuccessAlert();
+            backtoVisit();
         }
+        System.out.println(posFinale.getValue());
+    }else{
+        showError("Errore Inserimento Competizione","La selezione non è corretta");
+    }
     }
 
     private void UpdateMethod(String nomeClub,int annoFondazione,String nazionalita,String stadioNew) throws SQLException {
@@ -205,6 +196,15 @@ public class VisitTeamQueryController {
         backToVisit();
     }
 
+    private void backtoVisit(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/VisitTeamQuery.fxml"));
+            Stage stage = (Stage) BackToSearch.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+        }
+    }
 
     @FXML
     private void backToSearch() {
@@ -226,11 +226,6 @@ public class VisitTeamQueryController {
             stage.setScene(scene);
         } catch (IOException e) {
         }
-    }
-
-    @FXML
-    private void confirmRemove() {
-        // Implementa la logica per rimuovere una skill
     }
 
     @FXML
@@ -260,23 +255,6 @@ public class VisitTeamQueryController {
         }
     }
 
-    @FXML
-    private void confirmRemoveTrophy() {
-        // Implementa la logica per rimuovere un trofeo
-    }
-
-    @FXML
-    private void ConfirmInsertTrophy() {
-        // Implementa la logica per inserire un trofeo
-    }
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERRORE");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     private void loadTrofeiVinti() throws SQLException {
         List<TrofeoDiSquadra> trofei = trofeoDiSquadraDAO.getTrofeiBySquadra(CurrentTeam);
         ObservableList<TrofeoDiSquadra> data = FXCollections.observableArrayList(trofei);
@@ -294,25 +272,6 @@ public class VisitTeamQueryController {
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Dati aggiornati con successo!");
-
-        // Mostra l'alert
-        alert.show();
-
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            alert.close();
-        });
-    }
-
-    private void showSuccessRemoveS() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Successo");
-        alert.setHeaderText(null);
-        alert.setContentText("Skill Rimossa con successo!");
 
         // Mostra l'alert
         alert.show();
@@ -377,9 +336,9 @@ public class VisitTeamQueryController {
     }
 
     private void salvaDimensioneStadio(String nomeClub,int annoFondazione,String nazionalita, String dimensione) throws SQLException, ClassNotFoundException {
-        CapacityNewStadio = Integer.parseInt(dimensione);
+        int capacityNewStadio = Integer.parseInt(dimensione);
         System.out.println("Dimensione stadio salvata: " + dimensione);
-        Stadio stadio = new Stadio(String.valueOf(stadioNew),CapacityNewStadio);
+        Stadio stadio = new Stadio(String.valueOf(stadioNew), capacityNewStadio);
         stadioDAO.create(stadio);
         UpdateMethod(nomeClub, annoFondazione, nazionalita, stadioNew);
     }
@@ -390,26 +349,6 @@ public class VisitTeamQueryController {
         alert.setHeaderText(null);
         alert.setContentText(messaggio);
         alert.showAndWait();
-    }
-
-
-    private void showSuccessRemoveT() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Successo");
-        alert.setHeaderText(null);
-        alert.setContentText("Trofeo rimosso con successo!");
-
-        // Mostra l'alert
-        alert.show();
-
-        Platform.runLater(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            alert.close();
-        });
     }
 
 }
