@@ -85,11 +85,6 @@ public class VisitQueryController {
     public void initialize() throws SQLException {
 
         NomeBar.setText(QueryRichiesta);
-
-        Squadra squadra = squadraDAO.getSquadraByNome(QueryRichiesta);
-        if (squadra == null) {
-            List<Integer> idResults = personaDAO.getIdsByNome(QueryRichiesta);
-            if (!idResults.isEmpty()) {
                 // Recupera l'ID del calciatore corrente dal nome utente, se il ruolo è "CALCIATORE"
                 CurrentUserID = utenteDAO.getIdByUsernameIfCalciatore(CurrentUser);
                 CurrentPlayer = personaDAO.getIdByNomeQ(QueryRichiesta);
@@ -167,11 +162,27 @@ public class VisitQueryController {
                 ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     ResultSelection = String.valueOf(newValue);
                 });
-                if (ResultSelection != null) {
-                    }
-                }
-            }
-        }
+
+        ObservableList<String> nazionalita = FXCollections.observableArrayList(
+                "Italia", "Germania", "Francia", "Spagna", "Inghilterra", "Portogallo", "Brasile", "Argentina", "Stati Uniti",
+                "Belgio", "Olanda", "Polonia", "Grecia", "Svezia", "Russia", "Giappone", "Messico", "Uruguay", "Colombia",
+                "Cile", "Croazia", "Danimarca", "Serbia", "Svizzera", "Australia", "Ecuador", "Tunisia", "Algeria", "Canada",
+                "Corea del Sud", "Perù", "Egitto", "Nigeria", "Camerun", "Sud Africa", "Turchia", "Israele", "Romania",
+                "Bulgaria", "Finlandia", "Norvegia", "Austria", "Slovacchia", "Slovenia", "Ceco", "Costa Rica", "Giamaica",
+                "Honduras", "Panama", "Kenia", "Zambia", "Mozambico", "Ghana", "Marocco", "Galles", "Scozia", "Paraguay",
+                "Bolivia", "Venezuela", "Perù", "Ecuador", "Libia", "Seychelles", "Malta", "Figi", "Samoa", "Tonga",
+                "Isole Faroe", "Isole Cook", "Saint Kitts e Nevis", "Saint Lucia", "Barbados", "Trinidad e Tobago",
+                "Grenada", "Antigua e Barbuda", "Saint Vincent e Grenadine", "Bahamas", "Bermuda", "Isole Vergini",
+                "Armenia", "Georgia", "Azerbaigian", "Kazakhstan", "Uzbekistan", "Turkmenistan", "Kyrgyzstan", "Tajikistan",
+                "Mongolia", "Nepal", "Bhutan", "Maldivas", "Sri Lanka", "Myanmar", "Cambogia", "Laos", "Filippine",
+                "Indonesia", "Singapore", "Malaysia", "Brunei"
+        );
+        nationalityChoiceBox.setItems(nazionalita);
+
+        // Imposta le opzioni per la ChoiceBox del Piede
+        ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
+        PiedeChoiceBox.setItems(tipologiePiedi);
+    }
 
 
 

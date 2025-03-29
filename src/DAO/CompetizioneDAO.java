@@ -36,6 +36,30 @@ public class CompetizioneDAO {
     }
 
 
+    public List<String> getCompetizioniAndDate() throws SQLException {
+        String sql = "SELECT nomecompetizione, annoSvolgimento FROM competizione";
+        List<String> competizioniAndDates = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String competizione = rs.getString("nomecompetizione");
+                String annoSvolgimento = rs.getString("annoSvolgimento");
+                competizioniAndDates.add(competizione + " - " + annoSvolgimento);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return competizioniAndDates;
+    }
+
+
+
+
+
+
 
 
     public List<String> getCompetizioniAndDate(String compAnalizzata) throws SQLException {

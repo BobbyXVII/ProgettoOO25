@@ -15,6 +15,20 @@ public class StadioDAO {
         return DatabaseConnection.getConnection();
     }
 
+    public List<String> SelectAll() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT nomeStadio FROM STADIO";
+        List<String> stadioList = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                stadioList.add(rs.getString("nomeStadio"));
+            }
+        }
+        return stadioList;
+    }
+
+
     private Stadio mapResultSetToStadio(ResultSet rs) throws SQLException {
         Stadio stadio = new Stadio();
         stadio.setNomeStadio(rs.getString("nomeStadio"));
@@ -48,6 +62,8 @@ public class StadioDAO {
             return stadioList;
         }
     }
+
+
 
     public void create(Stadio stadio) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO STADIO (nomeStadio, capacita) VALUES (?, ?)";

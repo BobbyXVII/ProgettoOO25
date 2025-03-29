@@ -52,6 +52,21 @@ public class SquadraDAO {
         return clubList;
     }
 
+    public void updateSquadra(Squadra squadra) throws SQLException {
+        String sql = "UPDATE Squadra SET annoFondazione = ?, nazionalita = ?, nomeStadio = ? WHERE nomeSquadra = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, squadra.getAnnoFondazione());
+            ps.setString(2, squadra.getNazionalita());
+            ps.setString(3, squadra.getNomeStadio());
+            ps.setString(4, squadra.getNomeSquadra());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 /*
@@ -67,17 +82,6 @@ public class SquadraDAO {
         }
     }
 
-    public void updateSquadra(Squadra squadra) throws SQLException {
-        String sql = "UPDATE Squadra SET annoFondazione = ?, campAppartenenza = ?, nazionalita = ?, nomeStadio = ? WHERE nomeSquadra = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, squadra.getAnnoFondazione());
-            ps.setString(2, squadra.getCampAppartenenza());
-            ps.setString(3, squadra.getNazionalita());
-            ps.setString(4, squadra.getNomeStadio());
-            ps.setString(5, squadra.getNomeSquadra());
-            ps.executeUpdate();
-        }
-    }
 
     public void deleteSquadra(String nomeSquadra) throws SQLException {
         String sql = "DELETE FROM Squadra WHERE nomeSquadra = ?";

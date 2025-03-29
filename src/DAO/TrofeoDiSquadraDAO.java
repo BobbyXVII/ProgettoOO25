@@ -1,33 +1,37 @@
 package DAO;
 
 import java.sql.*;
+
+import Database.DatabaseConnection;
 import Model.TrofeoDiSquadra;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrofeoDiSquadraDAO {
-    private Connection connection;
 
-    public TrofeoDiSquadraDAO(Connection connection) {
-        this.connection = connection;
-    }
+    public List<TrofeoDiSquadra> getTrofeiBySquadra(String nomeSquadra) throws SQLException {
+        String sql = "SELECT nomeCompetizione, annoSvolgimento FROM trofeo_di_squadra WHERE nomeSquadra = ?";
+        List<TrofeoDiSquadra> trofei = new ArrayList<>();
 
-    public TrofeoDiSquadra getTrofeoDiSquadraById(String idTrofeoDS) throws SQLException {
-        String sql = "SELECT * FROM Trofeo_Di_Squadra WHERE ID_Trofeo_DS = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, idTrofeoDS);
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nomeSquadra);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+
+            while (rs.next()) {
                 TrofeoDiSquadra trofeo = new TrofeoDiSquadra();
-                trofeo.setIdTrofeoDS(rs.getString("ID_Trofeo_DS"));
                 trofeo.setNomeCompetizione(rs.getString("nomeCompetizione"));
                 trofeo.setAnnoSvolgimento(rs.getString("annoSvolgimento"));
-                trofeo.setNomeSquadra(rs.getString("nomeSquadra"));
-                return trofeo;
+                trofei.add(trofeo);
             }
-            return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return trofei;
     }
+
+
+    /*
 
     public List<TrofeoDiSquadra> getAllTrofeiDiSquadra() throws SQLException {
         String sql = "SELECT * FROM Trofeo_Di_Squadra";
@@ -75,4 +79,5 @@ public class TrofeoDiSquadraDAO {
             ps.executeUpdate();
         }
     }
+     */
 }

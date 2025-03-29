@@ -6,6 +6,23 @@ public class Partecipa {
     private String nomeSquadra;
     private int posizioneFinale;
 
+    public Partecipa(String nomeCompetizione, String annoSvolgimento, String nomeSquadra, int posizioneFinale) {
+        this.nomeCompetizione = nomeCompetizione;
+        this.annoSvolgimento = annoSvolgimento;
+        this.nomeSquadra = nomeSquadra;
+        this.posizioneFinale = posizioneFinale;
+    }
+
+    public Partecipa() {
+
+    }
+
+    public Partecipa(String competizione, String anno, String currentTeam) {
+        this.nomeCompetizione = nomeCompetizione;
+        this.annoSvolgimento = annoSvolgimento;
+        this.nomeSquadra = nomeSquadra;
+    }
+
     // Getter e Setter
     public String getNomeCompetizione() {
         return nomeCompetizione;

@@ -130,9 +130,25 @@ public class SearchInController {
     }
 
     @FXML
-    public void GoVisit(){
+    public void GoVisit() throws SQLException {
+        String Interface;
+        Squadra squadra = squadraDAO.getSquadraByNome(selectedItem);
+        if (squadra != null) {
+            Interface = "VisitTeam";
+        }else{
+            List<Integer> idResults = personaDAO.getIdsByNome(selectedItem);
+            if (!idResults.isEmpty()) {
+                Interface = "Visit";
+            }else{
+                Interface = "VisitCompetition";
+            }
+        }
+        CorrectView(Interface);
+    }
+
+    public void CorrectView(String Interface){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/VisitQuery.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/" + Interface + "Query.fxml"));
             Stage stage = (Stage) BackLogged.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
