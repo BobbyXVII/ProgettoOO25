@@ -81,18 +81,23 @@ public class SquadraDAO {
         }
     }
 
-/*
     public void addSquadra(Squadra squadra) throws SQLException {
-        String sql = "INSERT INTO Squadra (nomeSquadra, annoFondazione, campAppartenenza, nazionalita, nomeStadio) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO Squadra (nomeSquadra, annoFondazione, citta, nazionalita, nomeStadio) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql))  {
             ps.setString(1, squadra.getNomeSquadra());
             ps.setInt(2, squadra.getAnnoFondazione());
-            ps.setString(3, squadra.getCampAppartenenza());
+            ps.setString(3, squadra.getCitta());
             ps.setString(4, squadra.getNazionalita());
             ps.setString(5, squadra.getNomeStadio());
             ps.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
+
+/*
+
 
 */
 }

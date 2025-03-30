@@ -10,9 +10,6 @@ public class DatabaseConnection {
 
     private static final Logger LOGGER = Logger.getLogger(DatabaseConnection.class.getName());
 
-    // NIENTE PIÙ CREDENZIALI HARDCODED QUI!
-    // Le leggeremo dalle variabili d'ambiente
-
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         String dbUrl = System.getenv("DB_URL");        // Leggi la variabile d'ambiente DB_URL
         String dbUsername = System.getenv("DB_USERNAME"); // Leggi la variabile d'ambiente DB_USERNAME

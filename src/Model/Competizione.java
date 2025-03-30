@@ -6,6 +6,20 @@ public class Competizione {
     private String tipCompetizione;
     private String nazionalita;
 
+    public Competizione(String nomeCompetizione, String tipCompetizione) {
+        this.nomeCompetizione = nomeCompetizione;
+        this.tipCompetizione = tipCompetizione;
+    }
+
+    public Competizione(String nomeCompetizione, String annoSvolgimento, String tipCompetizione, String nazionalita) {
+        this.nomeCompetizione = nomeCompetizione;
+        this.annoSvolgimento = annoSvolgimento;
+        this.tipCompetizione = tipCompetizione;
+        this.nazionalita = nazionalita;
+    }
+
+
+
     // Getter e Setter
     public String getNomeCompetizione() {
         return nomeCompetizione;

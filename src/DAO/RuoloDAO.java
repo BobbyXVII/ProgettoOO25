@@ -63,6 +63,55 @@ public class RuoloDAO {
         return null;
     }
 
+    public List<String> getRuoliByID(int id) throws SQLException {
+        String sql = "SELECT nomeRuolo FROM ruolo JOIN gioca ON ruolo.abbrRuolo = gioca.abbrRuolo WHERE gioca.ID = ?";
+        List<String> ruoli = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);  // Imposta l'ID passato come parametro
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ruoli.add(rs.getString("nomeRuolo"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();  // Gestione dell'errore
+        }
+
+        return ruoli;
+    }
+
+    public List<String> getRolesNotAssignedToID(int playerID) throws SQLException {
+        String sql = "SELECT DISTINCT nomeRuolo FROM ruolo WHERE abbrRuolo NOT IN (SELECT abbrRuolo FROM gioca WHERE gioca.ID = ?)";
+        List<String> roles = new ArrayList<>();
+
+        // Connessione al database e preparazione della query
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Impostiamo il parametro per il playerID nella query
+            ps.setInt(1, playerID);
+
+            // Eseguiamo la query e otteniamo i risultati
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Aggiungiamo il ruolo alla lista
+                    roles.add(rs.getString("nomeRuolo"));
+                }
+            }
+        } catch (SQLException e) {
+            // Gestione dell'errore in caso di problemi con il database
+            throw new SQLException("Errore durante l'esecuzione della query: " + e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return roles;
+    }
+
+
+
 }
 
 /*

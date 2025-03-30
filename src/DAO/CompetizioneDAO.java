@@ -96,6 +96,123 @@ public class CompetizioneDAO {
         }
     }
 
+    public List<String> getTipologieCompetizioni() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT DISTINCT tipCompetizione FROM competizione";
+        List<String> tipologieCompetizioni = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                tipologieCompetizioni.add(rs.getString("tipCompetizione"));
+            }
+        }
+
+        return tipologieCompetizioni;
+    }
+
+    public List<String> getAnniSvolgimento(String nomeCompetizione) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT annoSvolgimento FROM competizione WHERE nomeCompetizione = ?";
+        List<String> anniSvolgimento = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeCompetizione);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    anniSvolgimento.add(rs.getString("annoSvolgimento"));
+                }
+            }
+        }
+        return anniSvolgimento;
+    }
+
+
+    public List<String> getInfoTeam(String nomeCompetizione) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT tipCompetizione, nazionalita FROM competizione WHERE nomeCompetizione = ?";
+        List<String> infoCompetizione = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeCompetizione);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    infoCompetizione.add(rs.getString("tipCompetizione"));
+                    infoCompetizione.add(rs.getString("nazionalita"));
+                }
+            }
+        }
+
+        return infoCompetizione;
+    }
+
+
+
+    public void addCompetizione(Competizione competizione) throws SQLException {
+        String sql = "INSERT INTO Competizione (nomeCompetizione, annoSvolgimento, tipCompetizione, nazionalita) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, competizione.getNomeCompetizione());
+            ps.setString(2, competizione.getAnnoSvolgimento());
+            ps.setString(3, competizione.getTipCompetizione());
+            ps.setString(4, competizione.getNazionalita());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public void updateCompetizioneTip_Naz(Competizione competizione) throws SQLException {
+        String sql = "UPDATE Competizione SET tipCompetizione = ?, nazionalita = ? WHERE nomeCompetizione = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, competizione.getTipCompetizione());
+            ps.setString(2, competizione.getNazionalita());
+            ps.setString(3, competizione.getNomeCompetizione());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateCompetizioneTip(Competizione competizione) throws SQLException {
+        String sql = "UPDATE Competizione SET tipCompetizione = ? WHERE nomeCompetizione = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, competizione.getTipCompetizione());
+            ps.setString(2, competizione.getNomeCompetizione());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateCompetizioneNaz(Competizione competizione) throws SQLException {
+        String sql = "UPDATE Competizione SET nazionalita = ? WHERE nomeCompetizione = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, competizione.getNazionalita());
+            ps.setString(2, competizione.getNomeCompetizione());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 
 
@@ -133,28 +250,6 @@ public class CompetizioneDAO {
                 competizioniList.add(competizione);
             }
             return competizioniList;
-        }
-    }
-
-    public void addCompetizione(Competizione competizione) throws SQLException {
-        String sql = "INSERT INTO Competizione (nomeCompetizione, annoSvolgimento, tipCompetizione, nazionalita) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, competizione.getNomeCompetizione());
-            ps.setString(2, competizione.getAnnoSvolgimento());
-            ps.setString(3, competizione.getTipCompetizione());
-            ps.setString(4, competizione.getNazionalita());
-            ps.executeUpdate();
-        }
-    }
-
-    public void updateCompetizione(Competizione competizione) throws SQLException {
-        String sql = "UPDATE Competizione SET tipCompetizione = ?, nazionalita = ? WHERE nomeCompetizione = ? AND annoSvolgimento = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, competizione.getTipCompetizione());
-            ps.setString(2, competizione.getNazionalita());
-            ps.setString(3, competizione.getNomeCompetizione());
-            ps.setString(4, competizione.getAnnoSvolgimento());
-            ps.executeUpdate();
         }
     }
 }

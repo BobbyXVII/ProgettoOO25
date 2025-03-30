@@ -21,19 +21,19 @@
                     </image>
                 </ImageView>
             </children></Pane>
-        <Pane layoutX="36.0" layoutY="366.0" prefHeight="340.0" prefWidth="518.0" styleClass="Panel">
+        <Pane layoutX="215.0" layoutY="366.0" prefHeight="340.0" prefWidth="518.0" styleClass="Panel">
             <children>
-                <Label layoutX="17.0" layoutY="14.0" text="Nome Club:">
+                <Label layoutX="17.0" layoutY="14.0" text="Nome Competizione:">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="17.0" layoutY="54.0" text="Stadio:">
+                <Label layoutX="17.0" layoutY="54.0" text="Altre edizioni svolte:">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="17.0" layoutY="94" text="Anno Fondazione:">
+                <Label layoutX="17.0" layoutY="94" text="Tipo di Competizione:">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
@@ -43,17 +43,12 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="nomeClubL" layoutX="180" layoutY="14.0" textFill="#2c5191">
+                <Label fx:id="nomeCompL" layoutX="180" layoutY="14.0" textFill="#2c5191">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="stadioL" layoutX="180" layoutY="54.0" textFill="#2c5191">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Label fx:id="annoFondazioneL" layoutX="180" layoutY="94" textFill="#2c5191">
+                <Label fx:id="tipCompL" layoutX="180" layoutY="94" textFill="#2c5191">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -63,68 +58,44 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="Edit_nomeClub" layoutX="320.0" layoutY="11.5" opacity="0" />
-                <TextField fx:id="Edit_stadio" layoutX="320.0" layoutY="51.5" opacity="0" />
                 <ChoiceBox fx:id="nationalityChoiceBox" layoutX="319.0" layoutY="132.0" opacity="0" prefWidth="150.0" />
-                <Button fx:id="btnModifica" layoutX="16.0" layoutY="294.0" mnemonicParsing="false" opacity="0" styleClass="button" text="Modifica dati" />
-                <Button fx:id="btnAnnulla" layoutX="112.0" layoutY="294.0" mnemonicParsing="false"  opacity="0" styleClass="buttonRemove" text="annulla modifica" />
-                <Button fx:id="btnConferma" layoutX="336.0" layoutY="294.0" mnemonicParsing="false" opacity="0" styleClass="buttonAdd" text="Conferma modifica" />
-                <TextField fx:id="Edit_annoFondazione" layoutX="320.0" layoutY="92.0" opacity="0" />
+                <Button fx:id="btnModifica" layoutX="16.0" layoutY="294.0" mnemonicParsing="false" onAction="#ActiveEdit" opacity="0" styleClass="button" text="Modifica dati" />
+                <Button fx:id="btnAnnulla" layoutX="112.0" layoutY="294.0" mnemonicParsing="false" onAction="#backToVisit" opacity="0" styleClass="buttonRemove" text="annulla modifica" />
+                <Button fx:id="btnConferma" layoutX="336.0" layoutY="294.0" mnemonicParsing="false" onAction="#ConfirmUpdate" opacity="0" styleClass="buttonAdd" text="Conferma modifica" />
+            <ChoiceBox fx:id="Edit_TipComp" layoutX="319.0" layoutY="92.0" opacity="0.0" prefWidth="150.0" />
+            <ChoiceBox fx:id="Ed_Comp" layoutX="164.0" layoutY="52.0" prefWidth="150.0" />
 
             </children></Pane>
         <Pane fx:id="Pannello3" layoutX="365.0" layoutY="-136.0" prefHeight="200.0" prefWidth="550.0">
             <children>
-                <Button fx:id="BackToSearch" layoutX="54.0" layoutY="152.0" mnemonicParsing="false" styleClass="button2" text="Torna alla ricerca" />
-                <Button fx:id="BackToLogged" layoutX="393.0" layoutY="152.0" mnemonicParsing="false" styleClass="button2" text="Torna alla Home" />
+                <Button fx:id="BackToSearch" layoutX="54.0" layoutY="152.0" mnemonicParsing="false" onAction="#BackToSearch" styleClass="button2" text="Torna alla ricerca" />
+                <Button fx:id="BackToLogged" layoutX="393.0" layoutY="152.0" mnemonicParsing="false" onAction="#BackToLogged" styleClass="button2" text="Torna alla Home" />
                 <ImageView fitHeight="46.0" fitWidth="52.0" layoutX="252.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../Immagini/Icon.png" />
                     </image>
                 </ImageView>
             </children></Pane>
-        <Pane fx:id="Panel1" layoutX="562.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
+        <Pane layoutX="761.0" layoutY="343.0" prefHeight="23.0" prefWidth="305.0" styleClass="Bar">
             <children>
-                <TableView fx:id="TrofeiVinti" editable="true" prefHeight="340.0" prefWidth="286.0">
-                    <columns>
-                        <TableColumn fx:id="nomeTrofeo" prefWidth="125.0" text="nome Trofeo" />
-                        <TableColumn fx:id="dataVincita" prefWidth="145.0" text="Data Vincita" />
-                    </columns>
-                </TableView>
-            </children></Pane>
-        <Pane fx:id="Bar1" layoutX="562.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
-            <children>
-                <Label layoutX="10.0" layoutY="1.0" text="TROFEI VINTI" textFill="WHITE">
+                <Label layoutX="6.0" layoutY="1.0" prefWidth="214.0" text="SQUADRE CHE HANNO VINTO" textFill="WHITE">
                     <font>
                         <Font name="Calibri Bold" size="17.0" />
                     </font>
                 </Label>
             </children>
         </Pane>
-        <Pane layoutX="865.0" layoutY="343.0" prefHeight="23.0" prefWidth="393.0" styleClass="Bar">
+        <Pane fx:id="PanelTrofy" layoutX="761.0" layoutY="366.0" prefHeight="340.0" prefWidth="305.0" styleClass="Panel">
             <children>
-                <Label layoutX="10.0" layoutY="1.0" text="COMPETIZIONI GIOCATE" textFill="WHITE">
-                    <font>
-                        <Font name="Calibri Bold" size="17.0" />
-                    </font>
-                </Label>
-            </children>
-        </Pane>
-        <Pane fx:id="PanelTrofy" layoutX="865.0" layoutY="366.0" prefHeight="340.0" prefWidth="393.0" styleClass="Panel">
-            <children>
-                <TableView fx:id="CompGiocate" editable="true" layoutX="4.0" prefHeight="194.0" prefWidth="386.0">
+                <TableView fx:id="SquadreVincitrici" editable="true" layoutX="9.0" layoutY="7.0" prefHeight="322.0" prefWidth="287.0">
                     <columns>
-                        <TableColumn fx:id="nomeComp" prefWidth="185.0" text="Nome Competizione" />
-                        <TableColumn fx:id="AnnoSvolgimento" prefWidth="135.0" text="Anno Svolgimento" />
-                        <TableColumn fx:id="PosizioneFinale" prefWidth="49.0" text="PF" />
+                        <TableColumn fx:id="nomeSquadra" prefWidth="133.0" text="Nome Squadra" />
+                        <TableColumn fx:id="AnnoSvolgimento" prefWidth="140.0" text="Anno Svolgimento" />
                     </columns>
                 </TableView>
-                <ChoiceBox fx:id="ListComp" layoutX="122.0" layoutY="220.0" opacity="0.0" prefWidth="150.0" />
-                <Label fx:id="TextComp" layoutX="14.0" layoutY="203.0" opacity="0.0" text="Seleziona competizione sulla quale operare:" />
-                <Button fx:id="btn_inserisciComp" layoutX="168.0" layoutY="295.0" mnemonicParsing="false" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
-                <Spinner fx:id="posFinale" editable="true" layoutX="123.0" layoutY="254.0" />
             </children>
         </Pane>
-        <Pane fx:id="Bar11" layoutX="36.0" layoutY="343.0" prefHeight="23.0" prefWidth="518.0" styleClass="Bar">
+        <Pane fx:id="Bar11" layoutX="215.0" layoutY="343.0" prefHeight="23.0" prefWidth="518.0" styleClass="Bar">
             <children>
                 <Label layoutX="10.0" layoutY="1.0" text="INFORMAZIONI" textFill="WHITE">
                     <font>

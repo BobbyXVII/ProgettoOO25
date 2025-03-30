@@ -86,6 +86,26 @@ public class LoggedInController {
                     e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
                     showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
                 }
+            } else if (result.get() == addTeam) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/AddNewTeam.fxml"));
+                    Stage stage = (Stage) Add_btn.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
+                    showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+                }
+            }else{
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/AddNewCompetition.fxml"));
+                    Stage stage = (Stage) Add_btn.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
+                    showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+                }
             }
         }
     }
@@ -99,7 +119,7 @@ public class LoggedInController {
 
         StringaQuery = inputText;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SearchIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/Elaborazione_Query.fxml"));
             Stage stage = (Stage) Q_Start.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);

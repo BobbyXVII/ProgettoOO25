@@ -96,19 +96,14 @@ public class AddNewPlayerController {
     @FXML
     private void handleProceed() {
         if (campiValidi()) {
-                //conversione data come parametro
                 LocalDate localDate = dataNascitaPicker.getValue();
                 Date data = Date.valueOf(localDate);
                 float altezzaFinale = Float.parseFloat(altezzaField.getText());
                 Persona persona = new Persona(String.valueOf(nomeField.getText().trim()),String.valueOf(cognomeField.getText().trim()),data,String.valueOf(nationalityChoiceBox.getValue().trim()),altezzaFinale,String.valueOf(PiedeChoiceBox.getValue().trim()));
                 try {
                     personaDAO.addPersona(persona);
-                    System.out.println("Persona aggiunta con successo!");
                     ProceedAdd();
                 } catch (SQLException e) {
-                    System.out.println("Errore durante l'inserimento: " + e.getMessage());
-                    System.out.println(String.valueOf(nomeField.getText().trim()));
-                    System.out.println(String.valueOf(cognomeField.getText().trim()));
                 }
         }else{
             mostraErrore("Compila tutti i campi prima di procedere.");

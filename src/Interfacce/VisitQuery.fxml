@@ -34,7 +34,7 @@
                   </Label>
                </children></Pane>
          </children></Pane>
-      <Pane layoutX="36.0" layoutY="366.0" prefHeight="340.0" prefWidth="518.0" styleClass="Panel">
+      <Pane layoutX="25.0" layoutY="366.0" prefHeight="340.0" prefWidth="479.0" styleClass="Panel">
          <children>
             <Label layoutX="17.0" layoutY="14.0" text="Nome:">
                <font>
@@ -117,7 +117,7 @@
             <Button fx:id="btnConferma" layoutX="336.0" layoutY="294.0" mnemonicParsing="false" onAction="#ConfirmEdit" opacity="0" styleClass="buttonAdd" text="Conferma modifica" />
 
          </children></Pane>
-      <Pane layoutX="36.0" layoutY="343.0" prefHeight="23.0" prefWidth="518.0" styleClass="Bar">
+      <Pane layoutX="25.0" layoutY="343.0" prefHeight="23.0" prefWidth="479.0" styleClass="Bar">
          <children>
             <Label layoutX="10.0" layoutY="1.0" text="INFORMAZIONI" textFill="WHITE">
                <font>
@@ -135,7 +135,7 @@
                </image>
             </ImageView>
          </children></Pane>
-      <Pane fx:id="Panel1" layoutX="562.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
+      <Pane fx:id="Panel1" layoutX="513.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
          <children>
             <TableView fx:id="skillsTable" editable="true" layoutX="8.0" prefHeight="214.0" prefWidth="270.0">
                <columns>
@@ -147,7 +147,7 @@
             <Button fx:id="btn_RemoveSkill" layoutX="39.0" layoutY="287.0" mnemonicParsing="false" onAction="#confirmRemove" opacity="0.0" styleClass="buttonRemove" text="Rimuovi" />
             <Button fx:id="btn_inserisciSkill" layoutX="189.0" layoutY="287.0" mnemonicParsing="false" onAction="#ConfirmInsert" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
          </children></Pane>
-      <Pane fx:id="Bar1" layoutX="562.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
+      <Pane fx:id="Bar1" layoutX="513.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
          <children>
             <Label layoutX="10.0" layoutY="1.0" text="SKILLS" textFill="WHITE">
                <font>
@@ -156,7 +156,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="857.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
+      <Pane layoutX="807.0" layoutY="343.0" prefHeight="23.0" prefWidth="286.0" styleClass="Bar">
          <children>
             <Label layoutX="10.0" layoutY="1.0" text="TROFEI INDIVIDUALI VINTI" textFill="WHITE">
                <font>
@@ -165,7 +165,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="PanelTrofy" layoutX="857.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
+      <Pane fx:id="PanelTrofy" layoutX="807.0" layoutY="366.0" prefHeight="340.0" prefWidth="286.0" styleClass="Panel">
          <children>
             <TableView fx:id="trophyTable" editable="true" layoutX="8.0" prefHeight="194.0" prefWidth="270.0">
                <columns>
@@ -178,6 +178,28 @@
             <Button fx:id="btn_RemoveTrophy" layoutX="39.0" layoutY="302.0" mnemonicParsing="false" onAction="#confirmRemoveTrophy" opacity="0.0" styleClass="buttonRemove" text="Rimuovi" />
             <Button fx:id="btn_inserisciTrophy" layoutX="189.0" layoutY="302.0" mnemonicParsing="false" onAction="#ConfirmInsertTrophy" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
             <DatePicker fx:id="DateWinTrophy" layoutX="69.0" layoutY="257.0" opacity="0.0" prefHeight="25.0" prefWidth="150.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="1097.0" layoutY="343.0" prefHeight="23.0" prefWidth="166.0" styleClass="Bar">
+         <children>
+            <Label layoutX="10.0" layoutY="1.0" prefHeight="21.0" prefWidth="186.0" text="RUOLI GIOCATI" textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="PanelTrofy1" layoutX="1097.0" layoutY="366.0" prefHeight="340.0" prefWidth="166.0" styleClass="Panel">
+         <children>
+            <TableView fx:id="roleTable" editable="true" layoutX="6.0" prefHeight="194.0" prefWidth="155.0">
+               <columns>
+                  <TableColumn fx:id="roleCol" prefWidth="155.0" text="Ruoli" />
+               </columns>
+            </TableView>
+            <Label fx:id="TextTrophy1" layoutX="14.0" layoutY="208.0" opacity="0.0" text="Aggiungi Ruolo:" />
+            <Button fx:id="btn_inserisciTrophy1" layoutX="189.0" layoutY="302.0" mnemonicParsing="false" onAction="#ConfirmInsertTrophy" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
+            <ComboBox fx:id="ListOfRoles" layoutX="8.0" layoutY="231.0" opacity="0.0" prefWidth="150.0" />
+            <Button fx:id="btn_InserisciRuolo" layoutX="44.0" layoutY="283.0" mnemonicParsing="false" onAction="#InsertRole" opacity="0.0" styleClass="buttonAdd" text="Inserisci" />
          </children>
       </Pane>
    </children>

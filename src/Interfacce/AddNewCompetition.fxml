@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="Sfondo" prefHeight="720" prefWidth="1280" stylesheets="@CSS/ANP.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddNewCompetitionController">
+    <children>
+        <AnchorPane fx:id="BK_ground" layoutX="232.0" layoutY="1.0" prefHeight="719.0" prefWidth="812.0">
+            <children>
+                <Label layoutX="272.0" layoutY="60.0" text="Inserisci Nuova Squadra">
+                    <font>
+                        <Font name="Calibri Bold" size="29.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="Add_nomeComp" layoutX="208.0" layoutY="127.0" prefHeight="25.0" prefWidth="394.0" />
+                <Label layoutX="208.0" layoutY="103.0" text="Nome Competizione" />
+                <TextField fx:id="Add_annoSvolgimento" layoutX="208.0" layoutY="188.0" prefHeight="25.0" prefWidth="394.0" />
+                <Label layoutX="208.0" layoutY="164.0" text="annoSvolgimento" />
+                <Label layoutX="208.0" layoutY="229.0" text="Tipologia Competizione" />
+                <Label layoutX="208.0" layoutY="289.0" text="Nazionalità" />
+                <ProgressBar layoutX="1.0" layoutY="25.0" prefHeight="18.0" prefWidth="811.0" progress="1.0" />
+                <Button fx:id="Proceed_btn" layoutX="347.0" layoutY="477.0" mnemonicParsing="false" onAction="#handleProceed" prefHeight="64.0" prefWidth="119.0" styleClass="button1" text="Procedi" />
+                <Button fx:id="Back_btn" layoutX="334.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="35.0" prefWidth="145.0" styleClass="BackButton" text="Torna alla ricerca" />
+                <ComboBox fx:id="Add_TipComp" layoutX="210.0" layoutY="255.0" prefHeight="28.0" prefWidth="394.0" />
+            <ComboBox fx:id="nationalityComboBox" layoutX="208.0" layoutY="322.0" prefHeight="28.0" prefWidth="394.0" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

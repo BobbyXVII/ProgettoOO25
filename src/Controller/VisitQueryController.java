@@ -12,24 +12,20 @@ package Controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.ImageView;
-        import javafx.scene.layout.AnchorPane;
-        import javafx.scene.layout.Pane;
         import javafx.stage.Stage;
-
         import java.io.IOException;
-        import java.math.BigDecimal;
         import java.sql.Date;
         import java.sql.SQLException;
         import java.time.LocalDate;
-        import java.util.ArrayList;
         import java.util.List;
-        import java.text.DecimalFormat;
-        import java.text.DecimalFormatSymbols;
-        import java.util.Locale;
 
 public class VisitQueryController {
 
     private final String QueryRichiesta = SearchInController.selectedItem;
+    @FXML
+    private TableView<String> roleTable;  // Tipo String perché stiamo mostrando solo il nome del ruolo
+    @FXML
+    private TableColumn<String, String> roleCol;
 
     private final String CurrentUser = ControllerLogin.nomeUtenteConnesso;
 
@@ -39,15 +35,15 @@ public class VisitQueryController {
 
     private final String CurrentUserPEX = ControllerLogin.roleUserConnected;
 
-    @FXML private AnchorPane VisitCalciatori;
-    @FXML private Pane Pannello, Pannello1, Valore, Panel, Bar, Pannello3;
-    @FXML private Label NomeBar, CognomeBar, ValoreDiMercL, ValoreDiMercL1, TextSkill, TextTrophy;
+    @FXML private Label NomeBar,ValoreDiMercL, TextSkill, TextTrophy;
     @FXML private Label NomeL, cognomeL, DateNascitaL, NazionalitaL, PiedeL, CurrTeamL, AltezzaL;
-    @FXML private TextField Edit_name, Edit_cognome, Edit_Nazio, Edit_piede, Edit_altezza;
+    @FXML private TextField Edit_name, Edit_cognome, Edit_altezza;
     @FXML private DatePicker Edit_Date, DateWinTrophy;
     @FXML private ImageView logoVisitaPlayer, iconImage;
-    @FXML private ChoiceBox nationalityChoiceBox, PiedeChoiceBox, ListSkills, ListTrophy;
-    @FXML private Button btnTornaRicerca, btnTornaHome, btnAnnulla, BackToSearch, BackToLogged, btnConferma, btn_inserisciTrophy, btn_RemoveTrophy, btnModifica;
+    @FXML private ChoiceBox<String> nationalityChoiceBox, PiedeChoiceBox, ListSkills, ListTrophy;
+
+    @FXML private ComboBox<String> ListOfRoles;
+    @FXML private Button btnTornaRicerca, btnTornaHome, btnAnnulla, BackToSearch, BackToLogged, btnConferma, btn_inserisciTrophy, btn_RemoveTrophy, btnModifica, btn_InserisciRuolo;
 
     @FXML
     private TableView<Vince> trophyTable;
@@ -68,6 +64,8 @@ public class VisitQueryController {
 
     private int CurrentPlayer;
 
+    private String ValueOfRole;
+
     private final SquadraDAO squadraDAO = new SquadraDAO();
     private final CarrieraDAO carrieraDAO = new CarrieraDAO();
     private final PersonaDAO personaDAO = new PersonaDAO();
@@ -81,10 +79,15 @@ public class VisitQueryController {
     @FXML private Button btn_RemoveSkill, btn_inserisciSkill;
     private final PossiedeDAO possiedeDAO = new PossiedeDAO();
 
+    private final RuoloDAO ruoloDAO = new RuoloDAO();
+
+    private final GiocaDAO giocaDAO = new GiocaDAO();
+
     @FXML
     public void initialize() throws SQLException {
 
         NomeBar.setText(QueryRichiesta);
+        updatelist();
                 // Recupera l'ID del calciatore corrente dal nome utente, se il ruolo è "CALCIATORE"
                 CurrentUserID = utenteDAO.getIdByUsernameIfCalciatore(CurrentUser);
                 CurrentPlayer = personaDAO.getIdByNomeQ(QueryRichiesta);
@@ -108,12 +111,16 @@ public class VisitQueryController {
                     TextTrophy.setOpacity(1);
                     ListTrophy.setOpacity(1);
                     DateWinTrophy.setOpacity(1);
-                    ListSkills.setOpacity(1);
-                    ListTrophy.setOpacity(1);
                     btn_RemoveTrophy.setOpacity(1);
                     btn_inserisciTrophy.setOpacity(1);
+                    ListSkills.setOpacity(1);
+                    ListTrophy.setOpacity(1);
                     btnModifica.setOpacity(1);
+                    ListOfRoles.setOpacity(1);
                 }
+
+
+
                 // Imposta le colonne per i trofei
                 trophyName.setCellValueFactory(cellData -> {
                     try {
@@ -141,37 +148,51 @@ public class VisitQueryController {
                 ListSkills.setItems(skillsList);
 
                 // Gestione della selezione della skill
-                ListSkills.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        List<String> Result = null;
-                        try {
-                            Result = possiedeDAO.getSkillsByCalciatoreId(CurrentPlayer);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        for (String s : Result) {
-                            if (s.equals(newValue)) {
-                                btn_inserisciSkill.setOpacity(0);
-                                btn_RemoveSkill.setOpacity(1);
-                            }else{
-                                btn_inserisciSkill.setOpacity(1);
-                                btn_RemoveSkill.setOpacity(0);
-                            }
-                        }
-                    }
-                });
+        ListSkills.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                List<String> result = null;
+                try {
+                    result = possiedeDAO.getSkillsByCalciatoreId(CurrentPlayer);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
 
+                // Controlla se la skill è già posseduta
+                if (result.contains(newValue)) {
+                    btn_inserisciSkill.setOpacity(0);  // Nasconde il bottone "Inserisci" se la skill è già posseduta
+                    btn_RemoveSkill.setOpacity(1);    // Mostra il bottone "Rimuovi" se la skill è già posseduta
+                } else {
+                    btn_inserisciSkill.setOpacity(1);  // Mostra il bottone "Inserisci" se la skill non è posseduta
+                    btn_RemoveSkill.setOpacity(0);    // Nasconde il bottone "Rimuovi" se la skill non è posseduta
+                }
+            }
+        });
 
+        try {
+            // Recupera i ruoli dal DAO
+            List<String> ruoli = ruoloDAO.getRuoliByID(CurrentPlayer);
 
-                // Carica i trofei disponibili
-                ObservableList<String> TotalTrophy = FXCollections.observableArrayList(trofIndDAO.getAllTrophyNames());
-                ListTrophy.setItems(TotalTrophy);
+            // Imposta la cella della TableColumn con il nome del ruolo
+            roleCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
+            // Popola la TableView con i ruoli
+            roleTable.setItems(FXCollections.observableArrayList(ruoli));
 
-                // Gestione della selezione del trofeo
-                ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    ResultSelection = String.valueOf(newValue);
-                });
+        } catch (SQLException e) {
+            e.printStackTrace();  // Gestione dell'errore
+        }
+
+// Carica i trofei disponibili
+        ObservableList<String> TotalTrophy = FXCollections.observableArrayList(trofIndDAO.getAllTrophyNames());
+        ListTrophy.setItems(TotalTrophy);
+
+// Gestione della selezione del trofeo
+        ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            // Assicurati che newValue non sia null
+            if (newValue != null) {
+                ResultSelection = String.valueOf(newValue);
+            }
+        });
 
 
         ObservableList<String> nazionalita = FXCollections.observableArrayList(
@@ -193,6 +214,55 @@ public class VisitQueryController {
         // Imposta le opzioni per la ChoiceBox del Piede
         ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
         PiedeChoiceBox.setItems(tipologiePiedi);
+    }
+
+
+    @FXML
+    private void InsertRole() {
+        if(ValueOfRole != null){
+            String abbrToAdd;
+            try {
+                abbrToAdd = ruoloDAO.getAbbrFromRole(String.valueOf(ValueOfRole));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            Gioca gioca = new Gioca(abbrToAdd,CurrentPlayer);
+            try {
+                giocaDAO.insertNewRole(gioca);
+                updatelist();
+                showSuccessAddR();
+            } catch (SQLException e) {
+                showAlert("Ruolo già assegnato");
+                throw new RuntimeException(e);
+            }
+            showSuccessAddR();
+        }else{
+            showAlert("Errore nella selezione del ruolo da assegnare");
+        }
+        backToVisit();
+    }
+
+    public void updatelist(){
+        try {
+            // Ottieni i ruoli da RuoloDAO
+            List<String> ruoli = ruoloDAO.getRolesNotAssignedToID(CurrentUserID);
+
+            // Carica i ruoli nel ComboBox
+            ObservableList<String> roleList = FXCollections.observableArrayList(ruoli);
+
+            // Assicurati di aggiornare gli elementi del ComboBox
+            ListOfRoles.setItems(roleList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();  // Gestisci l'errore in modo appropriato
+        }
+
+        ListOfRoles.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ValueOfRole = newValue;
+                btn_InserisciRuolo.setOpacity(1);
+            }
+        });
     }
 
 
@@ -394,6 +464,25 @@ public class VisitQueryController {
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Skill Rimossa con successo!");
+
+        // Mostra l'alert
+        alert.show();
+
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            alert.close();
+        });
+    }
+
+    private void showSuccessAddR() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successo");
+        alert.setHeaderText(null);
+        alert.setContentText("Ruolo Aggiunto con successo!");
 
         // Mostra l'alert
         alert.show();

@@ -6,6 +6,14 @@ public class TrofeoDiSquadra {
     private String annoSvolgimento;
     private String nomeSquadra;
 
+    public TrofeoDiSquadra(String nomeSquadra, String annoSvolgimento) {
+        this.nomeSquadra = nomeSquadra;
+        this.annoSvolgimento = annoSvolgimento;
+    }
+
+    public TrofeoDiSquadra() {
+    }
+
     // Getter e Setter
     public String getIdTrofeoDS() {
         return idTrofeoDS;

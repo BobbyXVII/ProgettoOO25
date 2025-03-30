@@ -30,6 +30,29 @@ public class TrofeoDiSquadraDAO {
         return trofei;
     }
 
+    public List<TrofeoDiSquadra> getTrofeiByCom(String nomeCompetizione) throws SQLException {
+        String sql = "SELECT nomeSquadra, annoSvolgimento FROM trofeo_di_squadra WHERE nomeCompetizione = ?";
+        List<TrofeoDiSquadra> trofei = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nomeCompetizione);  // Corrected the parameter name
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TrofeoDiSquadra trofeo = new TrofeoDiSquadra();
+                trofeo.setNomeSquadra(rs.getString("nomeSquadra"));
+                trofeo.setAnnoSvolgimento(rs.getString("annoSvolgimento"));
+                trofei.add(trofeo);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return trofei;
+    }
+
+
+
 
     /*
 
