@@ -20,8 +20,8 @@ public class CarrieraDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("ID"); // Ottieni solo l'ID
-                idList.add(id); // Aggiungi l'ID alla lista
+                int id = rs.getInt("ID");
+                idList.add(id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,7 +30,7 @@ public class CarrieraDAO {
             throw new RuntimeException(e);
         }
 
-        return idList; // Restituisce la lista degli ID trovati
+        return idList;
     }
 
 
@@ -66,18 +66,16 @@ public class CarrieraDAO {
     public String getNomeSquadraByCalciatoreId(int calciatoreId) throws SQLException {
         String sql = "SELECT nomeSquadra " +
                 "FROM Carriera " +
-                "WHERE id = ? AND dataFineCarriera IS NULL " +  // Filtra per l'ID del calciatore e carriera attiva
-                "ORDER BY dataInizioCarriera DESC LIMIT 1";  // Ordina per la carriera più recente
+                "WHERE id = ? AND dataFineCarriera IS NULL " +
+                "ORDER BY dataInizioCarriera DESC LIMIT 1";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Imposta l'ID del calciatore come parametro nella query
             stmt.setInt(1, calciatoreId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    // Restituisce il nome della squadra
                     return rs.getString("nomeSquadra");
                 }
             }
@@ -88,7 +86,7 @@ public class CarrieraDAO {
             throw new RuntimeException(e);
         }
 
-        return null;  // Ritorna null se non trova la squadra attuale
+        return null;
     }
 
     public BigDecimal getValoreDiMercatoByCalciatoreId(int calciatoreId) throws SQLException {
@@ -109,71 +107,6 @@ public class CarrieraDAO {
             throw new RuntimeException(e);
         }
 
-        return null; // Ritorna "0" invece di null per evitare problemi
+        return null;
     }
-
-
-
-
-/*
-    public List<Carriera> getAllCarriere() throws SQLException {
-        String sql = "SELECT * FROM Carriera";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            List<Carriera> carriereList = new ArrayList<>();
-            while (rs.next()) {
-                Carriera carriera = new Carriera();
-                carriera.setId(rs.getInt("ID"));
-                carriera.setNomeSquadra(rs.getString("nomeSquadra"));
-                carriera.setDataInizioCarriera(rs.getDate("dataInizioCarriera"));
-                carriera.setDataFineCarriera(rs.getDate("dataFineCarriera"));
-                carriera.setCartelliniRossiAnnuali(rs.getInt("cartelliniRossiAnnuali"));
-                carriera.setCartelliniGialliAnnuali(rs.getInt("cartelliniGialliAnnuali"));
-                carriera.setTipologia(rs.getString("tipologia"));
-                carriera.setInfortuniAnnuali(rs.getInt("infortuniAnnuali"));
-                carriera.setGoalSubitiAnnuali(rs.getInt("goalSubitiAnnuali"));
-                carriera.setGoalEseguitiAnnuali(rs.getInt("goalEseguitiAnnuali"));
-                carriera.setValoreDiMercato(rs.getInt("valoreDiMercato"));
-                carriera.setDataRitiro(rs.getDate("dataRitiro"));
-                carriereList.add(carriera);
-            }
-            return carriereList;
-        }
-    }
-
-
-    public void updateCarriera(Carriera carriera) throws SQLException {
-        String sql = "UPDATE Carriera SET " +
-                "dataFineCarriera = ?, cartelliniRossiAnnuali = ?, cartelliniGialliAnnuali = ?, " +
-                "tipologia = ?, infortuniAnnuali = ?, goalSubitiAnnuali = ?, goalEseguitiAnnuali = ?, " +
-                "valoreDiMercato = ?, dataRitiro = ? " +
-                "WHERE ID = ? AND nomeSquadra = ? AND dataInizioCarriera = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setDate(1, carriera.getDataFineCarriera() != null ? new java.sql.Date(carriera.getDataFineCarriera().getTime()) : null);
-            ps.setInt(2, carriera.getCartelliniRossiAnnuali());
-            ps.setInt(3, carriera.getCartelliniGialliAnnuali());
-            ps.setString(4, carriera.getTipologia());
-            ps.setInt(5, carriera.getInfortuniAnnuali());
-            ps.setInt(6, carriera.getGoalSubitiAnnuali());
-            ps.setInt(7, carriera.getGoalEseguitiAnnuali());
-            ps.setInt(8, carriera.getValoreDiMercato());
-            ps.setDate(9, carriera.getDataRitiro() != null ? new java.sql.Date(carriera.getDataRitiro().getTime()) : null);
-            ps.setInt(10, carriera.getId());
-            ps.setString(11, carriera.getNomeSquadra());
-            ps.setDate(12, new java.sql.Date(carriera.getDataInizioCarriera().getTime()));
-            ps.executeUpdate();
-        }
-    }
-
-    public void deleteCarriera(int id, String nomeSquadra, Date dataInizioCarriera) throws SQLException {
-        String sql = "DELETE FROM Carriera WHERE ID = ? AND nomeSquadra = ? AND dataInizioCarriera = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.setString(2, nomeSquadra);
-            ps.setDate(3, new java.sql.Date(dataInizioCarriera.getTime()));
-            ps.executeUpdate();
-        }
-    }
-
- */
 }

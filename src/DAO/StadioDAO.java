@@ -28,7 +28,6 @@ public class StadioDAO {
         return stadioList;
     }
 
-
     private Stadio mapResultSetToStadio(ResultSet rs) throws SQLException {
         Stadio stadio = new Stadio();
         stadio.setNomeStadio(rs.getString("nomeStadio"));
@@ -63,8 +62,6 @@ public class StadioDAO {
         }
     }
 
-
-
     public void create(Stadio stadio) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO STADIO (nomeStadio, capacita) VALUES (?, ?)";
         try (Connection conn = getConnection();
@@ -93,7 +90,4 @@ public class StadioDAO {
             pstmt.executeUpdate();
         }
     }
-
-    // Metodi aggiuntivi (se necessario)
-    // ...
 }

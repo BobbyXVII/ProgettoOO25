@@ -53,64 +53,56 @@ public class AddNewCompetitionController {
                 Add_TipComp.setItems(TipList);
             }
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Oppure loggare l'errore
+            e.printStackTrace();
         }
 
         Add_TipComp.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                TipSelected = String.valueOf(newValue); // `newValue` è già una stringa
+                TipSelected = String.valueOf(newValue);
             }
         });
 
         Add_annoSvolgimento.textProperty().addListener((observable, oldValue, newValue) -> {
-
             ResultAnno = newValue;
         });
-
-
-
-
     }
 
     @FXML
     private void handleProceed() throws SQLException {
-    if (Add_nomeComp.getText() != null && Add_annoSvolgimento.getText() != null && nationalityComboBox.getValue() != null && TipSelected !=  null){
-        if (!isValidAnnoSvolgimento(ResultAnno)) {
-            // Mostra un errore se l'input non è valido
-            showError("Formato Anno Svolgimento", "Il formato deve essere 'YYYY/YYYY'.");
-        }else{
-            List<String> comp = competizioneDAO.getCompetizioniAndDate();
-            String nomeCompetizione = Add_nomeComp.getText().trim();
-            String annoSvolgimento = Add_annoSvolgimento.getText().trim();
-
-
-            String competizioneAnno = nomeCompetizione + " - " + annoSvolgimento;
-
-            if (comp.contains(competizioneAnno)) {
-                showError("ERRORE CREAZIONE", "Competizione con anno svolgimento e nome già esistente");
+        if (Add_nomeComp.getText() != null && Add_annoSvolgimento.getText() != null && nationalityComboBox.getValue() != null && TipSelected !=  null){
+            if (!isValidAnnoSvolgimento(ResultAnno)) {
+                showError("Formato Anno Svolgimento", "Il formato deve essere 'YYYY/YYYY'.");
             }else{
+                List<String> comp = competizioneDAO.getCompetizioniAndDate();
+                String nomeCompetizione = Add_nomeComp.getText().trim();
+                String annoSvolgimento = Add_annoSvolgimento.getText().trim();
 
-                Competizione competizione = new Competizione(String.valueOf(Add_nomeComp.getText().trim()),String.valueOf(Add_annoSvolgimento.getText().trim()),String.valueOf(TipSelected),String.valueOf(nationalityComboBox.getValue()));
-                try {
-                    competizioneDAO.addCompetizione(competizione);
-                    showSuccessAlert();
-                } catch (SQLException e) {
-                    showError("ERRORE CREAZIONE","Competizione non aggiunta correttamente.");
-                    throw new RuntimeException(e);
-                }
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
-                    Stage stage = (Stage) Proceed_btn.getScene().getWindow();
-                    Scene scene = new Scene(loader.load());
-                    stage.setScene(scene);
-                } catch (IOException ignored) {
+                String competizioneAnno = nomeCompetizione + " - " + annoSvolgimento;
+
+                if (comp.contains(competizioneAnno)) {
+                    showError("ERRORE CREAZIONE", "Competizione con anno svolgimento e nome già esistente");
+                }else{
+                    Competizione competizione = new Competizione(String.valueOf(Add_nomeComp.getText().trim()),String.valueOf(Add_annoSvolgimento.getText().trim()),String.valueOf(TipSelected),String.valueOf(nationalityComboBox.getValue()));
+                    try {
+                        competizioneDAO.addCompetizione(competizione);
+                        showSuccessAlert();
+                    } catch (SQLException e) {
+                        showError("ERRORE CREAZIONE","Competizione non aggiunta correttamente.");
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
+                        Stage stage = (Stage) Proceed_btn.getScene().getWindow();
+                        Scene scene = new Scene(loader.load());
+                        stage.setScene(scene);
+                    } catch (IOException ignored) {
+                    }
                 }
             }
+        }else{
+            showError("ERRORE INSERIMENTO", "Compila tutti i campi prima di procedere.");
         }
-    }else{
-        showError("ERRORE INSERIMENTO", "Compila tutti i campi prima di procedere.");
     }
-        }
 
     @FXML
     private void handleBack() {
@@ -131,10 +123,7 @@ public class AddNewCompetitionController {
         }
     }
 
-
-
     private boolean isValidAnnoSvolgimento(String input) {
-        // Definisci il pattern per il formato '4 numeri / 4 numeri'
         String regex = "\\d{4}/\\d{4}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
@@ -148,13 +137,12 @@ public class AddNewCompetitionController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     private void showSuccessAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Competizione aggiunta con successo!");
-
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {

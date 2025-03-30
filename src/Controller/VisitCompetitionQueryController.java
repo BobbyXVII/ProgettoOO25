@@ -1,6 +1,5 @@
 package Controller;
 
-
 import DAO.CompetizioneDAO;
 import DAO.TrofeoDiSquadraDAO;
 import DAO.UtenteDAO;
@@ -34,13 +33,11 @@ public class VisitCompetitionQueryController {
     @FXML
     private TableColumn<TrofeoDiSquadra, String> nomeSquadra;
 
-
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
     private final CompetizioneDAO competizioneDAO = new CompetizioneDAO();
 
     TrofeoDiSquadraDAO trofeoDAO = new TrofeoDiSquadraDAO();
-
 
     String currentComp = SearchInController.selectedItem;
     String TipSelected;
@@ -52,19 +49,17 @@ public class VisitCompetitionQueryController {
         try {
             List<String> anni = competizioneDAO.getAnniSvolgimento(currentComp);
 
-            // Pulisce e carica i dati nel ChoiceBox
             Ed_Comp.getItems().clear();
             Ed_Comp.getItems().addAll(anni);
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); // Gestione errore
+            e.printStackTrace();
         }
-
 
         try {
             List<String> info = competizioneDAO.getInfoTeam(currentComp);
             if (!info.isEmpty()) {
-                tipCompL.setText(info.get(0));  // Assegna la tipologia della competizione
-                NazionalitaL.setText(info.get(1));  // Assegna la nazionalità
+                tipCompL.setText(info.get(0));
+                NazionalitaL.setText(info.get(1));
             } else {
                 tipCompL.setText("N/D");
                 NazionalitaL.setText("N/D");
@@ -75,20 +70,16 @@ public class VisitCompetitionQueryController {
             NazionalitaL.setText("Errore");
         }
 
-
         try {
-            List<TrofeoDiSquadra> squadre = trofeoDAO.getTrofeiByCom(currentComp);  // Assuming correct method
+            List<TrofeoDiSquadra> squadre = trofeoDAO.getTrofeiByCom(currentComp);
 
             nomeSquadra.setCellValueFactory(new PropertyValueFactory<>("nomeSquadra"));
             AnnoSvolgimento.setCellValueFactory(new PropertyValueFactory<>("annoSvolgimento"));
 
             SquadreVincitrici.setItems(FXCollections.observableArrayList(squadre));
         } catch (SQLException e) {
-            e.printStackTrace();  // Consider adding user-friendly message here
-            // Optionally: show an error dialog to the user
+            e.printStackTrace();
         }
-
-
 
         ObservableList<String> nazionalita = FXCollections.observableArrayList(
                 "Italia", "Internazionale","Germania", "Francia", "Spagna", "Inghilterra", "Portogallo", "Brasile", "Argentina", "Stati Uniti",
@@ -105,12 +96,10 @@ public class VisitCompetitionQueryController {
                 "Indonesia", "Singapore", "Malaysia", "Brunei");
         nationalityChoiceBox.setItems(nazionalita);
 
-
         String currentUserPEX = utenteDAO.ControllaPex(ControllerLogin.nomeUtenteConnesso);
         if ("ADMIN".equals(currentUserPEX)) {
             btnModifica.setOpacity(1);
         }
-
 
         try {
             List<String> TotalTip = competizioneDAO.getTipologieCompetizioni();
@@ -119,12 +108,12 @@ public class VisitCompetitionQueryController {
                 Edit_TipComp.setItems(TipList);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Oppure loggare l'errore
+            e.printStackTrace();
         }
 
         Edit_TipComp.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                TipSelected = String.valueOf(newValue); // `newValue` è già una stringa
+                TipSelected = String.valueOf(newValue);
             }
         });
     }
@@ -135,7 +124,6 @@ public class VisitCompetitionQueryController {
         btnConferma.setOpacity(1);
         Edit_TipComp.setOpacity(1);
         nationalityChoiceBox.setOpacity(1);
-
     }
 
     @FXML
@@ -173,30 +161,26 @@ public class VisitCompetitionQueryController {
 
     @FXML
     private void ConfirmUpdate() throws SQLException {
-
-    if(TipSelected != null){
-        if (nationalityChoiceBox.getValue() == null){
-            //solo tip
-            Competizione competizione = new Competizione(currentComp,null,TipSelected.trim(),null);
-            competizioneDAO.updateCompetizioneTip(competizione);
-            showSuccessAlert();
+        if(TipSelected != null){
+            if (nationalityChoiceBox.getValue() == null){
+                Competizione competizione = new Competizione(currentComp,null,TipSelected.trim(),null);
+                competizioneDAO.updateCompetizioneTip(competizione);
+                showSuccessAlert();
+            }else{
+                Competizione competizione = new Competizione(currentComp,null,TipSelected.trim(),String.valueOf(nationalityChoiceBox.getValue().trim()));
+                competizioneDAO.updateCompetizioneTip_Naz(competizione);
+                showSuccessAlert();
+            }
         }else{
-            //naz e tip
-            Competizione competizione = new Competizione(currentComp,null,TipSelected.trim(),String.valueOf(nationalityChoiceBox.getValue().trim()));
-            competizioneDAO.updateCompetizioneTip_Naz(competizione);
-            showSuccessAlert();
+            if(nationalityChoiceBox.getValue() != null){
+                Competizione competizione = new Competizione(currentComp,null,null,String.valueOf(nationalityChoiceBox.getValue().trim()));
+                competizioneDAO.updateCompetizioneNaz(competizione);
+                showSuccessAlert();
+            }else{
+                showError("Errore di Aggiornamento","L'update ha riscontrato dei problemi");
+            }
         }
-    }else{
-        //solo naz
-        if(nationalityChoiceBox.getValue() != null){
-            Competizione competizione = new Competizione(currentComp,null,null,String.valueOf(nationalityChoiceBox.getValue().trim()));
-            competizioneDAO.updateCompetizioneNaz(competizione);
-            showSuccessAlert();
-        }else{
-            showError("Errore di Aggiornamento","L'update ha riscontrato dei problemi");
-        }
-    }
-    backToVisit();
+        backToVisit();
     }
 
     private void showError(String titolo, String messaggio) {
@@ -212,8 +196,6 @@ public class VisitCompetitionQueryController {
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Dati aggiornati con successo!");
-
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {

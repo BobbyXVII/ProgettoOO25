@@ -23,7 +23,7 @@ public class VisitQueryController {
 
     private final String QueryRichiesta = SearchInController.selectedItem;
     @FXML
-    private TableView<String> roleTable;  // Tipo String perché stiamo mostrando solo il nome del ruolo
+    private TableView<String> roleTable;
     @FXML
     private TableColumn<String, String> roleCol;
 
@@ -88,7 +88,6 @@ public class VisitQueryController {
 
         NomeBar.setText(QueryRichiesta);
         updatelist();
-                // Recupera l'ID del calciatore corrente dal nome utente, se il ruolo è "CALCIATORE"
                 CurrentUserID = utenteDAO.getIdByUsernameIfCalciatore(CurrentUser);
                 CurrentPlayer = personaDAO.getIdByNomeQ(QueryRichiesta);
                 Persona persona = personaDAO.getPersonaById(CurrentPlayer);
@@ -121,7 +120,7 @@ public class VisitQueryController {
 
 
 
-                // Imposta le colonne per i trofei
+
                 trophyName.setCellValueFactory(cellData -> {
                     try {
                         return new SimpleStringProperty(String.valueOf(trofIndDAO.getNomeAssegnazioneById(cellData.getValue().getIdTrofeoIN())));
@@ -131,23 +130,22 @@ public class VisitQueryController {
                 });
                 trophyWinDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDataVincita().toString()));
 
-                // Carica i trofei vinti
+
                 List<Vince> vinceList = vinceDAO.getTrofeiVintiByPlayer(CurrentPlayer);
                 ObservableList<Vince> observableList = FXCollections.observableArrayList(vinceList);
                 trophyTable.setItems(observableList);
 
-                // Carica le skills
+
                 nomeSkillColumn.setCellValueFactory(new PropertyValueFactory<>("nomeSkill"));
                 List<Possiede> skills = possiedeDAO.getSkillsByCalciatoreIdT(CurrentPlayer);
                 ObservableList<Possiede> observableSkills = FXCollections.observableArrayList(skills);
                 skillsTable.setItems(observableSkills);
 
-                // Lista delle skills possedute
+
                 List<String> skillsPossedute = possiedeDAO.getSkillsByCalciatoreId(CurrentPlayer);
                 ObservableList<String> skillsList = FXCollections.observableArrayList(skillsDAO.getAllSkills());
                 ListSkills.setItems(skillsList);
 
-                // Gestione della selezione della skill
         ListSkills.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 List<String> result = null;
@@ -159,36 +157,36 @@ public class VisitQueryController {
 
                 // Controlla se la skill è già posseduta
                 if (result.contains(newValue)) {
-                    btn_inserisciSkill.setOpacity(0);  // Nasconde il bottone "Inserisci" se la skill è già posseduta
-                    btn_RemoveSkill.setOpacity(1);    // Mostra il bottone "Rimuovi" se la skill è già posseduta
+                    btn_inserisciSkill.setOpacity(0);
+                    btn_RemoveSkill.setOpacity(1);
                 } else {
-                    btn_inserisciSkill.setOpacity(1);  // Mostra il bottone "Inserisci" se la skill non è posseduta
-                    btn_RemoveSkill.setOpacity(0);    // Nasconde il bottone "Rimuovi" se la skill non è posseduta
+                    btn_inserisciSkill.setOpacity(1);
+                    btn_RemoveSkill.setOpacity(0);
                 }
             }
         });
 
         try {
-            // Recupera i ruoli dal DAO
+
             List<String> ruoli = ruoloDAO.getRuoliByID(CurrentPlayer);
 
-            // Imposta la cella della TableColumn con il nome del ruolo
+
             roleCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
-            // Popola la TableView con i ruoli
+
             roleTable.setItems(FXCollections.observableArrayList(ruoli));
 
         } catch (SQLException e) {
-            e.printStackTrace();  // Gestione dell'errore
+            e.printStackTrace();
         }
 
-// Carica i trofei disponibili
+
         ObservableList<String> TotalTrophy = FXCollections.observableArrayList(trofIndDAO.getAllTrophyNames());
         ListTrophy.setItems(TotalTrophy);
 
-// Gestione della selezione del trofeo
+
         ListTrophy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // Assicurati che newValue non sia null
+
             if (newValue != null) {
                 ResultSelection = String.valueOf(newValue);
             }
@@ -211,7 +209,7 @@ public class VisitQueryController {
         );
         nationalityChoiceBox.setItems(nazionalita);
 
-        // Imposta le opzioni per la ChoiceBox del Piede
+
         ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
         PiedeChoiceBox.setItems(tipologiePiedi);
     }
@@ -244,17 +242,14 @@ public class VisitQueryController {
 
     public void updatelist(){
         try {
-            // Ottieni i ruoli da RuoloDAO
             List<String> ruoli = ruoloDAO.getRolesNotAssignedToID(CurrentUserID);
 
-            // Carica i ruoli nel ComboBox
             ObservableList<String> roleList = FXCollections.observableArrayList(ruoli);
 
-            // Assicurati di aggiornare gli elementi del ComboBox
             ListOfRoles.setItems(roleList);
 
         } catch (SQLException e) {
-            e.printStackTrace();  // Gestisci l'errore in modo appropriato
+            e.printStackTrace();
         }
 
         ListOfRoles.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -400,10 +395,8 @@ public class VisitQueryController {
 
     @FXML
     public void ConfirmEdit() throws SQLException {
-        // Recupera la persona attuale dal database
         Persona personaEsistente = personaDAO.getPersonaById(CurrentPlayer);
 
-        // Se la persona esiste, aggiorna solo i campi modificati
         String nome = Edit_name.getText().isEmpty() ? personaEsistente.getNome() : Edit_name.getText().trim();
         String cognome = Edit_cognome.getText().isEmpty() ? personaEsistente.getCognome() : Edit_cognome.getText().trim();
         LocalDate localDate = Edit_Date.getValue() == null ? personaEsistente.getData_Nascita().toLocalDate() : Edit_Date.getValue();
@@ -413,10 +406,8 @@ public class VisitQueryController {
         String piede = (PiedeChoiceBox.getValue() == null) ? personaEsistente.getPiede() : String.valueOf(PiedeChoiceBox.getValue());
 
 
-        // Crea il nuovo oggetto aggiornato
         Persona personaAggiornata = new Persona(CurrentPlayer, nome, cognome, data, nazionalita, altezza, piede);
 
-        // Esegui l'update
         personaDAO.updatePersona(personaAggiornata);
         showSuccessAlert();
         backToVisit();

@@ -49,7 +49,6 @@ public class VisitTeamQueryController {
     @FXML private TableColumn<Partecipa, Integer> PosizioneFinale;
     @FXML private TableColumn<Partecipa, String> AnnoSvolgimento;
 
-
     private final String CurrentTeam = SearchInController.selectedItem;
 
     private String ResultComp;
@@ -124,7 +123,6 @@ public class VisitTeamQueryController {
         ObservableList<String> competizioniList = FXCollections.observableArrayList(TotalComp);
         ListComp.setItems(competizioniList);
 
-        // Gestione della selezione della skill
         ListComp.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             ResultComp = String.valueOf(newValue);
         });
@@ -163,29 +161,29 @@ public class VisitTeamQueryController {
 
     @FXML
     private void ConfirmInsertComp() throws SQLException {
-    if(ResultComp != null){
-        posFinale.setEditable(true);
-        posFinale.setPromptText("0");
-        String[] parti = ResultComp.split(" - ");
-        String competizione = parti[0].trim();
-        String anno = parti[1].trim();
-        if(posFinale.getValue() == null){
-            showError("Errore di selezione","Nessun valore di posizione finale è stato selezionato. Selezionare 0 se non si vuole inserire posizione");
-        }else{
-            if(posFinale.getValue() < 1){
-                Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam);
-                partecipaDAO.insertPartecipa1(partecipa);
+        if(ResultComp != null){
+            posFinale.setEditable(true);
+            posFinale.setPromptText("0");
+            String[] parti = ResultComp.split(" - ");
+            String competizione = parti[0].trim();
+            String anno = parti[1].trim();
+            if(posFinale.getValue() == null){
+                showError("Errore di selezione","Nessun valore di posizione finale è stato selezionato. Selezionare 0 se non si vuole inserire posizione");
             }else{
-                Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam,((Integer)posFinale.getValue()));
-                partecipaDAO.insertPartecipa(partecipa);
+                if(posFinale.getValue() < 1){
+                    Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam);
+                    partecipaDAO.insertPartecipa1(partecipa);
+                }else{
+                    Partecipa partecipa  = new Partecipa(competizione,anno,CurrentTeam,((Integer)posFinale.getValue()));
+                    partecipaDAO.insertPartecipa(partecipa);
+                }
+                showSuccessAlert();
+                backtoVisit();
             }
-            showSuccessAlert();
-            backtoVisit();
+            System.out.println(posFinale.getValue());
+        }else{
+            showError("Errore Inserimento Competizione","La selezione non è corretta");
         }
-        System.out.println(posFinale.getValue());
-    }else{
-        showError("Errore Inserimento Competizione","La selezione non è corretta");
-    }
     }
 
     private void UpdateMethod(String nomeClub,int annoFondazione,String nazionalita,String stadioNew) throws SQLException {
@@ -233,12 +231,10 @@ public class VisitTeamQueryController {
 
         Squadra squadraEsistente = squadraDAO.getSquadraByNome(CurrentTeam);
 
-        // Se la persona esiste, aggiorna solo i campi modificati
         String nomeClub = Edit_nomeClub.getText().isEmpty() ? squadraEsistente.getNomeSquadra() : Edit_nomeClub.getText().trim();
         stadioNew = Edit_stadio.getText().isEmpty() ? squadraEsistente.getNomeStadio() : Edit_stadio.getText().trim();
         String nazionalita = (nationalityChoiceBox.getValue() == null) ? squadraEsistente.getNazionalita() : String.valueOf(nationalityChoiceBox.getValue());
         int annoFondazione = Edit_annoFondazione.getText().isEmpty() ? squadraEsistente.getAnnoFondazione() : Integer.parseInt(Edit_annoFondazione.getText().trim());
-
 
         List<String> stadi = stadioDAO.SelectAll();
         for (String s : stadi) {
@@ -273,7 +269,6 @@ public class VisitTeamQueryController {
         alert.setHeaderText(null);
         alert.setContentText("Dati aggiornati con successo!");
 
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {
@@ -299,7 +294,6 @@ public class VisitTeamQueryController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == yesButton) {
-            // Creazione della nuova finestra per inserire la dimensione dello stadio
             Stage stage = new Stage();
             stage.setTitle("Inserisci Dimensione Stadio");
 
@@ -315,7 +309,6 @@ public class VisitTeamQueryController {
                 if (!dimensione.isEmpty()) {
                     try {
                         salvaDimensioneStadio(nomeClub, annoFondazione, nazionalita, dimensione);
-
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     } catch (ClassNotFoundException ex) {

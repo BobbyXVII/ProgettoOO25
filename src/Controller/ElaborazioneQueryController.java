@@ -22,8 +22,8 @@ public class ElaborazioneQueryController {
 
     public void initialize() {
         Random random = new Random();
-        int duration = random.nextInt(3) + 8; // Durata tra 20 e 30 secondi
-        double increment = 1.0 / (duration * 10.0); // Incremento per frame
+        int duration = random.nextInt(3) + 8;
+        double increment = 1.0 / (duration * 10.0);
 
         timeline = new Timeline(
                 new KeyFrame(Duration.millis(100), event -> {

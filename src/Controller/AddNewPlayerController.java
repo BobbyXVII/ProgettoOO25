@@ -18,8 +18,6 @@ import javafx.scene.control.ButtonType;
 import java.util.Optional;
 import java.time.LocalDate;
 
-
-
 public class AddNewPlayerController {
 
     @FXML
@@ -50,10 +48,8 @@ public class AddNewPlayerController {
 
     public static int idNewPlayerAdded;
 
-
     @FXML
     public void initialize() {
-        // Imposta le opzioni per la ChoiceBox della Nazionalità
         ObservableList<String> nazionalita = FXCollections.observableArrayList(
                 "Italia", "Germania", "Francia", "Spagna", "Inghilterra", "Portogallo", "Brasile", "Argentina", "Stati Uniti",
                 "Belgio", "Olanda", "Polonia", "Grecia", "Svezia", "Russia", "Giappone", "Messico", "Uruguay", "Colombia",
@@ -70,13 +66,8 @@ public class AddNewPlayerController {
         );
         nationalityChoiceBox.setItems(nazionalita);
 
-        // Imposta le opzioni per la ChoiceBox del Piede
         ObservableList<String> tipologiePiedi = FXCollections.observableArrayList("Destro", "Sinistro", "Ambidestro");
         PiedeChoiceBox.setItems(tipologiePiedi);
-
-
-        //Creazione Persona e invio Query
-
     }
 
     @FXML
@@ -92,19 +83,18 @@ public class AddNewPlayerController {
         }
     }
 
-
     @FXML
     private void handleProceed() {
         if (campiValidi()) {
-                LocalDate localDate = dataNascitaPicker.getValue();
-                Date data = Date.valueOf(localDate);
-                float altezzaFinale = Float.parseFloat(altezzaField.getText());
-                Persona persona = new Persona(String.valueOf(nomeField.getText().trim()),String.valueOf(cognomeField.getText().trim()),data,String.valueOf(nationalityChoiceBox.getValue().trim()),altezzaFinale,String.valueOf(PiedeChoiceBox.getValue().trim()));
-                try {
-                    personaDAO.addPersona(persona);
-                    ProceedAdd();
-                } catch (SQLException e) {
-                }
+            LocalDate localDate = dataNascitaPicker.getValue();
+            Date data = Date.valueOf(localDate);
+            float altezzaFinale = Float.parseFloat(altezzaField.getText());
+            Persona persona = new Persona(String.valueOf(nomeField.getText().trim()),String.valueOf(cognomeField.getText().trim()),data,String.valueOf(nationalityChoiceBox.getValue().trim()),altezzaFinale,String.valueOf(PiedeChoiceBox.getValue().trim()));
+            try {
+                personaDAO.addPersona(persona);
+                ProceedAdd();
+            } catch (SQLException e) {
+            }
         }else{
             mostraErrore("Compila tutti i campi prima di procedere.");
         }
@@ -127,16 +117,15 @@ public class AddNewPlayerController {
         alert.showAndWait();
     }
 
-
     private void BackToSearch() {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
-                Stage stage = (Stage) Back_btn.getScene().getWindow();
-                Scene scene = new Scene(loader.load());
-                stage.setScene(scene);
-            } catch (IOException e) {
-                showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
-            }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
+            Stage stage = (Stage) Back_btn.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
+        }
     }
 
     private void ProceedAdd() throws SQLException {
@@ -152,10 +141,9 @@ public class AddNewPlayerController {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
-            e.printStackTrace(); // Stampare il vero errore in console
+            e.printStackTrace();
             showAlert("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
         }
-
     }
 
     private void showAlert(String title, String message) {

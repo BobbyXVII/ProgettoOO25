@@ -8,7 +8,7 @@ public class UtenteDAO {
 
     public Utente autenticaUtente(String username, String password) {
         String sql = "SELECT * FROM Utenti WHERE username = ? AND password = ?";
-        try (Connection conn = DatabaseConnection.getConnection();  // Usa DatabaseConnection qui
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -43,7 +43,7 @@ public class UtenteDAO {
             ResultSet rs = verificaStmt.executeQuery();
 
             if (!rs.next()) {
-                return false; // Vecchia password errata
+                return false;
             }
 
             updateStmt.setString(1, newPassword);
@@ -60,13 +60,12 @@ public class UtenteDAO {
 
     public String ControllaPex(String username) {
         String sql = "SELECT ruolo FROM Utenti WHERE username = ?";
-        try (Connection conn = DatabaseConnection.getConnection();  // Usa DatabaseConnection qui
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return (rs.getString("ruolo")
-                );
+                return (rs.getString("ruolo"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,13 +82,10 @@ public class UtenteDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            // Imposta il parametro per il nome utente
             ps.setString(1, username);
 
-            // Esegui la query
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Recupera l'ID utente
                     userId = rs.getInt("id_calciatore");
                     return userId;
                 }
@@ -98,6 +94,6 @@ public class UtenteDAO {
             e.printStackTrace();
         }
 
-        return -1;  // Restituisce null se l'utente non è calciatore o non esiste
+        return -1;
     }
 }

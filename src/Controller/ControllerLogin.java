@@ -27,17 +27,14 @@ public class ControllerLogin {
     @FXML
     private Button RegistrazioneLogIn;
 
-    // Istanza del DAO per accedere al database
     private UtenteDAO utenteDAO = new UtenteDAO();
 
-    // Variabile globale per salvare il nome utente dell'utente connesso
     public static String nomeUtenteConnesso;
 
     public static String roleUserConnected;
 
     @FXML
     public void initialize() {
-        // Gestore per il pulsante di login
         PulsanteLogIn.setOnAction((ActionEvent event) -> {
             try {
                 handleLogin(event);
@@ -46,7 +43,6 @@ public class ControllerLogin {
             }
         });
 
-        // Gestore per il pulsante di registrazione
         RegistrazioneLogIn.setOnAction((ActionEvent event) -> {
             try {
                 handleRegistrazione(event);
@@ -63,32 +59,26 @@ public class ControllerLogin {
         String username = UsernameLogIn.getText().trim();
         String password = PasswordLogIn.getText().trim();
 
-        // Controllo preliminare sui campi vuoti
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Errore di Login", "Inserisci sia l'username che la password.");
             return;
         }
 
-        // Verifica l'autenticità dell'utente tramite il DAO
         Utente utente = utenteDAO.autenticaUtente(username, password);
 
         if (utente != null) {
-            // Salva il nome utente dell'utente connesso nella variabile globale
             nomeUtenteConnesso = username;
 
-            // Login effettuato con successo: carica la nuova schermata (LoggedIn.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
             Stage stage = (Stage) PulsanteLogIn.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } else {
-            // Se l'autenticazione fallisce, mostra un messaggio di errore
             showAlert("Errore di Login", "Username o password non corretti.");
         }
     }
 
     private void handleRegistrazione(ActionEvent event) throws IOException {
-        // Carica la schermata di registrazione (SignUp.fxml)
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Interfacce/SignUp.fxml"));
         Stage stage = (Stage) RegistrazioneLogIn.getScene().getWindow();
         Scene scene = new Scene(loader.load());
@@ -102,6 +92,4 @@ public class ControllerLogin {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 }

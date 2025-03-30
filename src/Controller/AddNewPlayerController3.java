@@ -24,17 +24,16 @@ import java.util.Optional;
 public class AddNewPlayerController3 {
 
     @FXML
-    private ListView<String> myListView_Trofei_Ind;  // Verifica che il tipo di ListView sia corretto
+    private ListView<String> myListView_Trofei_Ind;
 
     @FXML
-    private ListView<String> myListView_Trofei_Squ;  // Verifica che il tipo di ListView sia corretto
+    private ListView<String> myListView_Trofei_Squ;
 
     @FXML
     private Button Back_btn;
 
     @FXML
     private Button End_Btn;
-
 
     @FXML
     private DatePicker dateTrophyInd;
@@ -48,8 +47,6 @@ public class AddNewPlayerController3 {
 
     VinceDAO vinceDAO = new VinceDAO();
 
-
-
     private final int idNewPlayerAdded = AddNewPlayerController.idNewPlayerAdded;
 
     @FXML
@@ -57,19 +54,10 @@ public class AddNewPlayerController3 {
         try {
             List<String> trophyInd = trofeoInd.getAllIndTrophy();
             ObservableList<String> trophyIndlist = FXCollections.observableArrayList(trophyInd);
-            myListView_Trofei_Ind.setItems(trophyIndlist);  // Imposta gli oggetti sulla ListView
+            myListView_Trofei_Ind.setItems(trophyIndlist);
         } catch (SQLException e) {
-            e.printStackTrace(); // Gestisci l'errore
+            e.printStackTrace();
         }
-
-        Ind_Button.setOnAction(event -> {
-            try {
-                handleAddTrophyInd();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
 
         Ind_Button.setOnAction(event -> {
             try {
@@ -80,7 +68,6 @@ public class AddNewPlayerController3 {
         });
     }
 
-
     public void handleAddTrophyInd() throws SQLException {
         int resultCheckVince;
         String resultLastTrophy;
@@ -88,21 +75,18 @@ public class AddNewPlayerController3 {
         Date data = Date.valueOf(localDate);
         selectedTrophy = myListView_Trofei_Ind.getSelectionModel().getSelectedItem();
         try {
-            resultCheckVince = vinceDAO.checkTrophyInd(data,selectedTrophy);
-
+            resultCheckVince = vinceDAO.checkTrophyInd(data, selectedTrophy);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (resultCheckVince == 1){
+        if (resultCheckVince == 1) {
             showAlert("Il Trofeo è già assegnato ad un giocatore");
-        }else{
-
-            TrofeoIndividuale trofeoIndividuale = new TrofeoIndividuale(null,selectedTrophy,data);
+        } else {
+            TrofeoIndividuale trofeoIndividuale = new TrofeoIndividuale(null, selectedTrophy, data);
             trofeoInd.addTrofeoIndividuale(trofeoIndividuale);
 
-
             resultLastTrophy = trofeoInd.getLastTrofeoIndividualeId();
-            Vince vince = new Vince(resultLastTrophy,null,idNewPlayerAdded,data);
+            Vince vince = new Vince(resultLastTrophy, null, idNewPlayerAdded, data);
             vinceDAO.addVince(vince);
             showSuccessAlert();
         }
@@ -121,8 +105,6 @@ public class AddNewPlayerController3 {
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Elemento aggiunto con successo!");
-
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {
@@ -160,6 +142,7 @@ public class AddNewPlayerController3 {
             showAlert("Il sistema non è riuscito ad elaborare correttamente la richiesta.");
         }
     }
+
     private void BackToSearch() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));

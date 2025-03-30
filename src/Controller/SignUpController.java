@@ -77,7 +77,7 @@ public class SignUpController {
 
             caricaLogin(event);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) { // Violazione di chiave primaria (username già usato)
+            if (e.getSQLState().equals("23505")) {
                 showAlert("Errore", "Username già utilizzato.");
             } else {
                 showAlert("Errore", "La password deve essere di almeno 8 caratteri.");

@@ -43,14 +43,11 @@ public class SearchInController {
 
     private final String QueryDone = LoggedInController.StringaQuery;
 
-
-    //importazione variabile globale
     private final String UtenteConnesso = ControllerLogin.nomeUtenteConnesso;
 
     public static String selectedItem;
 
     public static int Flag;
-
 
     public void initialize() throws SQLException {
 
@@ -63,34 +60,30 @@ public class SearchInController {
             Totalquery.add(squadra.getNomeSquadra());
             Totalquery.add(" ");
             Totalquery.add(" ");
-            List<Integer> carriereIds = carrieraDAO.getCarrieraByClubName(QueryDone); // Restituisce solo gli ID
+            List<Integer> carriereIds = carrieraDAO.getCarrieraByClubName(QueryDone);
             for (Integer id : carriereIds) {
-                // Usa l'ID per fare qualcosa, come recuperare informazioni da un altro DAO
                 String nomeCognome = personaDAO.getNomeCognomeById(id);
                 Totalquery.add(nomeCognome);
             }
-
-
         } else {
-            List<Integer> idResults = personaDAO.getIdsByNome(QueryDone);  // Restituisce una lista di ID
+            List<Integer> idResults = personaDAO.getIdsByNome(QueryDone);
             if(!idResults.isEmpty()){
                 Flag = 2;
                 for (Integer id : idResults) {
-                    String nomeCognome = personaDAO.getNomeCognomeById(id);  // Ottieni nome e cognome per ogni ID
+                    String nomeCognome = personaDAO.getNomeCognomeById(id);
                     if (nomeCognome != null) {
                         Totalquery.add(nomeCognome);
                     }
                 }
-        } else {
+            } else {
                 resultSearchComp = competizioneDAO.checkCompetizioneEsiste(QueryDone);
                 if (resultSearchComp == 1){
                     Flag = 3;
                     List<String> competizioni = competizioneDAO.getCompetizioniAndDate(QueryDone);
                     for (String competizione : competizioni) {
-                        System.out.println(competizione);  // Stampa ogni competizione con la sua data
+                        System.out.println(competizione);
                         Totalquery.add(competizione);
                     }
-
                 }else {
                     showAlert("Errore di ricerca", "La query non ha riportato alcun risultato.");
                     handleHomepage();
@@ -153,46 +146,12 @@ public class SearchInController {
         }
     }
 
-            /*
-    private void handleAdd() {
-        if (selectedItem == null || selectedItem.trim().isEmpty() || selectedItem.equals(" ")) {
-            showAlert("Errore", "Seleziona un elemento dalla lista.");
-            return;
-        }
-        System.out.println("Aggiungi: " + selectedItem);
-        cambiaScena();
-    }
-     */
-
-    /*
-    private void handleRemove() throws SQLException {
-        if (selectedItem == null || selectedItem.trim().isEmpty() || selectedItem.equals(" ")) {
-            showAlert("Errore", "Seleziona un elemento dalla lista.");
-            return;
-        }
-        if(Flag == 1){
-            squadraDAO.deleteSquadra(selectedItem);
-            showSuccessAlert();
-        } else if (Flag == 2) {
-            int idToRemove = personaDAO.getIdByNomeQ(selectedItem);
-            personaDAO.deletePersona(idToRemove);
-            showSuccessAlert();
-        }else{
-            String[] parti = selectedItem.split(" - ");
-            String competizione = parti[0].trim();
-            String anno = parti[1].trim();
-            competizioneDAO.deleteCompetizione(competizione,anno);
-            showSuccessAlert();
-        }
-    }
-*/
     private void showSuccessAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Successo");
         alert.setHeaderText(null);
         alert.setContentText("Elemento rimosso con successo!");
 
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {
@@ -212,6 +171,4 @@ public class SearchInController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 }

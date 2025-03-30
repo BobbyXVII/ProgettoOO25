@@ -30,16 +30,12 @@ public class VinceDAO {
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // Imposta il valore del primo parametro `?` (data)
             stmt.setDate(1, data);
-
-            // Imposta il valore del secondo parametro `?` (nomeAssegnazione)
             stmt.setString(2, trophyAn);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return 1;  // Trova il risultato
+                    return 1;
                 }
             }
         } catch (SQLException e) {
@@ -47,7 +43,7 @@ public class VinceDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return -1;  // Se non ci sono risultati, restituisce -1
+        return -1;
     }
 
     public int checkTrophyInd4ID(int id, Date data, String trophyAn) throws SQLException {
@@ -57,15 +53,13 @@ public class VinceDAO {
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // Imposta i parametri della query
             stmt.setDate(1, data);
             stmt.setString(2, trophyAn);
-            stmt.setInt(3, id);  // Filtro per ID giocatore
+            stmt.setInt(3, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return 1;  // Trovato un risultato
+                    return 1;
                 }
             }
         } catch (SQLException e) {
@@ -73,9 +67,8 @@ public class VinceDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return -1;  // Nessun risultato trovato
+        return -1;
     }
-
 
     public List<Vince> getTrofeiVintiByPlayer(int playerId) throws SQLException {
         String sql = "SELECT * FROM Vince WHERE ID = ? AND id_trofeo_ds IS NULL";
@@ -127,8 +120,8 @@ public class VinceDAO {
         String sql = "DELETE FROM Vince WHERE ID = ? AND ID_TROFEO_IN = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, playerId);  // ID del giocatore
-            ps.setString(2, selectedTrophy);  // ID del trofeo selezionato
+            ps.setInt(1, playerId);
+            ps.setString(2, selectedTrophy);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,29 +129,4 @@ public class VinceDAO {
             throw new RuntimeException(e);
         }
     }
-
-
 }
-/*
-    public void updateVince(Vince vince) throws SQLException {
-        String sql = "UPDATE Vince SET dataVincita = ? WHERE ID_TROFEO_IN = ? AND ID_TROFEO_DS = ? AND ID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setDate(1, new java.sql.Date(vince.getDataVincita().getTime()));
-            ps.setString(2, vince.getIdTrofeoIN());
-            ps.setString(3, vince.getIdTrofeoDS());
-            ps.setInt(4, vince.getIdPersona());
-            ps.executeUpdate();
-        }
-    }
-
-    public void deleteVince(String idTrofeoIN, String idTrofeoDS, int idPersona) throws SQLException {
-        String sql = "DELETE FROM Vince WHERE ID_TROFEO_IN = ? AND ID_TROFEO_DS = ? AND ID = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, idTrofeoIN);
-            ps.setString(2, idTrofeoDS);
-            ps.setInt(3, idPersona);
-            ps.executeUpdate();
-        }
-    }
-}
- */

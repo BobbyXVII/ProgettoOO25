@@ -52,9 +52,9 @@ public class RuoloDAO {
         String sql = "SELECT abbrRuolo FROM Ruolo WHERE nomeRuolo = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, Role);  // AGGIUNTO: impostare il parametro correttamente
+            stmt.setString(1, Role);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {  // Usa if invece di while
+            if (rs.next()) {
                 return rs.getString("abbrRuolo");
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -69,14 +69,14 @@ public class RuoloDAO {
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);  // Imposta l'ID passato come parametro
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 ruoli.add(rs.getString("nomeRuolo"));
             }
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();  // Gestione dell'errore
+            e.printStackTrace();
         }
 
         return ruoli;
@@ -86,22 +86,15 @@ public class RuoloDAO {
         String sql = "SELECT DISTINCT nomeRuolo FROM ruolo WHERE abbrRuolo NOT IN (SELECT abbrRuolo FROM gioca WHERE gioca.ID = ?)";
         List<String> roles = new ArrayList<>();
 
-        // Connessione al database e preparazione della query
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            // Impostiamo il parametro per il playerID nella query
             ps.setInt(1, playerID);
-
-            // Eseguiamo la query e otteniamo i risultati
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    // Aggiungiamo il ruolo alla lista
                     roles.add(rs.getString("nomeRuolo"));
                 }
             }
         } catch (SQLException e) {
-            // Gestione dell'errore in caso di problemi con il database
             throw new SQLException("Errore durante l'esecuzione della query: " + e.getMessage(), e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -109,38 +102,4 @@ public class RuoloDAO {
 
         return roles;
     }
-
-
-
 }
-
-/*
-    public void addRuolo(Ruolo ruolo) throws SQLException {
-        String sql = "INSERT INTO Ruolo (abbrRuolo, nomeRuolo, descrizione) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, ruolo.getAbbrRuolo());
-            ps.setString(2, ruolo.getNomeRuolo());
-            ps.setString(3, ruolo.getDescrizione());
-            ps.executeUpdate();
-        }
-    }
-
-    public void updateRuolo(Ruolo ruolo) throws SQLException {
-        String sql = "UPDATE Ruolo SET nomeRuolo = ?, descrizione = ? WHERE abbrRuolo = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, ruolo.getNomeRuolo());
-            ps.setString(2, ruolo.getDescrizione());
-            ps.setString(3, ruolo.getAbbrRuolo());
-            ps.executeUpdate();
-        }
-    }
-
-    public void deleteRuolo(String abbrRuolo) throws SQLException {
-        String sql = "DELETE FROM Ruolo WHERE abbrRuolo = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, abbrRuolo);
-            ps.executeUpdate();
-        }
-    }
-}
-*/

@@ -81,7 +81,6 @@ public class AddNewTeamController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == yesButton) {
-            // Creazione della nuova finestra per inserire la dimensione dello stadio
             Stage stage = new Stage();
             stage.setTitle("Inserisci Dimensione Stadio");
 
@@ -144,26 +143,24 @@ public class AddNewTeamController {
     }
 
 
+    @FXML
+    private void handleBack() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma");
+        alert.setHeaderText("Vuoi annullare la compilazione?");
+        alert.setContentText("Questa azione cancellerà i dati inseriti.");
 
-        @FXML
-        private void handleBack() {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Conferma");
-            alert.setHeaderText("Vuoi annullare la compilazione?");
-            alert.setContentText("Questa azione cancellerà i dati inseriti.");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
-                    Stage stage = (Stage) Back_btn.getScene().getWindow();
-                    Scene scene = new Scene(loader.load());
-                    stage.setScene(scene);
-                } catch (IOException e) {
-                }
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/LoggedIn.fxml"));
+                Stage stage = (Stage) Back_btn.getScene().getWindow();
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+            } catch (IOException e) {
             }
         }
-
+    }
 
 
     private void showSuccessAlert() {
@@ -172,7 +169,6 @@ public class AddNewTeamController {
         alert.setHeaderText(null);
         alert.setContentText("Dati aggiunti con successo!");
 
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {

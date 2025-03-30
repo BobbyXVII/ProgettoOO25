@@ -11,10 +11,9 @@ public class SquadraDAO {
 
     public Squadra getSquadraByNome(String nomeSquadra) throws SQLException {
         String sql = "SELECT * FROM Squadra WHERE LOWER(nomeSquadra) LIKE LOWER(?)";
-        try (Connection conn = DatabaseConnection.getConnection();  // Usa DatabaseConnection qui
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Imposta il parametro, convertendolo in minuscolo
             stmt.setString(1, "%" + nomeSquadra.toLowerCase() + "%");
 
             ResultSet rs = stmt.executeQuery();
@@ -41,7 +40,7 @@ public class SquadraDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String  club = rs.getString("nomeSquadra");
+                String club = rs.getString("nomeSquadra");
                 clubList.add(club);
             }
         } catch (SQLException e) {
@@ -84,7 +83,7 @@ public class SquadraDAO {
     public void addSquadra(Squadra squadra) throws SQLException {
         String sql = "INSERT INTO Squadra (nomeSquadra, annoFondazione, citta, nazionalita, nomeStadio) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql))  {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, squadra.getNomeSquadra());
             ps.setInt(2, squadra.getAnnoFondazione());
             ps.setString(3, squadra.getCitta());
@@ -95,9 +94,4 @@ public class SquadraDAO {
             throw new RuntimeException(e);
         }
     }
-
-/*
-
-
-*/
 }

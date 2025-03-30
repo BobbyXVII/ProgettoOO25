@@ -89,10 +89,8 @@ public class AddNewPlayerController2 {
             }
         });
 
-        // Imposta le opzioni per la ChoiceBox del Piede
         ObservableList<String> careerTypology = FXCollections.observableArrayList("Calciatore", "Allenatore", "Dirigente");
         tipologiaChoiceBox.setItems(careerTypology);
-
 
         try {
             List<String> skillsList = skillsDAO.getAllSkills();
@@ -118,7 +116,6 @@ public class AddNewPlayerController2 {
             }
         });
 
-        // Gestione dell'evento per il bottone 'aggiungi'
         SkillsButton.setOnAction(event -> {
             try {
                 handleAddSkill();
@@ -128,7 +125,6 @@ public class AddNewPlayerController2 {
         });
     }
 
-    // Metodo per gestire l'aggiunta della skill selezionata
     private void handleAddSkill() throws SQLException {
         selectedSkill = myListView_Skills.getSelectionModel().getSelectedItem();
         if (selectedSkill != null) {
@@ -159,7 +155,6 @@ public class AddNewPlayerController2 {
                 return;
             }
 
-            // Controllo se il ruolo è già stato aggiunto per l'ID
             if (giocaDAO.roleExists(ResultRole, idNewPlayerAdded)) {
                 showAlert("Questo ruolo è già stato assegnato.");
                 return;
@@ -194,7 +189,7 @@ public class AddNewPlayerController2 {
                 System.out.println("Errore durante l'inserimento: " + e.getMessage());
             }
         }else{
-           showAlert("Compila tutti i campi prima di procedere.");
+            showAlert("Compila tutti i campi prima di procedere.");
         }
     }
 
@@ -205,7 +200,7 @@ public class AddNewPlayerController2 {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
-            e.printStackTrace(); // Stampare il vero errore in console
+            e.printStackTrace();
             showAlert("Il sistema non è riuscito ad elaborare correttamente la richiesta.");
         }
 
@@ -255,7 +250,6 @@ public class AddNewPlayerController2 {
         alert.setHeaderText(null);
         alert.setContentText("Elemento aggiunto con successo!");
 
-        // Mostra l'alert
         alert.show();
 
         Platform.runLater(() -> {

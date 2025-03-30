@@ -16,7 +16,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
-
 public class LoggedInController {
     @FXML
     private Button GoToProfile;
@@ -34,7 +33,6 @@ public class LoggedInController {
 
     private final UtenteDAO utenteDAO = new UtenteDAO();
 
-    //importazione variabile globale
     private final String UtenteConnesso = ControllerLogin.nomeUtenteConnesso;
 
     public void handleGoToProfile() {
@@ -61,7 +59,6 @@ public class LoggedInController {
         Add_btn.setDisable(i == 0);
     }
 
-
     public void handleGoAdd() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Seleziona un'opzione");
@@ -83,7 +80,7 @@ public class LoggedInController {
                     Scene scene = new Scene(loader.load());
                     stage.setScene(scene);
                 } catch (IOException e) {
-                    e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
+                    e.printStackTrace();
                     showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
                 }
             } else if (result.get() == addTeam) {
@@ -93,17 +90,17 @@ public class LoggedInController {
                     Scene scene = new Scene(loader.load());
                     stage.setScene(scene);
                 } catch (IOException e) {
-                    e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
+                    e.printStackTrace();
                     showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
                 }
-            }else{
+            } else {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/AddNewCompetition.fxml"));
                     Stage stage = (Stage) Add_btn.getScene().getWindow();
                     Scene scene = new Scene(loader.load());
                     stage.setScene(scene);
                 } catch (IOException e) {
-                    e.printStackTrace();  // Stampa l'eccezione per capire cosa sta succedendo
+                    e.printStackTrace();
                     showError("ERRORE NEL SISTEMA", "Il sistema non è riuscito ad elaborare correttamente la richiesta.");
                 }
             }

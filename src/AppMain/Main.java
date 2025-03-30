@@ -11,7 +11,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Carica la prima scena
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../Interfacce/Login.fxml"));
         Parent root = loader.load();
 
@@ -19,8 +18,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Unina Soccer");
 
-        // Corrected image loading
-        String imagePath = "/Immagini/Icon.png"; // Use leading slash for classpath root
+        String imagePath = "/Immagini/Icon.png";
         Image icon = new Image(getClass().getResource(imagePath).toExternalForm());
         primaryStage.getIcons().add(icon);
 
