@@ -27,3 +27,16 @@ Per visualizzare il database con l'eventuale struttura, ecco il link della repos
 
 ## UninaSoccer Logo
 ![Logo](https://imgur.com/Umw2tjl.png)
+
+## Accesso al sistema
+Per accedere secondo le diverse modalità previste, all'interno dell'applicativo consigliamo i seguenti utenti:
+# ACCESSO ADMIN
+username: admin
+pass: admin_pass123
+
+# ACCESSO UTENTE
+potete registrarvi
+
+# ACCESSO CALCIATORE
+username: alex.meret
+password: Meret_1997!
