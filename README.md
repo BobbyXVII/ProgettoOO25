@@ -1,7 +1,7 @@
 
-# UninaSoccer
+# UninaSoccer - TRACCIA NUMERO 3, GRUPPO 2
 
-Il seguente progetto di OO svolto dagli studenti:  
+Il seguente progetto di OO UNINA svolto dagli studenti:  
 Roberto Rocco Milanese - N86004554 \ [@BobbyXVII](https://github.com/BobbyXVII)  
 Valerio Monteforte - N86005290 \ [@nayde8824](https://github.com/nayde8824)
 
@@ -20,7 +20,8 @@ nome variabile: `DB_USERNAME`, contenuto: (di base) `postgres` altrimenti:`il vo
 Una volta fatto questo, la cartella eseguirà in maniera autonoma la connessione al DB.
 
 
-
+# Basi di dati
+Per visualizzare il database con l'eventuale struttura, ecco il link della repository. [LINK]([https://github.com/nayde8824](https://github.com/BobbyXVII/Progetto-BD-2023-2024))
 
 
 ## UninaSoccer Logo
