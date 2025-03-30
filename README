@@ -1,0 +1,1 @@
+Per garantire una connessione sicura ed efficiente al database all'interno dell’applicativo, sono state utilizzate variabili locali per la gestione delle credenziali e dei parametri di connessione. Questa scelta è stata adottata per migliorare la modularità del sistema.
