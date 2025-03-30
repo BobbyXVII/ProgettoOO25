@@ -21,7 +21,8 @@ Una volta fatto questo, la cartella eseguirà in maniera autonoma la connessione
 
 
 # Basi di dati
-Per visualizzare il database con l'eventuale struttura, ecco il link della repository. [@LINK]([https://github.com/nayde8824](https://github.com/BobbyXVII/Progetto-BD-2023-2024))
+Per visualizzare il database con l'eventuale struttura, ecco il link della repository.  
+[LINK](https://github.com/BobbyXVII/Progetto-BD-2023-2024)
 
 
 ## UninaSoccer Logo
